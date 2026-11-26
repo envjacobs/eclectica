@@ -181,7 +181,7 @@
             <h1 class="font-display text-base sm:text-lg font-black tracking-wide text-starlight-50 leading-tight">
               ECLECTICA <span class="text-starlight-300 font-sans text-[11px] font-bold uppercase tracking-widest ml-1">ECG Cloud</span>
             </h1>
-            <p class="text-[11px] text-slate-400 hidden xl:block">13-Game Scryfall-Syntax Deckbuilder · Multi-Device Sync</p>
+            <p class="text-[11px] text-slate-400 hidden xl:block">14-Game Scryfall-Syntax Deckbuilder · Multi-Device Sync</p>
           </div>
         </button>
 
@@ -276,7 +276,7 @@
       <div class="w-full flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-4">
         <div id="homeLogosLeft" class="w-full lg:w-44 xl:w-52 flex flex-wrap lg:grid lg:grid-cols-2 items-center justify-center gap-2"></div>
 
-        <!-- CENTERED SQUARE COLLAGE (2 RANDOM CARDS FROM EACH OF THE 13 ACTIVE SUPPORTED GAMES) -->
+        <!-- CENTERED SQUARE COLLAGE (2 RANDOM CARDS FROM EACH OF THE 14 ACTIVE SUPPORTED GAMES) -->
         <div class="w-full max-w-[540px] sm:max-w-[620px] xl:max-w-[660px] aspect-square bg-abyss-900/95 border-2 border-starlight-300/60 rounded-3xl p-2.5 sm:p-3.5 shadow-2xl collage-frame-glow flex flex-col justify-between relative overflow-hidden">
           <div class="flex items-center gap-2 pb-2 px-1 border-b border-abyss-700 shrink-0">
             <div class="flex items-center gap-2">
@@ -362,12 +362,12 @@
             </button>
           </form>
 
-          <!-- ALL 14+ ACTIVE GAME DATABASES TOGGLE MATRIX -->
+          <!-- ALL 14 ACTIVE GAMES + CUSTOM DATABASE TOGGLE MATRIX -->
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-starlight-200 font-semibold">
-              <span>Active Game Databases (<span id="selectedGameCountLabel">14</span> / 14)</span>
+              <span>Active Game Databases (<span id="selectedGameCountLabel">15</span> / 15)</span>
               <div class="flex items-center gap-2">
-                <button type="button" id="selectAllGamesBtn" class="text-starlight-300 hover:underline cursor-pointer">All 14</button>
+                <button type="button" id="selectAllGamesBtn" class="text-starlight-300 hover:underline cursor-pointer">All 15</button>
                 <span>·</span>
                 <button type="button" id="clearGamesBtn" class="text-slate-400 hover:text-starlight-100 cursor-pointer">None</button>
               </div>
@@ -384,7 +384,7 @@
             </div>
 
             <div class="bg-abyss-900 border border-abyss-700 rounded-lg p-2 text-[10px] font-mono text-starlight-100 space-y-1">
-              <div class="text-starlight-300 font-bold">Unified Operators (Works on ALL 13 Games + Custom):</div>
+              <div class="text-starlight-300 font-bold">Unified Operators (Works on ALL 14 Games + Custom):</div>
               <div><code>t:</code>type/trait · <code>o:</code>rules · <code>c:</code>color/aspect · <code>a:</code>aspect · <code>g:</code>game</div>
               <div><code>cost&lt;=N</code> / <code>cmc=N</code> · <code>pow&gt;=N</code> / <code>atk&gt;=N</code> · <code>hp&gt;=N</code> / <code>def&gt;=N</code></div>
               <div><code>s:</code>set · <code>r:</code>rarity · <code>is:legendary</code> / <code>is:unit</code> / <code>-</code>negate / <code>OR</code></div>
@@ -450,7 +450,6 @@
             <button type="button" data-quick-term="Lightning Bolt" class="quick-chip px-2 py-0.5 rounded bg-abyss-850 hover:bg-abyss-700 border border-abyss-600 text-starlight-200 cursor-pointer">Lightning Bolt</button>
             <button type="button" data-quick-term="g:swu" class="quick-chip px-2 py-0.5 rounded bg-abyss-850 hover:bg-abyss-700 border border-abyss-600 text-rose-300 cursor-pointer">g:swu</button>
             <button type="button" data-quick-term="g:chaotic" class="quick-chip px-2 py-0.5 rounded bg-abyss-850 hover:bg-abyss-700 border border-abyss-600 text-orange-300 cursor-pointer">g:chaotic</button>
-            <button type="button" data-quick-term="g:kryptik" class="quick-chip px-2 py-0.5 rounded bg-abyss-850 hover:bg-abyss-700 border border-abyss-600 text-purple-300 cursor-pointer">g:kryptik</button>
             <button type="button" data-quick-term="g:gwent" class="quick-chip px-2 py-0.5 rounded bg-abyss-850 hover:bg-abyss-700 border border-abyss-600 text-teal-300 cursor-pointer">g:gwent</button>
             <button type="button" data-quick-term="t:dragon cost<=6" class="quick-chip px-2 py-0.5 rounded bg-abyss-850 hover:bg-abyss-700 border border-abyss-600 text-sky-300 cursor-pointer">t:dragon cost&lt;=6</button>
           </div>
@@ -460,7 +459,7 @@
         <div id="searchResultsContainer" class="flex-1 overflow-y-auto p-3 max-h-[560px] lg:max-h-[calc(100vh-300px)] space-y-2.5">
           <div id="searchResultCountsBar" class="hidden flex flex-wrap items-center gap-1.5 pb-2 border-b border-abyss-800 text-[10px] font-mono"></div>
           <div id="searchStatusMsg" class="text-xs text-slate-300 text-center py-4 px-3 leading-relaxed">
-            Use Scryfall/SWUDB syntax across <strong class="text-starlight-300">all 13 active supported games</strong>—or search <code class="text-starlight-300">g:swu</code>, <code class="text-starlight-300">g:kryptik</code>, <code class="text-starlight-300">g:gwent</code>, <code class="text-starlight-300">g:fab</code>, or leave blank to browse full pools.<br/>
+            Use Scryfall/SWUDB syntax across <strong class="text-starlight-300">all 13 active supported games</strong>—or search <code class="text-starlight-300">g:swu</code>, <code class="text-starlight-300">g:chaotic</code>, <code class="text-starlight-300">g:gwent</code>, <code class="text-starlight-300">g:fab</code>, or leave blank to browse full pools.<br/>
             Click <strong class="text-starlight-300">★</strong> on any card to bookmark it without adding it to a deck!
           </div>
           <div id="searchResultsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2.5"></div>
@@ -1199,7 +1198,7 @@
         <textarea
           id="bulkImportTextarea"
           rows="7"
-          placeholder="1 [MTG] Lightning Bolt&#10;1 [YGO] Blue-Eyes White Dragon&#10;1 [SWU] Darth Vader, Commanding the First Legion&#10;1 [KRYPTIK] Umbra Dragon&#10;1 [GWENT] Geralt of Rivia"
+          placeholder="1 [MTG] Lightning Bolt&#10;1 [YGO] Blue-Eyes White Dragon&#10;1 [SWU] Darth Vader, Commanding the First Legion&#10;1 [CHAOTIC] Arias&#10;1 [GWENT] Geralt of Rivia"
           class="w-full bg-abyss-950 border border-abyss-600 focus:border-starlight-300 rounded-xl p-3.5 font-mono text-xs text-starlight-50 placeholder-slate-500 focus:outline-none leading-relaxed"
         ></textarea>
 
@@ -1408,7 +1407,7 @@
     }
 
     // =========================================================================
-    // 1. ALL 12 COMPLETE-DATABASE SUPPORTED GAMES + CUSTOM POOL
+    // 1. ALL 13 COMPLETE-DATABASE SUPPORTED GAMES + CUSTOM POOL
     // =========================================================================
     const ALL_SUPPORTED_GAMES = [
       { id: 'MTG', label: 'MTG', fullName: 'Magic: the Gathering', badgeStyle: 'background:#4f46e5;color:#ffffff;border-color:#a5b4fc;', pillStyle: 'background:rgba(79,70,229,0.22);color:#c7d2fe;border-color:rgba(129,140,248,0.45);', accentHex: '#6366f1', isDigitalOnly: false },
@@ -1416,7 +1415,7 @@
       { id: 'PKM', label: 'PKM', fullName: 'Pokémon TCG', badgeStyle: 'background:#e11d48;color:#ffffff;border-color:#fda4af;', pillStyle: 'background:rgba(225,29,72,0.22);color:#fecdd3;border-color:rgba(251,113,133,0.45);', accentHex: '#e11d48', isDigitalOnly: false },
       { id: 'HS', label: 'HS', fullName: 'Hearthstone', badgeStyle: 'background:#0284c7;color:#ffffff;border-color:#7dd3fc;', pillStyle: 'background:rgba(2,132,199,0.22);color:#bae6fd;border-color:rgba(56,189,248,0.45);', accentHex: '#0284c7', isDigitalOnly: true },
       { id: 'SWU', label: 'SWU', fullName: 'Star Wars: Unlimited', badgeStyle: 'background:#b91c1c;color:#ffffff;border-color:#fca5a5;', pillStyle: 'background:rgba(185,28,28,0.22);color:#fecaca;border-color:rgba(248,113,113,0.45);', accentHex: '#dc2626', isDigitalOnly: false },
-      { id: 'KRYPTIK', label: 'Kryptik', fullName: 'Kryptik TCG', badgeStyle: 'background:#7c3aed;color:#ffffff;border-color:#c4b5fd;', pillStyle: 'background:rgba(124,58,237,0.22);color:#ddd6fe;border-color:rgba(167,139,250,0.45);', accentHex: '#7c3aed', isDigitalOnly: false },
+      { id: 'CHAOTIC', label: 'Chaotic', fullName: 'Chaotic TCG', badgeStyle: 'background:#ea580c;color:#ffffff;border-color:#fdba74;', pillStyle: 'background:rgba(234,88,12,0.22);color:#fed7aa;border-color:rgba(251,146,60,0.45);', accentHex: '#ea580c', isDigitalOnly: false },
       { id: 'GWENT', label: 'GWENT', fullName: 'GWENT (The Witcher 3 / Tabletop)', badgeStyle: 'background:#0d9488;color:#ffffff;border-color:#5eead4;', pillStyle: 'background:rgba(13,148,136,0.22);color:#99f6e4;border-color:rgba(45,212,191,0.45);', accentHex: '#0d9488', isDigitalOnly: false },
       { id: 'LOR', label: 'Lorcana', fullName: 'Disney Lorcana', badgeStyle: 'background:#9333ea;color:#ffffff;border-color:#d8b4fe;', pillStyle: 'background:rgba(147,51,234,0.22);color:#e9d5ff;border-color:rgba(192,132,252,0.45);', accentHex: '#9333ea', isDigitalOnly: false },
       { id: 'ANR', label: 'Netrunner', fullName: 'Android: Netrunner', badgeStyle: 'background:#059669;color:#ffffff;border-color:#6ee7b7;', pillStyle: 'background:rgba(5,150,105,0.22);color:#a7f3d0;border-color:rgba(52,211,153,0.45);', accentHex: '#059669', isDigitalOnly: false },
@@ -1428,14 +1427,6 @@
     ];
 
     // =========================================================================
-    // 2. VERIFIED MULTI-SET CARD POOLS FOR SWU, GWENT, CHAOTIC, KRYPTIK, & FAB
-    // =========================================================================
-    const STATIC_REPO_DATABASES = {
-      KRYPTIK: './data/kryptik.json',
-      GWENT: './data/gwent.json'
-    };
-
-    // =========================================================================
     // 3. TO-BE-SUPPORTED GAMES CATALOG (INCLUDING BACKBURNERED GAMES)
     // =========================================================================
     const TO_BE_SUPPORTED_SUBCATEGORIES = [
@@ -1444,7 +1435,6 @@
         title: 'Classic 1990s–2000s Collectible Card Games',
         subtitle: 'Out-of-print golden-era CCGs awaiting unified online REST/JSON card databases',
         games: [
-          { tag: 'CHAOTIC', name: 'Chaotic TCG (Backburner)', era: '2006–2010 · 4Kids / TC Digital', reason: 'Lacks public online REST/JSON image API', c1: '#ea580c', c2: '#1e1b4b', shape: 'flame' },
           { tag: 'VTES', name: 'Jyhad / Vampire: The Eternal Struggle', era: '1994 · Wizards / Black Chantry', reason: 'Lacks unified CORS-enabled card image API', c1: '#dc2626', c2: '#18181b', shape: 'ankh' },
           { tag: 'SWCCG', name: 'Star Wars Customizable Card Game (Decipher)', era: '1995 · Decipher', reason: 'Community GEMP dumps require local parsing', c1: '#eab308', c2: '#0f172a', shape: 'star' },
           { tag: 'STCCG', name: 'Star Trek Customizable Card Game', era: '1994 · Decipher', reason: 'No public hosted card art endpoint', c1: '#38bdf8', c2: '#1e3a8a', shape: 'delta' },
@@ -1504,6 +1494,7 @@
           { tag: 'ALPHACLASH', name: 'Alpha Clash TCG', era: '2023–Present · Rising Empire', reason: 'No public REST card endpoint', c1: '#ef4444', c2: '#18181b', shape: 'alpha' },
           { tag: 'ELESTRALS', name: 'Elestrals', era: '2023–Present · Elestrals LLC', reason: 'No public REST card endpoint', c1: '#22c55e', c2: '#eab308', shape: 'spirit' },
           { tag: 'METAZOO', name: 'MetaZoo: Cryptid Nation', era: '2021–2024 · MetaZoo Games', reason: 'Official database offline', c1: '#16a34a', c2: '#713f12', shape: 'cryptid' },
+          { tag: 'KRYPTIK', name: 'Kryptik TCG (Backburner)', era: 'Backburner', reason: 'Awaiting an authorized card catalog and image source', c1: '#7c3aed', c2: '#1e1b4b', shape: 'crest' },
           { tag: 'UVS', name: 'UniVersus / My Hero Academia CCG', era: '2006–Present · UVS Games', reason: 'UVS Ultra blocks browser CORS', c1: '#dc2626', c2: '#2563eb', shape: 'fist' },
           { tag: 'FFTCG', name: 'Final Fantasy Trading Card Game', era: '2011–Present · Square Enix', reason: 'FFDecks/Square Enix lacks CORS headers', c1: '#38bdf8', c2: '#1e3a8a', shape: 'meteor' },
           { tag: 'FOW', name: 'Force of Will', era: '2012–Present · Force of Will Co.', reason: 'No stable public JSON endpoint', c1: '#f43f5e', c2: '#facc15', shape: 'will' },
@@ -1620,7 +1611,7 @@
         lotr: null,
         mc: null,
         swu: null,
-        kryptik: null,
+        chaotic: null,
         fab: null,
         gwent: null,
         pkm: null
@@ -2287,6 +2278,87 @@
       return 'Spell / Action';
     }
 
+    const SCRYFALL_REQUEST_INTERVAL_MS = 500;
+    const SCRYFALL_RATE_LIMIT_COOLDOWN_MS = 30000;
+    const SCRYFALL_COOLDOWN_STORAGE_KEY = 'eclectica_scryfall_cooldown_until';
+    const SCRYFALL_NEXT_REQUEST_STORAGE_KEY = 'eclectica_scryfall_next_request_at';
+    const SCRYFALL_REQUEST_LOCK_NAME = 'eclectica_scryfall_api_request';
+    let scryfallRequestQueue = Promise.resolve();
+    let scryfallNextRequestAt = 0;
+    let scryfallBlockedUntil = 0;
+
+    function readScryfallCooldownUntil() {
+      try {
+        return Number(localStorage.getItem(SCRYFALL_COOLDOWN_STORAGE_KEY)) || 0;
+      } catch (error) {
+        console.warn('Scryfall cooldown could not be read from storage:', error);
+        return 0;
+      }
+    }
+
+    function readScryfallNextRequestAt() {
+      try {
+        return Number(localStorage.getItem(SCRYFALL_NEXT_REQUEST_STORAGE_KEY)) || 0;
+      } catch (error) {
+        console.warn('Scryfall request schedule could not be read from storage:', error);
+        return 0;
+      }
+    }
+
+    function fetchScryfallJson(url) {
+      const request = scryfallRequestQueue.then(async () => {
+        const runRequest = async () => {
+          while (true) {
+            const now = Date.now();
+            scryfallBlockedUntil = Math.max(scryfallBlockedUntil, readScryfallCooldownUntil());
+            const nextRequestAt = Math.max(
+              scryfallNextRequestAt,
+              readScryfallNextRequestAt(),
+              scryfallBlockedUntil
+            );
+            const waitMs = nextRequestAt - now;
+            if (waitMs > 0) await new Promise(resolve => setTimeout(resolve, waitMs));
+
+            scryfallNextRequestAt = Date.now() + SCRYFALL_REQUEST_INTERVAL_MS;
+            try {
+              localStorage.setItem(SCRYFALL_NEXT_REQUEST_STORAGE_KEY, String(scryfallNextRequestAt));
+            } catch (error) {
+              console.warn('Scryfall request schedule could not be saved to storage:', error);
+            }
+
+            const response = await fetch(url, { headers: { Accept: 'application/json' } });
+            if (response.status === 429) {
+              const retryAfterSeconds = Number(response.headers.get('Retry-After'));
+              const cooldownMs = Math.max(
+                SCRYFALL_RATE_LIMIT_COOLDOWN_MS,
+                Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0 ? retryAfterSeconds * 1000 : 0
+              );
+              scryfallBlockedUntil = Date.now() + cooldownMs;
+              try {
+                localStorage.setItem(SCRYFALL_COOLDOWN_STORAGE_KEY, String(scryfallBlockedUntil));
+              } catch (error) {
+                console.warn('Scryfall cooldown could not be saved to storage:', error);
+              }
+              console.warn(`Scryfall rate limit reached; buffering requests for ${Math.ceil(cooldownMs / 1000)} seconds.`);
+              continue;
+            }
+            if (!response.ok) {
+              throw new Error(`Scryfall request failed with HTTP ${response.status}.`);
+            }
+            return response.json();
+          }
+        };
+
+        if (navigator.locks && typeof navigator.locks.request === 'function') {
+          return navigator.locks.request(SCRYFALL_REQUEST_LOCK_NAME, runRequest);
+        }
+        return runRequest();
+      });
+
+      scryfallRequestQueue = request.catch(() => {});
+      return request;
+    }
+
     function normalizeScryfallCard(raw) {
       let imageUrl = '';
       if (raw.image_uris?.normal) imageUrl = raw.image_uris.normal;
@@ -2343,9 +2415,7 @@
       try {
         while (nextUrl && pageGuard < 6) {
           pageGuard++;
-          const res = await fetch(nextUrl);
-          if (!res.ok) break;
-          const data = await res.json();
+          const data = await fetchScryfallJson(nextUrl);
           if (Array.isArray(data.data)) allRawPrints.push(...data.data);
           if (onProgress) onProgress(allRawPrints.length);
           nextUrl = data.has_more && data.next_page ? data.next_page : null;
@@ -2906,7 +2976,9 @@
       const res = await fetch(url);
       if (!res.ok) return [];
       const data = await res.json();
-      const arr = Array.isArray(data) ? data : (data.data || Object.values(data.response || {}));
+      const arr = Array.isArray(data)
+        ? data
+        : (Array.isArray(data.data) ? data.data : (Array.isArray(data.cards) ? data.cards : Object.values(data.response || {})));
       const cleanArr = Array.isArray(arr) ? arr : [];
       if (cleanArr.length > 0) {
         state.apiCaches[cacheKey] = cleanArr;
@@ -2932,6 +3004,76 @@
         } catch (e) { /* try next mirror */ }
       }
       return null;
+    }
+
+    function parseCsvRecords(csvText) {
+      const records = [];
+      let record = [];
+      let field = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < csvText.length; i++) {
+        const char = csvText[i];
+        if (inQuotes) {
+          if (char === '"' && csvText[i + 1] === '"') {
+            field += '"';
+            i++;
+          } else if (char === '"') {
+            inQuotes = false;
+          } else {
+            field += char;
+          }
+        } else if (char === '"' && field.length === 0) {
+          inQuotes = true;
+        } else if (char === ',') {
+          record.push(field);
+          field = '';
+        } else if (char === '\n') {
+          record.push(field);
+          records.push(record);
+          record = [];
+          field = '';
+        } else if (char === '\r') {
+          if (csvText[i + 1] !== '\n') {
+            record.push(field);
+            records.push(record);
+            record = [];
+            field = '';
+          }
+        } else {
+          field += char;
+        }
+      }
+
+      if (field.length > 0 || record.length > 0) {
+        record.push(field);
+        records.push(record);
+      }
+
+      const nonEmptyRecords = records.filter(row => row.some(value => value.trim() !== ''));
+      const headers = nonEmptyRecords.shift();
+      if (!headers) return [];
+      return nonEmptyRecords.map(row => headers.reduce((entry, header, index) => {
+        const key = header.replace(/^\uFEFF/, '').trim().toLowerCase().replace(/[\s_-]+/g, '');
+        entry[key] = row[index] || '';
+        return entry;
+      }, {}));
+    }
+
+    async function fetchCsvWithFallback(urls) {
+      const errors = [];
+      for (const url of urls) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const text = await response.text();
+          if (text.trim() && !text.trim().startsWith('<')) return text;
+          throw new Error('response was not CSV text');
+        } catch (error) {
+          errors.push(`${url}: ${error.message}`);
+        }
+      }
+      throw new Error(`Could not load Chaotic card data. ${errors.join('; ')}`);
     }
 
     async function getCleanHearthstonePool() {
@@ -3016,60 +3158,177 @@
       return [];
     }
 
-    // LIVE SWU Pool: Dynamically retrieves all sets from api.swu-db.com (auto-updates with new sets)
+    // LIVE SWU Pool: Retrieves the current full card catalog from api.swu-db.com
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const fromIdb = await idbGetDataset('norm_swu_live_v9');
+      const fromIdb = await idbGetDataset('norm_swu_live_v10');
       if (Array.isArray(fromIdb) && fromIdb.length > 0) {
         state.apiCaches.swu = fromIdb;
         return fromIdb;
       }
 
-      const sets = ['sor', 'shd', 'twi', 'jtl', 'lof', 'sec'];
-      const settledSets = await Promise.allSettled(
-        sets.map(async (s) => {
-          const directUrl = `https://api.swu-db.com/cards/${s}`;
-          const payload = await fetchWithCorsMirrorFallback([
-            directUrl,
-            `https://corsproxy.io/?${encodeURIComponent(directUrl)}`,
-            `https://api.allorigins.win/get?url=${encodeURIComponent(directUrl)}`,
-            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(directUrl)}`
-          ]);
-          const arr = Array.isArray(payload) ? payload : (Array.isArray(payload?.data) ? payload.data : []);
-          return arr
-            .filter(r => (r.Set || r.set) && (r.Number || r.number) && (r.Name || r.name))
-            .map(normalizeSwuRawCard);
-        })
-      );
-
-      const fetched = settledSets
-        .filter(r => r.status === 'fulfilled')
-        .flatMap(r => r.value);
-
-      if (fetched.length > 0) {
-        const dedup = new Map();
-        fetched.forEach(c => { if (!dedup.has(c.id)) dedup.set(c.id, c); });
-        const finalSwu = Array.from(dedup.values());
-        state.apiCaches.swu = finalSwu;
-        idbSetDataset('norm_swu_live_v9', finalSwu);
-        return finalSwu;
+      const directUrl = 'https://api.swu-db.com/cards/search?q=*';
+      const payload = await fetchWithCorsMirrorFallback([
+        directUrl,
+        `https://corsproxy.io/?${encodeURIComponent(directUrl)}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(directUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(directUrl)}`
+      ]);
+      const rawCards = Array.isArray(payload) ? payload : (Array.isArray(payload?.data) ? payload.data : []);
+      const fetched = rawCards
+        .filter(r => (r.Set || r.set) && (r.Number || r.number) && (r.Name || r.name))
+        .map(normalizeSwuRawCard);
+      if (fetched.length === 0) {
+        throw new Error('SWU API returned no cards from its full-catalog endpoint.');
       }
-      return [];
+
+      const dedup = new Map();
+      fetched.forEach(c => { if (!dedup.has(c.id)) dedup.set(c.id, c); });
+      const finalSwu = Array.from(dedup.values());
+      state.apiCaches.swu = finalSwu;
+      idbSetDataset('norm_swu_live_v10', finalSwu);
+      return finalSwu;
     }
 
-    // STATIC REPO JSON LOADER (Used identically for KRYPTIK and Witcher 3 Tabletop GWENT)
-    async function getStaticRepoPool(gameId) {
-      const cacheKey = gameId.toLowerCase();
-      if (state.apiCaches[cacheKey] && state.apiCaches[cacheKey].length > 0) return state.apiCaches[cacheKey];
-      const url = STATIC_REPO_DATABASES[gameId];
-      if (!url) return [];
-      const rawArr = await fetchCachedJson(cacheKey, url);
-      const norm = rawArr.map(entry => normalizeBuiltInDatabaseEntry(gameId, entry));
-      state.apiCaches[cacheKey] = norm;
-      return norm;
+    function normalizeChaoticCard(raw, index) {
+      const cardType = raw.cardtype || 'Card';
+      const tribe = raw.tribe || '';
+      const elements = raw.elements || '';
+      const number = raw.id || '';
+      const set = raw.set || 'Unknown Set';
+      const flavorText = raw.flavor || raw.flavortext || raw.falvor || '';
+      const numericValue = value => value !== undefined && value !== null && value !== '' && Number.isFinite(Number(value))
+        ? Number(value)
+        : null;
+      const statLabels = cardType === 'Creature'
+        ? [['Courage', raw.courage], ['Power', raw.power], ['Wisdom', raw.wisdom], ['Speed', raw.speed], ['Energy', raw.energy], ['Mugic', raw.mugic]]
+        : cardType === 'Attack'
+          ? [['BP', raw.bp], ['Base', raw.base], ['Fire', raw.fire], ['Air', raw.air], ['Earth', raw.earth], ['Water', raw.water]]
+          : cardType === 'Mugic'
+            ? [['Mugic Cost', raw.cost]]
+            : cardType === 'Location'
+              ? [['Initiative', raw.initiative]]
+              : [];
+      const statsText = statLabels
+        .filter(([, value]) => value !== undefined && value !== null && value !== '')
+        .map(([label, value]) => `${label} ${value}`)
+        .join(' · ');
+      const rulesText = [
+        raw.ability && `Ability: ${raw.ability}`,
+        raw.brainwashed && `Brainwashed: ${raw.brainwashed}`,
+        flavorText && `Flavor: ${flavorText}`
+      ].filter(Boolean).join('\n\n');
+      const imageUrl = set !== 'Unknown Set' && number
+        ? `https://raw.githubusercontent.com/mda9ish/chaotic-api/master/assets/${encodeURIComponent(set)}/${encodeURIComponent(number)}.png`
+        : '';
+      const card = {
+        id: `chaotic_${cardType}_${set}_${number}_${index}`.toLowerCase().replace(/[^a-z0-9_]/g, '_'),
+        sourceGame: 'CHAOTIC',
+        name: raw.name,
+        category: inferEclecticaCategory(`${cardType} ${raw.types || ''}`),
+        colorText: [tribe, elements].filter(Boolean).join(' · ') || 'Neutral',
+        rarity: raw.rarity || 'Common',
+        numericCost: Math.max(0, numericValue(raw.cost) ?? numericValue(raw.bp) ?? 0),
+        atkNum: numericValue(cardType === 'Creature' ? raw.power : raw.base),
+        defNum: numericValue(cardType === 'Creature' ? raw.energy : null),
+        originalYear: 2006,
+        isDigitalOnly: false,
+        statsText: statsText || cardType,
+        typeLine: `${cardType}${raw.types ? ` — ${raw.types}` : ''}`,
+        rulesText: rulesText || 'Chaotic TCG card.',
+        selectedVersionIdx: 0,
+        versions: [{
+          label: `1st: ${set} #${number}`,
+          setInfo: `Chaotic (${set} #${number})`,
+          year: 2006,
+          imageUrl
+        }]
+      };
+      card.selectedVersionIdx = getPreferredVersionIdx(card);
+      return card;
     }
 
-    // Full GWENT Card Database via api.gwent.one CORS mirror fallback
+    async function getCompleteChaoticPool() {
+      if (state.apiCaches.chaotic && state.apiCaches.chaotic.length > 0) return state.apiCaches.chaotic;
+      const fromIdb = await idbGetDataset('norm_chaotic_v2');
+      if (Array.isArray(fromIdb) && fromIdb.length > 0) {
+        state.apiCaches.chaotic = fromIdb;
+        return fromIdb;
+      }
+
+      const cardTypes = [
+        ['creatures', 'Creature'],
+        ['attacks', 'Attack'],
+        ['battlegear', 'Battlegear'],
+        ['locations', 'Location'],
+        ['mugic', 'Mugic']
+      ];
+      const groups = await Promise.all(cardTypes.map(async ([file, cardType]) => {
+        const path = `csv/${file}.csv`;
+        const csv = await fetchCsvWithFallback([
+          `https://raw.githubusercontent.com/mda9ish/chaotic-api/master/${path}`,
+          `https://cdn.jsdelivr.net/gh/mda9ish/chaotic-api@master/${path}`
+        ]);
+        return parseCsvRecords(csv).map(raw => ({ ...raw, cardtype: cardType }));
+      }));
+      const cards = groups.flat().map((raw, index) => normalizeChaoticCard(raw, index));
+      if (cards.length === 0) {
+        throw new Error('Chaotic card source returned no records.');
+      }
+
+      state.apiCaches.chaotic = cards;
+      idbSetDataset('norm_chaotic_v2', cards);
+      return cards;
+    }
+
+    // Witcher 3 Gwent cards from the public gwentcards.github.io catalog.
+    async function getCompleteGwentPool() {
+      if (state.apiCaches.gwent && state.apiCaches.gwent.length > 0) return state.apiCaches.gwent;
+      const fromIdb = await idbGetDataset('norm_gwent_witcher3_v1');
+      if (Array.isArray(fromIdb) && fromIdb.length > 0) {
+        state.apiCaches.gwent = fromIdb;
+        return fromIdb;
+      }
+
+      const directUrl = 'https://gwentcards.github.io/cards.json';
+      const payload = await fetchWithCorsMirrorFallback([
+        directUrl,
+        `https://corsproxy.io/?${encodeURIComponent(directUrl)}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(directUrl)}`
+      ]);
+      const entries = Array.isArray(payload?.cards) ? payload.cards : [];
+      if (entries.length === 0) {
+        throw new Error('Witcher 3 Gwent API returned no cards.');
+      }
+
+      const cards = entries
+        .filter(entry => entry && typeof entry.name === 'string' && entry.name.trim())
+        .map((entry, index) => {
+          const card = normalizeBuiltInDatabaseEntry('GWENT', {
+            name: entry.name,
+            type: 'Gwent Card',
+            color: entry.deck || 'Neutral',
+            rarity: 'Common',
+            cost: 0,
+            year: 2015,
+            set: entry.expansion || 'The Witcher 3',
+            rules: [entry.type, entry.details].filter(Boolean).join(' — '),
+            img: entry.picture
+              ? `https://gwentcards.github.io/pictures/${encodeURIComponent(entry.picture)}`
+              : ''
+          });
+          card.id = `gwent_w3_${index}_${entry.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+          return card;
+        });
+      if (cards.length === 0) {
+        throw new Error('Witcher 3 Gwent API returned no valid card records.');
+      }
+
+      state.apiCaches.gwent = cards;
+      idbSetDataset('norm_gwent_witcher3_v1', cards);
+      return cards;
+    }
+
     // Full Flesh and Blood Card Database via CORS-open GitHub JSON dataset (the-fab-cube/flesh-and-blood-cards)
     async function getCompleteFabPool() {
       if (state.apiCaches.fab && state.apiCaches.fab.length > 50) return state.apiCaches.fab;
@@ -3147,8 +3406,11 @@
       } else if (gameId === 'SWU') {
         const pool = await getCompleteSwuPool();
         rawResults = pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
-      } else if (STATIC_REPO_DATABASES[gameId]) {
-        const pool = await getStaticRepoPool(gameId);
+      } else if (gameId === 'CHAOTIC') {
+        const pool = await getCompleteChaoticPool();
+        rawResults = pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+      } else if (gameId === 'GWENT') {
+        const pool = await getCompleteGwentPool();
         rawResults = pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
       } else if (gameId === 'FAB') {
         const pool = await getCompleteFabPool();
@@ -3158,23 +3420,21 @@
           if (gameId === 'MTG') {
             const scryfallQ = rawSearchString.replace(/\bg:[a-zA-Z0-9_]+\b/gi, '').trim() || nameToken || 'year>=1993';
             if (exactFuzzy && nameToken) {
-              const res = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(nameToken)}`);
-              if (res.ok) {
-                const data = await res.json();
-                const normalized = data.object === 'card' ? [normalizeScryfallCard(data)].filter(c => cardMatchesUnifiedSyntax(c, clauses)) : [];
-                if (normalized.length > 0) await hydrateScryfallAllPrintings(normalized[0]);
-                rawResults = normalized;
-              }
+              const data = await fetchScryfallJson(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(nameToken)}`);
+              const normalized = data.object === 'card' ? [normalizeScryfallCard(data)].filter(c => cardMatchesUnifiedSyntax(c, clauses)) : [];
+              if (normalized.length > 0) await hydrateScryfallAllPrintings(normalized[0]);
+              rawResults = normalized;
             } else {
-              // Paginate beyond Scryfall's 175-card page cap (up to 4 pages = 700 unique cards)
+              // Follow Scryfall pagination until the complete result set has been read.
               let nextUrl = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(scryfallQ)}&order=released&dir=asc&unique=cards`;
               const rawList = [];
-              let pageCount = 0;
-              while (nextUrl && pageCount < 4) {
-                pageCount++;
-                const res = await fetch(nextUrl);
-                if (!res.ok) break;
-                const data = await res.json();
+              const visitedPages = new Set();
+              while (nextUrl) {
+                if (visitedPages.has(nextUrl)) {
+                  throw new Error('Scryfall repeated a pagination URL before completing the search.');
+                }
+                visitedPages.add(nextUrl);
+                const data = await fetchScryfallJson(nextUrl);
                 if (Array.isArray(data.data)) rawList.push(...data.data);
                 nextUrl = data.has_more && data.next_page ? data.next_page : null;
               }
@@ -3228,7 +3488,8 @@
             rawResults = allMc.filter(c => c.imagesrc).map(normalizeMarvelCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
           }
         } catch (e) {
-          rawResults = [];
+          console.error(`${gameId} card query failed:`, e);
+          throw e;
         }
       }
 
@@ -3261,7 +3522,7 @@
       statusMsg.classList.remove('hidden');
       countsBar.classList.add('hidden');
       loadMoreWrap.classList.add('hidden');
-      statusMsg.innerHTML = `<span class="inline-block animate-pulse text-starlight-300 font-semibold">Querying ${targetGames.length} full card databases (cached in IndexedDB)...</span>`;
+      statusMsg.innerHTML = `<span class="inline-block animate-pulse text-starlight-300 font-semibold">Querying ${targetGames.length} card databases. Scryfall limits are buffered; broad MTG searches may take a while...</span>`;
       grid.innerHTML = '';
 
       const settled = await Promise.allSettled(
@@ -3270,6 +3531,14 @@
           return { gameId: g, list: Array.isArray(list) ? list : [] };
         })
       );
+      const failedGames = settled
+        .map((result, index) => result.status === 'rejected' ? targetGames[index] : null)
+        .filter(Boolean);
+      const failedDetails = settled
+        .map((result, index) => result.status === 'rejected'
+          ? `${targetGames[index]}: ${result.reason instanceof Error ? result.reason.message : String(result.reason)}`
+          : null)
+        .filter(Boolean);
 
       const gameCounts = [];
       const buckets = [];
@@ -3297,11 +3566,16 @@
       state.searchVisibleCount = 30;
 
       if (merged.length === 0) {
-        statusMsg.textContent = 'No cards matched your search syntax across the active databases.';
+        statusMsg.textContent = failedGames.length > 0
+          ? `Could not load card data. ${failedDetails.join('; ')}`
+          : 'No cards matched your search syntax across the active databases.';
         return;
       }
 
       statusMsg.classList.add('hidden');
+      if (failedGames.length > 0) {
+        showToast(`Some card databases could not be loaded: ${failedDetails.join('; ')}`, 'error');
+      }
       countsBar.classList.remove('hidden');
       countsBar.innerHTML = `<span class="text-starlight-300 font-bold">${merged.length} Total:</span>` +
         gameCounts.map(gc => {
@@ -3439,61 +3713,121 @@
       return copy;
     }
 
-    async function drawLiveRandomCollageAll19Games() {
+    let activeCollageRun = 0;
+
+    async function drawLiveRandomCollage() {
+      const runId = ++activeCollageRun;
       const spinner = document.getElementById('collageLiveSpinner');
       const statsText = document.getElementById('homeCollageStatsText');
+      const grid = document.getElementById('homeCollageGrid');
+      state.homeCollageCards = [];
       if (spinner) spinner.classList.remove('hidden');
-      if (statsText) statsText.textContent = 'Drawing 2 random cards from each of the 13 active supported games...';
+      if (statsText) statsText.textContent = 'Loading card previews...';
+      if (grid) grid.innerHTML = '';
 
       const randLetter = ['a', 'e', 'i', 'o', 'u', 's', 'r', 'd'][Math.floor(Math.random() * 8)];
-      const randPkmPage = Math.floor(Math.random() * 600) + 1;
-
+      const fetchJson = async (url) => {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status} for ${url}`);
+        return response.json();
+      };
       const tasks = [
-        ...Array.from({ length: 2 }, () =>
-          fetch('https://api.scryfall.com/cards/random').then(r => r.ok ? r.json() : null).then(raw => raw?.object === 'card' ? [normalizeScryfallCard(raw)] : []).catch(() => [])
-        ),
-        fetchCachedJson('ygo', 'https://db.ygoprodeck.com/api/v7/cardinfo.php').then(a => pickRandomItems(a, 2).map(normalizeYugiohCard)).catch(() => []),
-        getCompletePokemonPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
-        getCleanHearthstonePool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
-        getCompleteSwuPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
-        getStaticRepoPool('KRYPTIK').then(pool => pickRandomItems(pool, 2)).catch(() => []),
-        fetch(`https://api.lorcast.com/v0/cards/search?q=${randLetter}`).then(r => r.ok ? r.json() : null).then(d => pickRandomItems((d?.results || []).filter(c => c.image_uris), 2).map(normalizeLorcanaCard)).catch(() => []),
-        fetchCachedJson('anr', 'https://netrunnerdb.com/api/2.0/public/cards').then(a => pickRandomItems(a.filter(c => c.code), 2).map(normalizeNetrunnerCard)).catch(() => []),
-        fetchCachedJson('arkham', 'https://arkhamdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeArkhamCard)).catch(() => []),
-        fetchCachedJson('lotr', 'https://ringsdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeLotrCard)).catch(() => []),
-        fetchCachedJson('mc', 'https://marvelcdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeMarvelCard)).catch(() => []),
-        getCompleteFabPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
-        getStaticRepoPool('GWENT').then(pool => pickRandomItems(pool, 2)).catch(() => [])
+        ...Array.from({ length: 2 }, (_, index) => ({
+          source: `MTG ${index + 1}`,
+          timeoutMs: null,
+          load: async () => {
+            const raw = await fetchScryfallJson('https://api.scryfall.com/cards/random');
+            return raw?.object === 'card' ? [normalizeScryfallCard(raw)] : [];
+          }
+        })),
+        { source: 'YGO', load: async () => pickRandomItems(await fetchCachedJson('ygo', 'https://db.ygoprodeck.com/api/v7/cardinfo.php'), 2).map(normalizeYugiohCard) },
+        { source: 'PKM', load: async () => pickRandomItems(await getCompletePokemonPool(), 2) },
+        { source: 'HS', load: async () => pickRandomItems(await getCleanHearthstonePool(), 2) },
+        { source: 'SWU', load: async () => pickRandomItems(await getCompleteSwuPool(), 2) },
+        { source: 'CHAOTIC', load: async () => pickRandomItems(await getCompleteChaoticPool(), 2) },
+        {
+          source: 'LOR',
+          load: async () => {
+            const data = await fetchJson(`https://api.lorcast.com/v0/cards/search?q=${randLetter}`);
+            return pickRandomItems((data?.results || []).filter(c => c.image_uris), 2).map(normalizeLorcanaCard);
+          }
+        },
+        { source: 'ANR', load: async () => pickRandomItems((await fetchCachedJson('anr', 'https://netrunnerdb.com/api/2.0/public/cards')).filter(c => c.code), 2).map(normalizeNetrunnerCard) },
+        { source: 'AHC', load: async () => pickRandomItems((await fetchCachedJson('arkham', 'https://arkhamdb.com/api/public/cards/')).filter(c => c.imagesrc), 2).map(normalizeArkhamCard) },
+        { source: 'LOTR', load: async () => pickRandomItems((await fetchCachedJson('lotr', 'https://ringsdb.com/api/public/cards/')).filter(c => c.imagesrc), 2).map(normalizeLotrCard) },
+        { source: 'MC', load: async () => pickRandomItems((await fetchCachedJson('mc', 'https://marvelcdb.com/api/public/cards/')).filter(c => c.imagesrc), 2).map(normalizeMarvelCard) },
+        { source: 'FAB', load: async () => pickRandomItems(await getCompleteFabPool(), 2) },
+        { source: 'GWENT', load: async () => pickRandomItems(await getCompleteGwentPool(), 2) }
       ];
 
-      const settled = await Promise.allSettled(tasks);
-      const pool = settled.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
-      const shuffled = shuffleArray(pool).slice(0, 36);
-      state.homeCollageCards = shuffled;
+      const pool = [];
+      const failedSources = [];
+      const renderCards = () => {
+        if (runId !== activeCollageRun || !grid) return;
+        const shuffled = shuffleArray(pool).slice(0, 36);
+        state.homeCollageCards = shuffled;
+        grid.innerHTML = shuffled.map((card, idx) => {
+          const theme = getBadgeStyleForGame(card.sourceGame);
+          return `
+            <div data-collage-idx="${idx}" title="${escapeXml(card.name)} [${escapeXml(card.sourceGame)}]" class="group relative tcg-aspect rounded-lg overflow-hidden bg-abyss-950 border border-abyss-700 hover:border-starlight-300 cursor-pointer shadow-md hover:scale-105 hover:z-10 transition-all duration-150">
+              ${renderCardVisualHtml(card)}
+              <span style="${theme.badgeStyle}" class="absolute bottom-0.5 left-0.5 z-10 px-1 py-0.2 rounded text-[7.5px] font-mono font-extrabold border shadow">
+                ${escapeXml(card.sourceGame)}
+              </span>
+            </div>
+          `;
+        }).join('');
 
-      const grid = document.getElementById('homeCollageGrid');
-      grid.innerHTML = shuffled.map((card, idx) => {
-        const theme = getBadgeStyleForGame(card.sourceGame);
-        return `
-          <div data-collage-idx="${idx}" title="${escapeXml(card.name)} [${escapeXml(card.sourceGame)}]" class="group relative tcg-aspect rounded-lg overflow-hidden bg-abyss-950 border border-abyss-700 hover:border-starlight-300 cursor-pointer shadow-md hover:scale-105 hover:z-10 transition-all duration-150">
-            ${renderCardVisualHtml(card)}
-            <span style="${theme.badgeStyle}" class="absolute bottom-0.5 left-0.5 z-10 px-1 py-0.2 rounded text-[7.5px] font-mono font-extrabold border shadow">
-              ${escapeXml(card.sourceGame)}
-            </span>
-          </div>
-        `;
-      }).join('');
-
-      grid.querySelectorAll('[data-collage-idx]').forEach(el => {
-        el.addEventListener('click', () => {
-          const card = state.homeCollageCards[Number(el.dataset.collageIdx)];
-          if (card) openCardInspector(card);
+        grid.querySelectorAll('[data-collage-idx]').forEach(el => {
+          el.addEventListener('click', () => {
+            const card = state.homeCollageCards[Number(el.dataset.collageIdx)];
+            if (card) openCardInspector(card);
+          });
         });
-      });
+        if (statsText) {
+          const uniqueGames = new Set(shuffled.map(card => card.sourceGame)).size;
+          statsText.textContent = `${shuffled.length} cards loaded so far across ${uniqueGames} supported universes`;
+        }
+      };
 
+      await Promise.all(tasks.map(async ({ source, load, timeoutMs = 15000 }) => {
+        let timeoutId;
+        try {
+          const loading = load();
+          const cards = timeoutMs === null
+            ? await loading
+            : await Promise.race([
+              loading,
+              new Promise((_, reject) => {
+                timeoutId = setTimeout(() => reject(new Error(`request timed out after ${timeoutMs / 1000} seconds`)), timeoutMs);
+              })
+            ]);
+          if (!Array.isArray(cards)) throw new Error('source returned an invalid card list');
+          if (cards.length === 0) failedSources.push(source);
+          if (runId === activeCollageRun && cards.length > 0) {
+            pool.push(...cards);
+            renderCards();
+          }
+        } catch (error) {
+          failedSources.push(source);
+          console.error(`${source} collage load failed:`, error);
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      }));
+
+      if (runId !== activeCollageRun) return;
       if (spinner) spinner.classList.add('hidden');
-      const uniqueGames = new Set(shuffled.map(c => c.sourceGame)).size;
-      if (statsText) statsText.textContent = `${shuffled.length} Random Cards across ${uniqueGames} supported universes`;
+      if (pool.length === 0 && grid) {
+        grid.innerHTML = '<div class="col-span-6 flex items-center justify-center text-center text-xs text-slate-400 px-4">No cards loaded. Check API access and the GWENT data source.</div>';
+      }
+      const uniqueGames = new Set(state.homeCollageCards.map(card => card.sourceGame)).size;
+      const summary = `${state.homeCollageCards.length} Random Cards across ${uniqueGames} supported universes`;
+      if (statsText) {
+        statsText.textContent = failedSources.length > 0
+          ? `${summary} · unavailable: ${[...new Set(failedSources)].join(', ')}`
+          : summary;
+      }
     }
 
     // =========================================================================
@@ -5507,7 +5841,7 @@
       document.querySelectorAll('.nav-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => switchTopPage(btn.dataset.page));
       });
-      document.getElementById('reshuffleCollageBtn').addEventListener('click', drawLiveRandomCollageAll19Games);
+      document.getElementById('reshuffleCollageBtn').addEventListener('click', drawLiveRandomCollage);
       document.getElementById('homeEnterDeckbuilderBtn').addEventListener('click', () => switchTopPage('studio'));
       document.getElementById('deckToPlaytestBtn').addEventListener('click', () => switchTopPage('playtest'));
 
@@ -5859,7 +6193,7 @@
           '1 [MTG] Lightning Bolt',
           '1 [YGO] Blue-Eyes White Dragon',
           '1 [SWU] Darth Vader, Commanding the First Legion',
-          '1 [KRYPTIK] Umbra Dragon',
+          '1 [CHAOTIC] Arias',
           '1 [GWENT] Geralt of Rivia'
         ].join('\n');
       });
@@ -5943,7 +6277,7 @@
       syncAllViews();
       renderRoadmapPage();
       renderHomepagePerimeterLogos();
-      drawLiveRandomCollageAll19Games();
+      drawLiveRandomCollage();
 
       const loadedShared = await checkAndLoadSharedDeckFromUrl();
       if (!loadedShared) {
