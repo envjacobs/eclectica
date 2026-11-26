@@ -311,6 +311,10 @@
   </section>
 
   <!-- ===================================================================== -->
+  <!-- PAGE 1: DECKBUILDER & VISUAL SPOILER WORKSPACE                        -->
+  <!-- ===================================================================== -->
+  <div id="pageStudio" class="hidden max-w-[1920px] mx-auto flex-col lg:flex-row min-h-[calc(100vh-61px)]">
+
     <!-- LEFT SIDEBAR: UNIFIED SCRYFALL/SWUDB SYNTAX SEARCH + BOOKMARKS + CUSTOM CREATOR -->
     <aside id="studioLeftSidebar" class="w-full lg:w-[440px] xl:w-[470px] shrink-0 bg-abyss-900/95 border-b lg:border-b-0 lg:border-r border-abyss-700 flex flex-col">
       <div class="p-3 border-b border-abyss-700 space-y-2.5">
@@ -1338,7 +1342,71 @@
     const STORAGE_CUSTOM_CARDS_KEY = 'ecg_custom_cards_v5';
     const STORAGE_PREFERRED_VERSIONS_KEY = 'eclectica_preferred_versions_v5';
     const STORAGE_BOOKMARKS_KEY = 'eclectica_bookmarked_cards_v1';
-// ... existing code ... -->
+    const IDB_NAME = 'eclectica_card_db_cache_v3';
+    const IDB_STORE = 'datasets';
+
+    function openCardCacheDb() {
+      return new Promise((resolve) => {
+        if (!window.indexedDB) return resolve(null);
+        try {
+          const req = indexedDB.open(IDB_NAME, 1);
+          req.onupgradeneeded = () => {
+            if (!req.result.objectStoreNames.contains(IDB_STORE)) {
+              req.result.createObjectStore(IDB_STORE);
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+
+    async function idbGetDataset(key) {
+      const idb = await openCardCacheDb();
+      if (!idb) return null;
+      return new Promise((resolve) => {
+        try {
+          const tx = idb.transaction(IDB_STORE, 'readonly');
+          const req = tx.objectStore(IDB_STORE).get(key);
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+
+    async function idbSetDataset(key, value) {
+      const idb = await openCardCacheDb();
+      if (!idb) return;
+      try {
+        const tx = idb.transaction(IDB_STORE, 'readwrite');
+        tx.objectStore(IDB_STORE).put(value, key);
+      } catch (e) {
+        console.warn('IndexedDB cache write skipped:', e);
+      }
+    }
+
+    async function copyTextSafely(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) { /* fallback below */ }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      return true;
+    }
+
     // =========================================================================
     // 1. ALL 14 ACTIVE SUPPORTED DATABASES + CUSTOM POOL
     // =========================================================================
@@ -2313,25 +2381,26 @@
       if (raw.power !== undefined && raw.toughness !== undefined) statsParts.push(`${raw.power}/${raw.toughness}`);
 
       const card = {
-        id: `pkm_${raw.id || `${raw.set?.id || 'set'}_${raw.number || raw.name}`}`,
-        sourceGame: 'PKM',
+        id: `mtg_${raw.oracle_id || raw.id}`,
+        sourceGame: 'MTG',
         name: raw.name,
-        category: inferEclecticaCategory(raw.supertype),
-        colorText: types || 'Colorless',
-        rarity: raw.rarity || 'Common',
-        numericCost,
-        atkNum: null,
-        defNum: raw.hp ? Number(raw.hp) : null,
+        category: inferEclecticaCategory(raw.type_line),
+        colorText: colorStr,
+        rarity: raw.rarity || 'common',
+        numericCost: Math.max(0, Math.round(Number(raw.cmc) || 0)),
+        atkNum: raw.power !== undefined && !isNaN(Number(raw.power)) ? Number(raw.power) : null,
+        defNum: raw.toughness !== undefined && !isNaN(Number(raw.toughness)) ? Number(raw.toughness) : null,
         originalYear: releaseYear,
-        isDigitalOnly: false,
-        statsText: `${raw.hp ? `HP ${raw.hp} · ` : ''}${raw.set?.name || 'Pokémon'} #${raw.number || ''}`,
-        typeLine: [types, raw.supertype, subtypes].filter(Boolean).join(' · ') || 'Pokémon Card',
-        rulesText: rulesLines.join('\n') || 'Standard Pokémon TCG card.',
+        isDigitalOnly: Boolean(raw.digital),
+        statsText: statsParts.join(' · ') || `MV ${raw.cmc ?? 0}`,
+        typeLine: raw.type_line || 'Magic Card',
+        rulesText: oracleText || 'No rules text.',
+        printsSearchUri: raw.prints_search_uri || `https://api.scryfall.com/cards/search?order=released&dir=asc&q=!"${encodeURIComponent(raw.name)}"&unique=prints`,
         selectedVersionIdx: 0,
         versions: [
           {
-            label: `1st: ${raw.set?.name || 'Original'} (${releaseYear}) #${raw.number || ''}`,
-            setInfo: `${raw.set?.name || 'Pokémon TCG'} #${raw.number || ''} (${raw.set?.releaseDate || releaseYear})`,
+            label: `1st: ${raw.set_name || 'Original'} (${releaseYear}) #${raw.collector_number || ''}`,
+            setInfo: `${raw.set_name || 'MTG'} (${(raw.set || '').toUpperCase()})`,
             year: releaseYear,
             imageUrl
           }
@@ -2456,7 +2525,7 @@
       }
 
       const card = {
-        id: `pkm_${raw.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+        id: `pkm_${raw.id || `${raw.set?.id || 'set'}_${raw.number || raw.name}`}`,
         sourceGame: 'PKM',
         name: raw.name,
         category: inferEclecticaCategory(raw.supertype),
@@ -2467,14 +2536,14 @@
         defNum: raw.hp ? Number(raw.hp) : null,
         originalYear: releaseYear,
         isDigitalOnly: false,
-        statsText: raw.hp ? `HP ${raw.hp}` : (raw.supertype || 'Pokémon'),
+        statsText: `${raw.hp ? `HP ${raw.hp} · ` : ''}${raw.set?.name || 'Pokémon'} #${raw.number || ''}`,
         typeLine: [types, raw.supertype, subtypes].filter(Boolean).join(' · ') || 'Pokémon Card',
         rulesText: rulesLines.join('\n') || 'Standard Pokémon TCG card.',
         selectedVersionIdx: 0,
         versions: [
           {
             label: `1st: ${raw.set?.name || 'Original'} (${releaseYear}) #${raw.number || ''}`,
-            setInfo: `${raw.set?.name || 'Pokémon TCG'} (${raw.set?.releaseDate || releaseYear})`,
+            setInfo: `${raw.set?.name || 'Pokémon TCG'} #${raw.number || ''} (${raw.set?.releaseDate || releaseYear})`,
             year: releaseYear,
             imageUrl
           }
@@ -3034,207 +3103,6 @@
       return fallback;
     }
 
-    // Full Legends of Runeterra (1,400+ cards) via Riot Data Dragon CORS-open JSON
-    async function getCompleteRuneterraPool() {
-      if (state.apiCaches.lor_r && state.apiCaches.lor_r.length > 0) return state.apiCaches.lor_r;
-      const fromIdb = await idbGetDataset('norm_lor_r_v2');
-      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
-        state.apiCaches.lor_r = fromIdb;
-        return fromIdb;
-      }
-
-      const sets = ['set1', 'set2', 'set3', 'set4', 'set5', 'set6', 'set6cde', 'set7', 'set7b', 'set8'];
-      const results = await Promise.allSettled(
-        sets.map(s =>
-          fetch(`https://dd.b.pvp.net/latest/${s}/en_us/data/${s}-en_us.json`)
-            .then(r => r.ok ? r.json() : [])
-            .then(arr => ({ setCode: s, cards: Array.isArray(arr) ? arr : [] }))
-            .catch(() => ({ setCode: s, cards: [] }))
-        )
-      );
-
-      const mapped = [];
-      const seenCodes = new Set();
-      for (const r of results) {
-        if (r.status !== 'fulfilled') continue;
-        const { setCode, cards } = r.value;
-        for (const raw of cards) {
-          if (!raw.cardCode || !raw.name || seenCodes.has(raw.cardCode)) continue;
-          if (raw.collectible === false && raw.supertype !== 'Champion') continue;
-          seenCodes.add(raw.cardCode);
-          const imgUrl = raw.assets?.[0]?.gameAbsolutePath
-            || `https://dd.b.pvp.net/latest/${setCode}/en_us/img/cards/${raw.cardCode}.png`;
-          const regions = Array.isArray(raw.regions) ? raw.regions.join(' ') : (raw.region || 'Neutral');
-          const typeStr = `${raw.supertype ? raw.supertype + ' ' : ''}${raw.type || 'Unit'}${(raw.subtypes && raw.subtypes.length) ? ' — ' + raw.subtypes.join(' · ') : ''}`;
-          const card = {
-            id: `lor_r_${raw.cardCode}`,
-            sourceGame: 'LOR_R',
-            name: raw.name,
-            category: inferEclecticaCategory(typeStr),
-            colorText: regions,
-            rarity: raw.rarity || 'Common',
-            numericCost: Math.max(0, Number(raw.cost) || 0),
-            atkNum: raw.attack !== undefined ? Number(raw.attack) : null,
-            defNum: raw.health !== undefined ? Number(raw.health) : null,
-            originalYear: 2020,
-            isDigitalOnly: true,
-            statsText: `${raw.cost ?? 0} Mana${raw.type === 'Unit' ? ` · ${raw.attack ?? 0}/${raw.health ?? 0}` : ''}`,
-            typeLine: typeStr,
-            rulesText: stripHtmlTags(raw.descriptionRaw || raw.description || '') || 'Legends of Runeterra card.',
-            selectedVersionIdx: 0,
-            versions: [{
-              label: `1st: ${setCode.toUpperCase()} (${raw.cardCode})`,
-              setInfo: `Legends of Runeterra (${setCode.toUpperCase()} · ${raw.cardCode})`,
-              year: 2020,
-              imageUrl: imgUrl
-            }]
-          };
-          card.selectedVersionIdx = getPreferredVersionIdx(card);
-          mapped.push(card);
-        }
-      }
-
-      if (mapped.length > 0) {
-        state.apiCaches.lor_r = mapped;
-        idbSetDataset('norm_lor_r_v2', mapped);
-        return mapped;
-      }
-
-      const fallback = EXTENDED_GAME_CARD_DATABASES.LOR_R.map(e => normalizeBuiltInDatabaseEntry('LOR_R', e));
-      state.apiCaches.lor_r = fallback;
-      return fallback;
-    }
-
-    // Full GWENT Card Database via open GWENT JSON dataset
-    async function getCompleteGwentPool() {
-      if (state.apiCaches.gwent && state.apiCaches.gwent.length > 0) return state.apiCaches.gwent;
-      const fromIdb = await idbGetDataset('norm_gwent_v2');
-      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
-        state.apiCaches.gwent = fromIdb;
-        return fromIdb;
-      }
-
-      const rawObj = await fetchWithCorsMirrorFallback([
-        'https://api.gwent.one/?key=data&response=json',
-        'https://raw.githubusercontent.com/GwentCommunityDevelopers/gwent-data/master/cards.json'
-      ]);
-
-      const rawList = Array.isArray(rawObj)
-        ? rawObj
-        : (rawObj?.response ? Object.values(rawObj.response) : []);
-
-      if (rawList.length > 0) {
-        const seen = new Set();
-        const mapped = [];
-        for (const raw of rawList) {
-          const idObj = raw.id || {};
-          const attr = raw.attributes || raw;
-          const name = attr.name || raw.name;
-          if (!name || seen.has(name.toLowerCase())) continue;
-          if (attr.type === 'Leader' || attr.type === 'Strategem') continue;
-          seen.add(name.toLowerCase());
-
-          const artId = idObj.art || idObj.card || raw.artId || '';
-          const imgUrl = artId ? `https://gwent.one/image/gwent/assets/card/art/low/${artId}.jpg` : '';
-          const prov = Number(attr.provision ?? 0);
-          const pwr = attr.power !== undefined && attr.power !== null ? Number(attr.power) : null;
-
-          const card = {
-            id: `gwent_${idObj.card || name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
-            sourceGame: 'GWENT',
-            name,
-            category: inferEclecticaCategory(attr.type || 'Unit'),
-            colorText: `${attr.faction || 'Neutral'} ${attr.color || ''}`.trim(),
-            rarity: attr.rarity || 'Legendary',
-            numericCost: Math.max(0, prov),
-            atkNum: pwr,
-            defNum: pwr,
-            originalYear: 2017,
-            isDigitalOnly: true,
-            statsText: `${prov} Prov${pwr !== null ? ` · Power ${pwr}` : ''}`,
-            typeLine: `${attr.type || 'Unit'}${attr.category ? ' — ' + attr.category : ''}`,
-            rulesText: stripHtmlTags(attr.ability || attr.ability_html || '') || 'GWENT card.',
-            selectedVersionIdx: 0,
-            versions: [{
-              label: `1st: ${attr.set || 'Base Set'}`,
-              setInfo: `GWENT (${attr.set || 'Base Set'})`,
-              year: 2017,
-              imageUrl: imgUrl
-            }]
-          };
-          card.selectedVersionIdx = getPreferredVersionIdx(card);
-          mapped.push(card);
-        }
-
-        if (mapped.length > 0) {
-          state.apiCaches.gwent = mapped;
-          idbSetDataset('norm_gwent_v2', mapped);
-          return mapped;
-        }
-      }
-
-      const fallback = EXTENDED_GAME_CARD_DATABASES.GWENT.map(e => normalizeBuiltInDatabaseEntry('GWENT', e));
-      state.apiCaches.gwent = fallback;
-      return fallback;
-    }
-
-    // Full Shadowverse Card Database via Shadowverse Portal / CORS-open mirror
-    async function getCompleteShadowversePool() {
-      if (state.apiCaches.sv && state.apiCaches.sv.length > 0) return state.apiCaches.sv;
-      const fromIdb = await idbGetDataset('norm_sv_v2');
-      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
-        state.apiCaches.sv = fromIdb;
-        return fromIdb;
-      }
-
-      const svDirect = 'https://shadowverse-portal.com/api/v1/cards?format=json&lang=en';
-      const payload = await fetchWithCorsMirrorFallback([
-        svDirect,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(svDirect)}`
-      ]);
-      const rawCards = payload?.data?.cards || [];
-      if (Array.isArray(rawCards) && rawCards.length > 0) {
-        const classNames = ['Neutral', 'Forestcraft', 'Swordcraft', 'Runecraft', 'Dragoncraft', 'Shadowcraft', 'Bloodcraft', 'Havencraft', 'Portalcraft'];
-        const typeNames = { 1: 'Follower', 2: 'Amulet', 3: 'Countdown Amulet', 4: 'Spell' };
-        const seen = new Set();
-        const mapped = [];
-        for (const raw of rawCards) {
-          if (!raw.card_name || seen.has(raw.card_name.toLowerCase())) continue;
-          seen.add(raw.card_name.toLowerCase());
-          const clan = classNames[raw.clan] || 'Neutral';
-          const charType = typeNames[raw.char_type] || 'Follower';
-          const imgUrl = raw.card_id ? `https://shadowverse-portal.com/image/card/phase2/common/C/C_${raw.card_id}.png` : '';
-          const card = {
-            id: `sv_${raw.card_id || raw.card_name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
-            sourceGame: 'SV',
-            name: raw.card_name,
-            category: inferEclecticaCategory(charType),
-            colorText: clan,
-            rarity: String(raw.rarity || 'Bronze'),
-            numericCost: Math.max(0, Number(raw.cost) || 0),
-            atkNum: raw.atk !== undefined ? Number(raw.atk) : null,
-            defNum: raw.life !== undefined ? Number(raw.life) : null,
-            originalYear: 2016,
-            isDigitalOnly: true,
-            statsText: `${raw.cost ?? 0} PP${charType === 'Follower' ? ` · ${raw.atk}/${raw.life}` : ''}`,
-            typeLine: `${clan} ${charType}${raw.tribe_name && raw.tribe_name !== '-' ? ' — ' + raw.tribe_name : ''}`,
-            rulesText: stripHtmlTags(raw.skill_disc || '') || 'Shadowverse card.',
-            selectedVersionIdx: 0,
-            versions: [{
-              label: `1st: ${raw.card_set_name || 'Shadowverse'}`,
-              setInfo: raw.card_set_name || 'Shadowverse',
-              year: 2016,
-              imageUrl: imgUrl
-            }]
-          };
-          card.selectedVersionIdx = getPreferredVersionIdx(card);
-          mapped.push(card);
-        }
-        if (mapped.length > 0) {
-          state.apiCaches.sv = mapped;
-          idbSetDataset('norm_sv_v2', mapped);
-          return mapped;
-        }
     // Full GWENT Card Database via open GWENT JSON dataset (rendered with full stats & ability frame)
     async function getCompleteGwentPool() {
       if (state.apiCaches.gwent && state.apiCaches.gwent.length > 0) return state.apiCaches.gwent;
@@ -4201,7 +4069,7 @@
       const deck = getActiveDeck();
       if (!deck) return;
 
-      const prefIdx = getPreferredVersionIdx(cardObj);
+      const prefIdx = getPreferredVersionIdx(cardObj, deck);
       const existing = deck.cards.find(c => c.id === cardObj.id);
       if (existing) {
         existing.quantity += qty;
@@ -4301,6 +4169,309 @@
         el.addEventListener('click', () => {
           const card = state.sampleHandCards[Number(el.dataset.sampleHandIdx)];
           if (card) openCardInspector(card);
+        });
+      });
+    }
+
+    function renderDeckSelector() {
+      const selector = document.getElementById('deckSelector');
+      if (!selector) return;
+      selector.innerHTML = state.decks.map(deck => {
+        const count = deck.cards.reduce((sum, c) => sum + c.quantity, 0);
+        const selected = deck.id === state.activeDeckId ? 'selected' : '';
+        return `<option value="${escapeXml(deck.id)}" ${selected}>${escapeXml(deck.name)} (${count})</option>`;
+      }).join('');
+
+      document.getElementById('navDeckCountPill').textContent = String(state.decks.length);
+      document.getElementById('vaultCapacityBadge').textContent = `${state.decks.length} Deckslots`;
+    }
+
+    function renderFormatSelectorAndAudit() {
+      const activeFmt = getActiveFormat();
+      const selector = document.getElementById('activeFormatSelector');
+      if (!selector) return;
+      selector.innerHTML = state.formats.map(f =>
+        `<option value="${escapeXml(f.id)}" ${f.id === activeFmt.id ? 'selected' : ''}>${escapeXml(f.name)}</option>`
+      ).join('');
+
+      document.getElementById('navActiveFormatBadge').textContent = activeFmt.name;
+
+      const deck = getActiveDeck();
+      const audit = evaluateDeckAgainstFormat(deck, activeFmt);
+
+      const ptsLabel = document.getElementById('formatPointsUsedLabel');
+      ptsLabel.textContent = audit.unlimitedPoints ? `${audit.totalPoints} / ∞` : `${audit.totalPoints} / ${audit.pointCap}`;
+      const overBudget = !audit.unlimitedPoints && audit.totalPoints > audit.pointCap;
+      ptsLabel.className = overBudget ? 'font-bold text-rose-400' : 'font-bold text-emerald-300';
+
+      const statusDot = document.getElementById('formatStatusDot');
+      const statusText = document.getElementById('formatStatusSummaryText');
+      if (audit.isLegal) {
+        statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        statusText.textContent = 'Legal';
+        statusText.className = 'text-emerald-300';
+      } else {
+        statusDot.className = 'w-2 h-2 rounded-full bg-rose-400 animate-pulse';
+        statusText.textContent = `${audit.violations.length} Issue(s)`;
+        statusText.className = 'text-rose-300';
+      }
+
+      const auditList = document.getElementById('formatAuditList');
+      if (audit.isLegal && audit.breakdown.length === 0) {
+        auditList.innerHTML = `<div class="text-emerald-300">✓ Deck passes all rules of <strong>${escapeXml(activeFmt.name)}</strong> (${escapeXml(activeFmt.startingLifeFormula || '')}).</div>`;
+      } else {
+        const vioHtml = audit.violations.map(v => `<div class="text-rose-300">⚠ ${escapeXml(v)}</div>`).join('');
+        const ptsHtml = audit.breakdown.map(p => `<div class="text-starlight-200 font-mono text-[11px]">• ${escapeXml(p)}</div>`).join('');
+        auditList.innerHTML = vioHtml + ptsHtml;
+      }
+    }
+
+    function getSortedDeckCards(cards) {
+      const activeFmt = getActiveFormat();
+      const copy = [...cards];
+      copy.sort((a, b) => {
+        if (state.deckSortBy === 'alpha_asc') return a.name.localeCompare(b.name);
+        if (state.deckSortBy === 'alpha_desc') return b.name.localeCompare(a.name);
+        if (state.deckSortBy === 'tag') {
+          const tagA = (a.tags && a.tags[0]) ? a.tags[0].toLowerCase() : 'zzzz_untagged';
+          const tagB = (b.tags && b.tags[0]) ? b.tags[0].toLowerCase() : 'zzzz_untagged';
+          return tagA.localeCompare(tagB) || a.name.localeCompare(b.name);
+        }
+        if (state.deckSortBy === 'game') return a.sourceGame.localeCompare(b.sourceGame) || a.name.localeCompare(b.name);
+        if (state.deckSortBy === 'cost_asc') return (a.numericCost - b.numericCost) || a.name.localeCompare(b.name);
+        if (state.deckSortBy === 'points_desc') {
+          return computeSingleCardEntryPoints(b, activeFmt) - computeSingleCardEntryPoints(a, activeFmt) || a.name.localeCompare(b.name);
+        }
+        return a.name.localeCompare(b.name);
+      });
+      return copy;
+    }
+
+    function getGridColumnsClass() {
+      if (state.cardSize === 1) return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8 gap-3';
+      if (state.cardSize === 3) return 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5';
+      if (state.cardSize === 4) return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6';
+      return 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4';
+    }
+
+    function buildSpoilerCardTile(card) {
+      const theme = getBadgeStyleForGame(card.sourceGame);
+      const badgeVisibility = state.showOverlayBadges ? '' : 'opacity-0 group-hover:opacity-100';
+      const activeFmt = getActiveFormat();
+      const cardPts = computeSingleCardEntryPoints(card, activeFmt);
+      const tags = Array.isArray(card.tags) ? card.tags : [];
+      const isReadOnly = Boolean(state.sharedViewData);
+
+      return `
+        <div class="group relative rounded-2xl overflow-hidden bg-abyss-900 border border-abyss-700 hover:border-starlight-300 card-foil-shadow select-none flex flex-col">
+          <div class="relative tcg-aspect w-full bg-abyss-950 cursor-pointer overflow-hidden" data-inspect-deck-id="${escapeXml(card.id)}">
+            ${renderCardVisualHtml(card)}
+
+            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider border shadow-md backdrop-blur-sm transition-opacity ${badgeVisibility} ${theme.badgeBg}">
+              ${escapeXml(card.sourceGame)}
+            </span>
+
+            <div class="absolute top-2 right-2 flex items-center gap-1 transition-opacity ${badgeVisibility}">
+              ${cardPts > 0 ? `<span class="px-1.5 py-0.5 rounded-full bg-purple-950/95 border border-purple-400/60 text-purple-200 font-mono text-[10px] font-bold shadow">${cardPts}p</span>` : ''}
+              <span class="px-2 py-0.5 rounded-full bg-abyss-950/95 border border-starlight-300/60 text-starlight-300 font-mono text-xs font-extrabold shadow-lg">
+                x${card.quantity}
+              </span>
+            </div>
+
+            ${tags.length > 0 ? `
+              <div class="absolute bottom-9 inset-x-1.5 flex flex-wrap gap-1 pointer-events-none">
+                ${tags.map(t => `<span class="px-1.5 py-0.2 rounded bg-sky-950/90 border border-sky-400/60 text-sky-200 font-mono text-[9px] font-bold shadow">#${escapeXml(t)}</span>`).join('')}
+              </div>
+            ` : ''}
+
+            <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-abyss-950 via-abyss-950/95 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-between gap-1">
+              ${isReadOnly ? '<span class="text-[10px] text-starlight-200 font-mono">Read-Only</span>' : `
+                <div class="flex items-center gap-1">
+                  <button type="button" data-dec-id="${escapeXml(card.id)}" class="w-7 h-7 rounded-lg bg-abyss-800 hover:bg-rose-600 text-white font-bold text-sm flex items-center justify-center border border-abyss-600 transition cursor-pointer">-</button>
+                  <button type="button" data-inc-id="${escapeXml(card.id)}" class="w-7 h-7 rounded-lg bg-abyss-800 hover:bg-emerald-600 text-white font-bold text-sm flex items-center justify-center border border-abyss-600 transition cursor-pointer">+</button>
+                </div>
+              `}
+              <button type="button" data-inspect-deck-id="${escapeXml(card.id)}" class="px-2.5 py-1 rounded-lg bg-starlight-300 hover:bg-starlight-200 text-abyss-950 font-bold text-[11px] shadow transition cursor-pointer">
+                Inspect
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDeckWorkspace() {
+      const deck = getActiveDeck();
+      const canvas = document.getElementById('deckCanvas');
+      if (!deck || !canvas) return;
+
+      document.getElementById('activeDeckTitle').textContent = deck.name;
+      const totalCards = deck.cards.reduce((sum, c) => sum + c.quantity, 0);
+      document.getElementById('totalCardCountBadge').textContent = `${totalCards} ${totalCards === 1 ? 'Card' : 'Cards'}`;
+
+      const gameCounts = {};
+      deck.cards.forEach(c => {
+        const g = (c.sourceGame || 'CUSTOM').toUpperCase();
+        gameCounts[g] = (gameCounts[g] || 0) + c.quantity;
+      });
+      document.getElementById('gameBreakdownPills').innerHTML = Object.entries(gameCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([game, count]) => {
+          const theme = getBadgeStyleForGame(game);
+          return `<span class="px-2 py-0.5 rounded-md border font-mono text-[11px] font-semibold ${theme.pillBg}">${count} ${escapeXml(game)}</span>`;
+        }).join('');
+
+      const allTagsSet = new Set();
+      deck.cards.forEach(c => (c.tags || []).forEach(t => allTagsSet.add(t)));
+      const tagStrip = document.getElementById('deckTagFilterStrip');
+      if (allTagsSet.size > 0) {
+        tagStrip.classList.remove('hidden');
+        tagStrip.innerHTML = `
+          <span class="text-sky-300 font-bold mr-1">Filter by Tag:</span>
+          <button type="button" data-filter-tag="" class="px-2 py-0.5 rounded-md font-mono cursor-pointer ${state.activeTagFilter === '' ? 'bg-sky-400 text-abyss-950 font-bold' : 'bg-abyss-950 text-slate-300 border border-abyss-700'}">All</button>
+          ${Array.from(allTagsSet).sort().map(t => `
+            <button type="button" data-filter-tag="${escapeXml(t)}" class="px-2 py-0.5 rounded-md font-mono cursor-pointer ${state.activeTagFilter === t ? 'bg-sky-400 text-abyss-950 font-bold' : 'bg-abyss-950 text-sky-200 border border-sky-500/40'}">#${escapeXml(t)}</button>
+          `).join('')}
+        `;
+        tagStrip.querySelectorAll('[data-filter-tag]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.activeTagFilter = btn.dataset.filterTag;
+            renderDeckWorkspace();
+          });
+        });
+      } else {
+        tagStrip.classList.add('hidden');
+      }
+
+      if (deck.cards.length === 0) {
+        canvas.innerHTML = `
+          <div class="h-full min-h-[380px] flex flex-col items-center justify-center text-center max-w-md mx-auto px-4">
+            <h3 class="font-display text-lg font-bold text-starlight-50 mb-1.5">${escapeXml(deck.name)} is Empty</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Search across all 14 active supported games using unified Scryfall/SWUDB syntax on the left, or import a validated decklist via <span class="text-starlight-300 font-semibold">Bulk Import</span>.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const filteredCards = state.activeTagFilter
+        ? deck.cards.filter(c => Array.isArray(c.tags) && c.tags.includes(state.activeTagFilter))
+        : deck.cards;
+
+      const sortedCards = getSortedDeckCards(filteredCards);
+
+      if (state.viewMode === 'grid') {
+        canvas.innerHTML = `<div class="grid ${getGridColumnsClass()}">${sortedCards.map(buildSpoilerCardTile).join('')}</div>`;
+      } else if (state.viewMode === 'stacks') {
+        const groups = new Map();
+        sortedCards.forEach(card => {
+          let keys = [card.sourceGame];
+          if (state.groupBy === 'tag') {
+            keys = (card.tags && card.tags.length > 0) ? card.tags : ['Untagged'];
+          } else if (state.groupBy === 'alpha') {
+            keys = [(card.name[0] || '#').toUpperCase()];
+          } else if (state.groupBy === 'category') {
+            keys = [card.category || 'Other'];
+          } else if (state.groupBy === 'cost') {
+            keys = [`Cost ${card.numericCost ?? 0}`];
+          }
+          keys.forEach(k => {
+            if (!groups.has(k)) groups.set(k, []);
+            groups.get(k).push(card);
+          });
+        });
+
+        const sortedGroupEntries = Array.from(groups.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+        canvas.innerHTML = `
+          <div class="space-y-6">
+            ${sortedGroupEntries.map(([title, gCards]) => `
+              <section class="bg-abyss-900/65 border border-abyss-700 rounded-2xl p-4">
+                <div class="flex items-center gap-2.5 pb-3 mb-4 border-b border-abyss-700">
+                  <h3 class="font-display text-base font-bold text-starlight-100">${escapeXml(title)}</h3>
+                  <span class="px-2 py-0.5 rounded-full bg-abyss-800 text-starlight-300 font-mono text-xs font-semibold">${gCards.reduce((s, c) => s + c.quantity, 0)}</span>
+                </div>
+                <div class="grid ${getGridColumnsClass()}">${gCards.map(buildSpoilerCardTile).join('')}</div>
+              </section>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        canvas.innerHTML = `
+          <div class="bg-abyss-900/90 border border-abyss-700 rounded-2xl overflow-hidden shadow-xl">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-abyss-700 bg-abyss-950/70 text-[11px] uppercase tracking-wider text-starlight-200">
+                  <th class="py-3 px-4">Qty</th>
+                  <th class="py-3 px-3">Game</th>
+                  <th class="py-3 px-3">Card Name &amp; Selected Version</th>
+                  <th class="py-3 px-3">Custom Deck Tags</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-abyss-800 text-xs">
+                ${sortedCards.map(card => {
+                  const theme = getBadgeStyleForGame(card.sourceGame);
+                  const ver = getActiveVersion(card);
+                  const tags = card.tags || [];
+                  return `
+                    <tr class="hover:bg-abyss-850/90 transition">
+                      <td class="py-2.5 px-4 font-mono font-bold text-starlight-300">${card.quantity}x</td>
+                      <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded font-mono text-[10px] font-bold border ${theme.badgeBg}">${escapeXml(card.sourceGame)}</span></td>
+                      <td class="py-2.5 px-3 cursor-pointer" data-inspect-deck-id="${escapeXml(card.id)}">
+                        <div class="font-semibold text-starlight-50 hover:text-starlight-300">${escapeXml(card.name)}</div>
+                        <div class="text-[10px] font-mono text-slate-400">${escapeXml(ver.label)}</div>
+                      </td>
+                      <td class="py-2.5 px-3">
+                        <div class="flex flex-wrap items-center gap-1">
+                          ${tags.map(t => `
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-sky-500/20 border border-sky-400/40 text-sky-200 font-mono text-[10px]">
+                              #${escapeXml(t)}
+                              <button type="button" data-del-tag-card="${escapeXml(card.id)}" data-del-tag-val="${escapeXml(t)}" class="hover:text-rose-300 cursor-pointer">×</button>
+                            </span>
+                          `).join('')}
+                          <button type="button" data-quick-tag-card="${escapeXml(card.id)}" class="px-2 py-0.5 rounded bg-abyss-800 hover:bg-sky-500 hover:text-abyss-950 text-sky-300 font-mono text-[10px] cursor-pointer">+ Tag</button>
+                        </div>
+                      </td>
+                      <td class="py-2.5 px-4 text-right">
+                        <div class="inline-flex items-center gap-1">
+                          <button type="button" data-dec-id="${escapeXml(card.id)}" class="w-6 h-6 rounded bg-abyss-800 hover:bg-rose-600 text-white font-bold cursor-pointer">-</button>
+                          <button type="button" data-inc-id="${escapeXml(card.id)}" class="w-6 h-6 rounded bg-abyss-800 hover:bg-emerald-600 text-white font-bold cursor-pointer">+</button>
+                        </div>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      canvas.querySelectorAll('[data-inc-id]').forEach(btn => {
+        btn.addEventListener('click', (e) => { e.stopPropagation(); updateCardQuantity(btn.dataset.incId, 1); });
+      });
+      canvas.querySelectorAll('[data-dec-id]').forEach(btn => {
+        btn.addEventListener('click', (e) => { e.stopPropagation(); updateCardQuantity(btn.dataset.decId, -1); });
+      });
+      canvas.querySelectorAll('[data-inspect-deck-id]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const card = getActiveDeck()?.cards.find(c => c.id === el.dataset.inspectDeckId);
+          if (card) openCardInspector(card);
+        });
+      });
+      canvas.querySelectorAll('[data-del-tag-card]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          removeTagFromDeckCard(btn.dataset.delTagCard, btn.dataset.delTagVal);
+        });
+      });
+      canvas.querySelectorAll('[data-quick-tag-card]').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const tag = await showCustomDialog({ title: 'Add Custom Tag to Card', defaultValue: '', confirmText: 'Add Tag' });
+          if (tag) addTagToDeckCard(btn.dataset.quickTagCard, tag);
         });
       });
     }
@@ -5514,7 +5685,14 @@
         saveAllStateToStorage();
         renderBookmarksView();
         if (state.searchResults.length > 0) renderSearchResults();
+        showToast('Cleared all bookmarked cards.', 'info');
       });
+
+      document.getElementById('selectAllGamesBtn').addEventListener('click', () => {
+        ALL_SUPPORTED_GAMES.forEach(s => state.selectedSearchGames.add(s.id));
+        renderGameFilterCheckboxes();
+      });
+
       document.getElementById('clearGamesBtn').addEventListener('click', () => {
         state.selectedSearchGames.clear();
         renderGameFilterCheckboxes();
