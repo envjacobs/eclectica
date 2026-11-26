@@ -278,7 +278,7 @@
 
         <!-- CENTERED SQUARE COLLAGE (2 RANDOM CARDS FROM EACH OF THE 14 ACTIVE SUPPORTED GAMES) -->
         <div class="w-full max-w-[540px] sm:max-w-[620px] xl:max-w-[660px] aspect-square bg-abyss-900/95 border-2 border-starlight-300/60 rounded-3xl p-2.5 sm:p-3.5 shadow-2xl collage-frame-glow flex flex-col justify-between relative overflow-hidden">
-          <div class="flex items-center justify-between gap-2 pb-2 px-1 border-b border-abyss-700 shrink-0">
+          <div class="flex items-center gap-2 pb-2 px-1 border-b border-abyss-700 shrink-0">
             <div class="flex items-center gap-2">
               <span id="collageLiveSpinner" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
               <span class="font-display text-xs sm:text-sm font-bold tracking-wider text-starlight-200 uppercase">
@@ -1408,112 +1408,31 @@
     }
 
     // =========================================================================
-    // 1. ALL 14 ACTIVE SUPPORTED DATABASES + CUSTOM POOL
+    // 1. ALL 12 COMPLETE-DATABASE SUPPORTED GAMES + CUSTOM POOL
     // =========================================================================
     const ALL_SUPPORTED_GAMES = [
-      { id: 'MTG', label: 'MTG', fullName: 'Magic: the Gathering', badgeBg: 'bg-indigo-600/95 text-white border-indigo-300/50', pillBg: 'bg-indigo-500/20 text-indigo-200 border-indigo-400/40', accentHex: '#6366f1', isDigitalOnly: false },
-      { id: 'YGO', label: 'YGO', fullName: 'Yu-Gi-Oh!', badgeBg: 'bg-amber-600/95 text-white border-amber-300/50', pillBg: 'bg-amber-500/20 text-amber-200 border-amber-400/40', accentHex: '#d97706', isDigitalOnly: false },
-      { id: 'PKM', label: 'PKM', fullName: 'Pokémon TCG', badgeBg: 'bg-rose-600/95 text-white border-rose-300/50', pillBg: 'bg-rose-500/20 text-rose-200 border-rose-400/40', accentHex: '#e11d48', isDigitalOnly: false },
-      { id: 'HS', label: 'HS', fullName: 'Hearthstone', badgeBg: 'bg-sky-600/95 text-white border-sky-300/50', pillBg: 'bg-sky-500/20 text-sky-200 border-sky-400/40', accentHex: '#0284c7', isDigitalOnly: true },
-      { id: 'SWU', label: 'SWU', fullName: 'Star Wars: Unlimited', badgeBg: 'bg-red-700/95 text-white border-red-300/50', pillBg: 'bg-red-500/20 text-red-200 border-red-400/40', accentHex: '#dc2626', isDigitalOnly: false },
-      { id: 'GWENT', label: 'GWENT', fullName: 'GWENT: The Witcher Card Game', badgeBg: 'bg-teal-600/95 text-white border-teal-300/50', pillBg: 'bg-teal-500/20 text-teal-200 border-teal-400/40', accentHex: '#0d9488', isDigitalOnly: true },
-      { id: 'CHAOTIC', label: 'Chaotic', fullName: 'Chaotic TCG', badgeBg: 'bg-orange-600/95 text-white border-orange-300/50', pillBg: 'bg-orange-500/20 text-orange-200 border-orange-400/40', accentHex: '#ea580c', isDigitalOnly: false },
-      { id: 'KRYPTIK', label: 'Kryptik', fullName: 'Kryptik TCG', badgeBg: 'bg-violet-600/95 text-white border-violet-300/50', pillBg: 'bg-violet-500/20 text-violet-200 border-violet-400/40', accentHex: '#7c3aed', isDigitalOnly: false },
-      { id: 'LOR', label: 'Lorcana', fullName: 'Disney Lorcana', badgeBg: 'bg-purple-600/95 text-white border-purple-300/50', pillBg: 'bg-purple-500/20 text-purple-200 border-purple-400/40', accentHex: '#9333ea', isDigitalOnly: false },
-      { id: 'ANR', label: 'Netrunner', fullName: 'Android: Netrunner', badgeBg: 'bg-emerald-600/95 text-white border-emerald-300/50', pillBg: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40', accentHex: '#059669', isDigitalOnly: false },
-      { id: 'FAB', label: 'FaB', fullName: 'Flesh and Blood', badgeBg: 'bg-amber-700/95 text-white border-amber-300/50', pillBg: 'bg-amber-500/20 text-amber-200 border-amber-400/40', accentHex: '#b45309', isDigitalOnly: false },
-      { id: 'AHC', label: 'Arkham', fullName: 'Arkham Horror LCG', badgeBg: 'bg-lime-700/95 text-white border-lime-300/50', pillBg: 'bg-lime-500/20 text-lime-200 border-lime-400/40', accentHex: '#4d7c0f', isDigitalOnly: false },
-      { id: 'LOTR', label: 'LOTR LCG', fullName: 'Lord of the Rings LCG', badgeBg: 'bg-yellow-700/95 text-white border-yellow-300/50', pillBg: 'bg-yellow-500/20 text-yellow-200 border-yellow-400/40', accentHex: '#a16207', isDigitalOnly: false },
-      { id: 'MC', label: 'Marvel', fullName: 'Marvel Champions LCG', badgeBg: 'bg-rose-700/95 text-white border-rose-300/50', pillBg: 'bg-rose-500/20 text-rose-200 border-rose-400/40', accentHex: '#be123c', isDigitalOnly: false },
-      { id: 'CUSTOM', label: 'Custom', fullName: 'Custom Card Pool', badgeBg: 'bg-starlight-300 text-abyss-950 border-starlight-100', pillBg: 'bg-starlight-300/20 text-starlight-200 border-starlight-300/40', accentHex: '#fde047', isDigitalOnly: false }
+      { id: 'MTG', label: 'MTG', fullName: 'Magic: the Gathering', badgeStyle: 'background:#4f46e5;color:#ffffff;border-color:#a5b4fc;', pillStyle: 'background:rgba(79,70,229,0.22);color:#c7d2fe;border-color:rgba(129,140,248,0.45);', accentHex: '#6366f1', isDigitalOnly: false },
+      { id: 'YGO', label: 'YGO', fullName: 'Yu-Gi-Oh!', badgeStyle: 'background:#d97706;color:#ffffff;border-color:#fcd34d;', pillStyle: 'background:rgba(217,119,6,0.22);color:#fde68a;border-color:rgba(251,191,36,0.45);', accentHex: '#d97706', isDigitalOnly: false },
+      { id: 'PKM', label: 'PKM', fullName: 'Pokémon TCG', badgeStyle: 'background:#e11d48;color:#ffffff;border-color:#fda4af;', pillStyle: 'background:rgba(225,29,72,0.22);color:#fecdd3;border-color:rgba(251,113,133,0.45);', accentHex: '#e11d48', isDigitalOnly: false },
+      { id: 'HS', label: 'HS', fullName: 'Hearthstone', badgeStyle: 'background:#0284c7;color:#ffffff;border-color:#7dd3fc;', pillStyle: 'background:rgba(2,132,199,0.22);color:#bae6fd;border-color:rgba(56,189,248,0.45);', accentHex: '#0284c7', isDigitalOnly: true },
+      { id: 'SWU', label: 'SWU', fullName: 'Star Wars: Unlimited', badgeStyle: 'background:#b91c1c;color:#ffffff;border-color:#fca5a5;', pillStyle: 'background:rgba(185,28,28,0.22);color:#fecaca;border-color:rgba(248,113,113,0.45);', accentHex: '#dc2626', isDigitalOnly: false },
+      { id: 'KRYPTIK', label: 'Kryptik', fullName: 'Kryptik TCG', badgeStyle: 'background:#7c3aed;color:#ffffff;border-color:#c4b5fd;', pillStyle: 'background:rgba(124,58,237,0.22);color:#ddd6fe;border-color:rgba(167,139,250,0.45);', accentHex: '#7c3aed', isDigitalOnly: false },
+      { id: 'GWENT', label: 'GWENT', fullName: 'GWENT (The Witcher 3 / Tabletop)', badgeStyle: 'background:#0d9488;color:#ffffff;border-color:#5eead4;', pillStyle: 'background:rgba(13,148,136,0.22);color:#99f6e4;border-color:rgba(45,212,191,0.45);', accentHex: '#0d9488', isDigitalOnly: false },
+      { id: 'LOR', label: 'Lorcana', fullName: 'Disney Lorcana', badgeStyle: 'background:#9333ea;color:#ffffff;border-color:#d8b4fe;', pillStyle: 'background:rgba(147,51,234,0.22);color:#e9d5ff;border-color:rgba(192,132,252,0.45);', accentHex: '#9333ea', isDigitalOnly: false },
+      { id: 'ANR', label: 'Netrunner', fullName: 'Android: Netrunner', badgeStyle: 'background:#059669;color:#ffffff;border-color:#6ee7b7;', pillStyle: 'background:rgba(5,150,105,0.22);color:#a7f3d0;border-color:rgba(52,211,153,0.45);', accentHex: '#059669', isDigitalOnly: false },
+      { id: 'FAB', label: 'FaB', fullName: 'Flesh and Blood', badgeStyle: 'background:#b45309;color:#ffffff;border-color:#fcd34d;', pillStyle: 'background:rgba(180,83,9,0.22);color:#fde68a;border-color:rgba(245,158,11,0.45);', accentHex: '#b45309', isDigitalOnly: false },
+      { id: 'AHC', label: 'Arkham', fullName: 'Arkham Horror LCG', badgeStyle: 'background:#4d7c0f;color:#ffffff;border-color:#bef264;', pillStyle: 'background:rgba(77,124,15,0.22);color:#d9f99d;border-color:rgba(163,230,53,0.45);', accentHex: '#4d7c0f', isDigitalOnly: false },
+      { id: 'LOTR', label: 'LOTR LCG', fullName: 'Lord of the Rings LCG', badgeStyle: 'background:#a16207;color:#ffffff;border-color:#fde047;', pillStyle: 'background:rgba(161,98,7,0.22);color:#fef08a;border-color:rgba(250,204,21,0.45);', accentHex: '#a16207', isDigitalOnly: false },
+      { id: 'MC', label: 'Marvel', fullName: 'Marvel Champions LCG', badgeStyle: 'background:#be123c;color:#ffffff;border-color:#fda4af;', pillStyle: 'background:rgba(190,18,60,0.22);color:#fecdd3;border-color:rgba(251,113,133,0.45);', accentHex: '#be123c', isDigitalOnly: false },
+      { id: 'CUSTOM', label: 'Custom', fullName: 'Custom Card Pool', badgeStyle: 'background:#fde047;color:#040812;border-color:#fef9c3;', pillStyle: 'background:rgba(253,224,71,0.22);color:#fef08a;border-color:rgba(253,224,71,0.45);', accentHex: '#fde047', isDigitalOnly: false }
     ];
 
     // =========================================================================
-    // 2. EXPANDED MULTI-SET CARD POOLS FOR SWU, CHAOTIC, KRYPTIK, & GWENT
+    // 2. VERIFIED MULTI-SET CARD POOLS FOR SWU, GWENT, CHAOTIC, KRYPTIK, & FAB
     // =========================================================================
-    const EXTENDED_GAME_CARD_DATABASES = {
-      SWU: [
-        { name: 'Darth Vader, Commanding the First Legion', cost: 7, atk: 5, hp: 7, rarity: 'Legendary', color: 'Villainy Aggression Red', type: 'Unit — Force · Imperial · Sith', set: 'SOR #010', year: 2024, rules: 'When Played: Search the top 10 cards of your deck for any number of Villainy units with combined cost 3 or less and play each of them for free.', img: 'https://cdn.swu-db.com/images/cards/SOR/010.png' },
-        { name: 'Luke Skywalker, Jedi Knight', cost: 7, atk: 6, hp: 7, rarity: 'Legendary', color: 'Heroism Vigilance Blue', type: 'Unit — Force · Jedi · Rebel', set: 'SOR #051', year: 2024, rules: 'Restore 3. When Played: Give an enemy unit -3/-3 for this phase. If a friendly unit was defeated this phase, give that enemy unit -6/-6 instead.', img: 'https://cdn.swu-db.com/images/cards/SOR/051.png' },
-        { name: 'Boba Fett, Disintegrator', cost: 3, atk: 3, hp: 5, rarity: 'Legendary', color: 'Villainy Cunning Yellow', type: 'Unit — Underworld · Bounty Hunter', set: 'SOR #179', year: 2024, rules: 'On Attack: If this unit is attacking an exhausted unit that did not enter play this round, deal 3 damage to that unit.', img: 'https://cdn.swu-db.com/images/cards/SOR/179.png' },
-        { name: 'Millennium Falcon, Piece of Junk', cost: 3, atk: 3, hp: 4, rarity: 'Legendary', color: 'Heroism Cunning Yellow', type: 'Space Unit — Underworld · Transport', set: 'SOR #193', year: 2024, rules: 'This unit enters play ready. When you ready this unit during the regroup phase, pay 1 resource or return it to your hand.', img: 'https://cdn.swu-db.com/images/cards/SOR/193.png' },
-        { name: 'Superlaser Blast', cost: 8, atk: null, hp: null, rarity: 'Legendary', color: 'Villainy Vigilance Blue', type: 'Event — Imperial', set: 'SOR #043', year: 2024, rules: 'Defeat all units.', img: 'https://cdn.swu-db.com/images/cards/SOR/043.png' },
-        { name: 'Sabine Wren, Explosives Artist', cost: 2, atk: 2, hp: 3, rarity: 'Common', color: 'Heroism Aggression Red', type: 'Unit — Mandalorian · Rebel · Spectre', set: 'SOR #142', year: 2024, rules: 'On Attack: You may deal 1 damage to the defender or to a base.', img: 'https://cdn.swu-db.com/images/cards/SOR/142.png' },
-        { name: 'Admiral Ackbar, Brilliant Strategist', cost: 3, atk: 1, hp: 4, rarity: 'Uncommon', color: 'Heroism Command Green', type: 'Unit — Rebel · Official', set: 'SOR #097', year: 2024, rules: 'When Played: You may deal damage to a unit equal to the number of units you control in its arena.', img: 'https://cdn.swu-db.com/images/cards/SOR/097.png' },
-        { name: 'Overwhelming Barrage', cost: 5, atk: null, hp: null, rarity: 'Uncommon', color: 'Villainy Command Green', type: 'Event — Tactic', set: 'SOR #092', year: 2024, rules: 'Give a friendly unit +2/+2 for this phase. Then, it deals damage equal to its power divided as you choose among any number of other units.', img: 'https://cdn.swu-db.com/images/cards/SOR/092.png' },
-        { name: 'Han Solo, Reluctant Hero', cost: 6, atk: 6, hp: 6, rarity: 'Rare', color: 'Heroism Cunning Yellow', type: 'Unit — Underworld · Rebel', set: 'SOR #198', year: 2024, rules: 'Ambush. While this unit is attacking, it deals combat damage before the defender.', img: 'https://cdn.swu-db.com/images/cards/SOR/198.png' },
-        { name: 'Emperor Palpatine, Master of the Dark Side', cost: 8, atk: 6, hp: 6, rarity: 'Legendary', color: 'Villainy Command Green', type: 'Unit — Force · Imperial · Sith', set: 'SOR #135', year: 2024, rules: 'When Played: Deal 6 damage divided as you choose among enemy units.', img: 'https://cdn.swu-db.com/images/cards/SOR/135.png' },
-        { name: 'Mace Windu, Party Crasher', cost: 7, atk: 7, hp: 6, rarity: 'Legendary', color: 'Heroism Aggression Red', type: 'Unit — Force · Republic · Jedi', set: 'SOR #149', year: 2024, rules: 'Ambush. When this unit attacks and defeats a unit, ready this unit.', img: 'https://cdn.swu-db.com/images/cards/SOR/149.png' },
-        { name: 'Avenger, Hunting Star Destroyer', cost: 9, atk: 8, hp: 8, rarity: 'Legendary', color: 'Villainy Vigilance Blue', type: 'Space Unit — Imperial · Capital Ship', set: 'SOR #040', year: 2024, rules: 'When Played / On Attack: An opponent chooses a non-leader unit they control. Defeat that unit.', img: 'https://cdn.swu-db.com/images/cards/SOR/040.png' },
-        { name: 'Home One, Alliance Flagship', cost: 8, atk: 7, hp: 7, rarity: 'Legendary', color: 'Heroism Command Green', type: 'Space Unit — Rebel · Capital Ship', set: 'SOR #102', year: 2024, rules: 'Each other friendly unit gains Restore 1. When Played: Play a Heroism unit from your discard pile. It costs 3 less.', img: 'https://cdn.swu-db.com/images/cards/SOR/102.png' },
-        { name: 'Supreme Leader Snoke, Shadow Ruler', cost: 8, atk: 6, hp: 6, rarity: 'Legendary', color: 'Villainy Vigilance Blue', type: 'Unit — Force · First Order · Official', set: 'SHD #037', year: 2024, rules: 'Each enemy non-leader unit gets -2/-2.', img: 'https://cdn.swu-db.com/images/cards/SHD/037.png' },
-        { name: 'Kylo Ren, Killing the Past', cost: 6, atk: 5, hp: 6, rarity: 'Legendary', color: 'Villainy Aggression Red', type: 'Unit — Force · First Order · Sith', set: 'SHD #140', year: 2024, rules: 'When Played: You may discard a card from your hand. If you do, give a unit +2/0 and Saboteur for this phase.', img: 'https://cdn.swu-db.com/images/cards/SHD/140.png' },
-        { name: 'Poe Dameron, Quick to Improvise', cost: 5, atk: 6, hp: 6, rarity: 'Legendary', color: 'Heroism Aggression Red', type: 'Unit — Resistance · Pilot', set: 'SHD #153', year: 2024, rules: 'On Attack: You may discard a card from your hand. If you do, deal 2 damage to a unit or base, or defeat an upgrade.', img: 'https://cdn.swu-db.com/images/cards/SHD/153.png' },
-        { name: 'Cad Bane, Hostage Taker', cost: 7, atk: 6, hp: 7, rarity: 'Legendary', color: 'Villainy Cunning Yellow', type: 'Unit — Underworld · Bounty Hunter', set: 'SHD #188', year: 2024, rules: 'When Played: Capture up to 3 enemy non-leader units with combined cost 6 or less.', img: 'https://cdn.swu-db.com/images/cards/SHD/188.png' },
-        { name: 'Tactical Droid Commander', cost: 5, atk: 4, hp: 4, rarity: 'Uncommon', color: 'Villainy Cunning Yellow', type: 'Unit — Separatist · Droid', set: 'TWI #184', year: 2024, rules: 'Exploit 2. When you play another Separatist unit: You may exhaust a unit that costs the same as or less than the played unit.', img: 'https://cdn.swu-db.com/images/cards/TWI/184.png' },
-        { name: 'General Grievous, Trophy Collector', cost: 4, atk: 4, hp: 4, rarity: 'Rare', color: 'Villainy Cunning Yellow', type: 'Unit — Separatist · Droid · General', set: 'TWI #186', year: 2024, rules: 'Grievous can have up to 4 Lightsaber upgrades attached to him. When a friendly Droid unit is defeated, draw a card.', img: 'https://cdn.swu-db.com/images/cards/TWI/186.png' },
-        { name: 'Ahsoka Tano, Chasing Shadows', cost: 5, atk: 5, hp: 4, rarity: 'Legendary', color: 'Heroism Cunning Yellow', type: 'Unit — Force · Republic · Jedi', set: 'TWI #199', year: 2024, rules: 'Ambush. When Played: Return an enemy non-leader unit that costs 4 or less to its owner’s hand.', img: 'https://cdn.swu-db.com/images/cards/TWI/199.png' }
-      ],
-      CHAOTIC: [
-        { name: 'Maxxor', cost: 6, atk: 60, hp: 65, rarity: 'Ultra Rare', color: 'OverWorld Fire Earth', type: 'Creature — OverWorld Hero', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 10, Earth 10. Pay 2 Mugic Counters: Target Creature gains 15 Energy and deals 10 bonus Fire damage on its next attack.', img: '' },
-        { name: 'Chaor', cost: 7, atk: 75, hp: 70, rarity: 'Ultra Rare', color: 'UnderWorld Fire Power', type: 'Creature — UnderWorld Conqueror', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 15. Recklessness 10. Whenever Chaor wins combat, draw 1 Attack card and gain 1 Mugic Counter.', img: '' },
-        { name: 'Iparu, Metallic Ally', cost: 5, atk: 55, hp: 60, rarity: 'Super Rare', color: 'OverWorld Water', type: 'Creature — OverWorld Elemental', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Shapeshift: Iparu gains all Elemental types and disciplines of the engaged opposing Creature.', img: '' },
-        { name: 'Lord Van Bloot', cost: 6, atk: 50, hp: 55, rarity: 'Ultra Rare', color: 'UnderWorld Dark', type: 'Creature — UnderWorld Taskmaster', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Intimidate: Opposing engaged Creatures lose 15 Courage and cannot play Mugic.', img: '' },
-        { name: 'Tangath Toborn', cost: 5, atk: 65, hp: 60, rarity: 'Ultra Rare', color: 'OverWorld Earth', type: 'Creature — OverWorld Warrior', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Earth 10. Courage 85. OverWorld Creatures you control gain +10 Courage.', img: '' },
-        { name: 'Takinom', cost: 6, atk: 60, hp: 60, rarity: 'Ultra Rare', color: 'UnderWorld Air Fire', type: 'Creature — UnderWorld Warrior', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Swift 1. Innate: Air 10, Fire 10. Pay 1 Mugic Counter: Takinom gains +15 Speed until end of combat.', img: '' },
-        { name: 'Odu-Bathax', cost: 6, atk: 70, hp: 65, rarity: 'Ultra Rare', color: 'Danian Earth', type: 'Creature — Danian Hive Monarch', set: 'Zenith of the Hive (2008)', year: 2008, rules: 'Hive: Odu-Bathax gains +5 Energy and +10 Power for each Mandiblor Creature you control.', img: '' },
-        { name: 'Najarin', cost: 5, atk: 35, hp: 55, rarity: 'Ultra Rare', color: 'OverWorld Water Air', type: 'Creature — OverWorld Muge', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Wisdom 100. Pay 2 Mugic Counters: Return target Mugic card from your Discard Pile to your hand.', img: '' },
-        { name: 'Bodal', cost: 3, atk: 25, hp: 35, rarity: 'Rare', color: 'OverWorld Water', type: 'Creature — OverWorld Muge', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Pay 1 Mugic Counter: Negate target Battlegear ability.', img: '' },
-        { name: 'Ulmar', cost: 4, atk: 30, hp: 40, rarity: 'Rare', color: 'UnderWorld Fire', type: 'Creature — UnderWorld Inventor', set: 'Dawn of Perim (2007)', year: 2007, rules: 'UnderWorld Creatures you control with Battlegear equipped deal +5 Fire damage.', img: '' },
-        { name: 'Aa’une the Oligarch', cost: 8, atk: 90, hp: 85, rarity: 'Ultra Rare', color: 'M’arrillian Water', type: 'Creature — M’arrillian Chieftain', set: 'Rise of the Oligarch (2009)', year: 2009, rules: 'Fluidmorph: Whenever Aa’une deals Water damage, gain 1 Mugic Counter. Minions you control gain +15 to all disciplines.', img: '' },
-        { name: 'Ursis', cost: 7, atk: 80, hp: 75, rarity: 'Ultra Rare', color: 'Tribeless Earth Air', type: 'Creature — Tribeless Beast', set: 'Silent Sands (2008)', year: 2008, rules: 'Innate: Earth 15, Air 15. Ursis cannot equip Battlegear or play Mugic, but deals +15 damage on all attacks.', img: '' },
-        { name: 'Cromaxx', cost: 7, atk: 85, hp: 80, rarity: 'Ultra Rare', color: 'Tribeless Fire Earth', type: 'Creature — Tribeless Behemoth', set: 'Silent Sands (2008)', year: 2008, rules: 'Outperform Power 10: Cromaxx deals +10 damage if its Power exceeds the opposing Creature’s Power.', img: '' },
-        { name: 'Heptadd', cost: 6, atk: 60, hp: 65, rarity: 'Ultra Rare', color: 'OverWorld Fire Water Earth Air', type: 'Creature — OverWorld Elemental', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 10, Water 10, Earth 10, Air 10. Heptadd can play Mugic from any Tribe.', img: '' },
-        { name: 'Intress', cost: 5, atk: 55, hp: 50, rarity: 'Super Rare', color: 'OverWorld Water Earth', type: 'Creature — OverWorld Warrior', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Water 10, Earth 5. Pay 1 Mugic Counter: Target OverWorld Creature gains +10 Power and +10 Speed.', img: '' },
-        { name: 'Raimusa', cost: 4, atk: 45, hp: 45, rarity: 'Rare', color: 'OverWorld Air', type: 'Creature — OverWorld Scout', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Swift 1. Air attacks made by Raimusa deal +5 damage.', img: '' },
-        { name: 'Pyrithion', cost: 5, atk: 60, hp: 55, rarity: 'Super Rare', color: 'UnderWorld Fire', type: 'Creature — UnderWorld Reptile', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 10. Recklessness 5. Deals +10 Fire damage when attacking an OverWorld Creature.', img: '' },
-        { name: 'Khybon', cost: 4, atk: 40, hp: 45, rarity: 'Rare', color: 'UnderWorld Earth', type: 'Creature — UnderWorld Mechanic', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Pay 1 Mugic Counter: Restore target destroyed Battlegear equipped to a Creature you control.', img: '' },
-        { name: 'Song of Revival', cost: 2, atk: null, hp: null, rarity: 'Super Rare', color: 'OverWorld Mugic', type: 'Mugic — OverWorld', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Return target Creature from your Discard Pile to play with half its printed Energy.', img: '' },
-        { name: 'Cannon of Casualty', cost: 2, atk: null, hp: null, rarity: 'Rare', color: 'UnderWorld Mugic', type: 'Mugic — UnderWorld', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Deal 20 damage to target Creature.', img: '' },
-        { name: 'Song of Geonova', cost: 3, atk: null, hp: null, rarity: 'Ultra Rare', color: 'Generic Mugic', type: 'Mugic — Generic', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Deal 15 damage to all engaged Creatures and negate all Location abilities until end of turn.', img: '' },
-        { name: 'Vlaric Shard', cost: 1, atk: null, hp: null, rarity: 'Rare', color: 'Colorless Battlegear', type: 'Battlegear — Relic', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Equipped Creature gains +10 Power and +5 Fire damage.', img: '' },
-        { name: 'Torwegg', cost: 1, atk: null, hp: null, rarity: 'Super Rare', color: 'Colorless Battlegear', type: 'Battlegear — Vehicle', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Equipped Creature gains Range and Swift 2.', img: '' },
-        { name: 'Mount Pillar', cost: 0, atk: null, hp: null, rarity: 'Super Rare', color: 'Danian Earth', type: 'Location — Danian Hive', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Initiative: Highest Speed. Danian Creatures gain +15 Energy and Hive synergy.', img: '' },
-        { name: 'Lava Pond', cost: 0, atk: null, hp: null, rarity: 'Rare', color: 'UnderWorld Fire', type: 'Location — UnderWorld', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Initiative: Highest Power. Fire attacks deal +10 damage.', img: '' }
-      ],
-      KRYPTIK: [
-        { name: 'Umbra Dragon', cost: 7, atk: 7, hp: 7, rarity: 'Mythic', color: 'Shadow Dark', type: 'Entity — Dragon · Shadow', set: 'Genesis (2022)', year: 2022, rules: 'Flight. Entry: Banish up to 2 cards from any graveyard; Umbra Dragon deals 2 damage to all opposing Entities.', img: '' },
-        { name: 'Solarius, Dawn Herald', cost: 5, atk: 4, hp: 6, rarity: 'Legendary', color: 'Light Radiant', type: 'Entity — Angel · Herald', set: 'Genesis (2022)', year: 2022, rules: 'Aura: Friendly Light Entities gain +1/+1. Once per turn, restore 3 Life.', img: '' },
-        { name: 'Rift Weaver', cost: 2, atk: 2, hp: 2, rarity: 'Rare', color: 'Arcane Blue', type: 'Entity — Mage', set: 'Genesis (2022)', year: 2022, rules: 'Entry: Look at the top 3 cards of your deck, put 1 into your hand, and place the rest on the bottom.', img: '' },
-        { name: 'Abyssal Eclipse', cost: 4, atk: null, hp: null, rarity: 'Rare', color: 'Shadow Dark', type: 'Spell — Cataclysm', set: 'Genesis (2022)', year: 2022, rules: 'Destroy target Entity with cost 5 or less. Draw a card.', img: '' },
-        { name: 'Pyre Wyvern', cost: 4, atk: 4, hp: 3, rarity: 'Uncommon', color: 'Flame Red', type: 'Entity — Dragon · Wyvern', set: 'Wicked Prophecy (2023)', year: 2023, rules: 'Swift. Attack: Deal 2 damage to defending player.', img: '' },
-        { name: 'Chrono Obelisk', cost: 3, atk: null, hp: null, rarity: 'Rare', color: 'Neutral Relic', type: 'Relic — Artifact', set: 'Genesis (2022)', year: 2022, rules: 'Exhaust: Generate 1 generic resource of any element.', img: '' },
-        { name: 'Vespera, Nightblade Assassin', cost: 3, atk: 3, hp: 2, rarity: 'Rare', color: 'Shadow Dark', type: 'Entity — Rogue · Assassin', set: 'Genesis (2022)', year: 2022, rules: 'Stealth. Lethal: Any damage Vespera deals to an Entity destroys it.', img: '' },
-        { name: 'Thornwood Colossus', cost: 6, atk: 6, hp: 8, rarity: 'Rare', color: 'Nature Green', type: 'Entity — Elemental · Giant', set: 'Genesis (2022)', year: 2022, rules: 'Guardian. Trample. Entry: Restore 4 Life.', img: '' },
-        { name: 'Arcane Singularity', cost: 5, atk: null, hp: null, rarity: 'Mythic', color: 'Arcane Blue', type: 'Spell — Sorcery', set: 'Wicked Prophecy (2023)', year: 2023, rules: 'Return all non-Relic Entities to their owners’ hands. Draw 2 cards.', img: '' },
-        { name: 'Cinder Pup', cost: 1, atk: 2, hp: 1, rarity: 'Common', color: 'Flame Red', type: 'Entity — Beast', set: 'Genesis (2022)', year: 2022, rules: 'Swift. Last Breath: Deal 1 damage to any target.', img: '' },
-        { name: 'Sanctum Shieldbearer', cost: 2, atk: 1, hp: 4, rarity: 'Common', color: 'Light Radiant', type: 'Entity — Soldier', set: 'Genesis (2022)', year: 2022, rules: 'Guardian. Shield 1.', img: '' },
-        { name: 'Malakor, Lich Sovereign', cost: 8, atk: 6, hp: 7, rarity: 'Mythic', color: 'Shadow Dark', type: 'Entity — Undead · Lich', set: 'Wicked Prophecy (2023)', year: 2023, rules: 'Entry: Reanimate up to 2 Entities with cost 4 or less from your graveyard.', img: '' },
-        { name: 'Aether Drake', cost: 3, atk: 3, hp: 2, rarity: 'Uncommon', color: 'Arcane Blue', type: 'Entity — Dragon · Drake', set: 'Genesis (2022)', year: 2022, rules: 'Flight. Entry: Draw 1 card, then discard 1 card.', img: '' },
-        { name: 'Blighted Bog', cost: 0, atk: null, hp: null, rarity: 'Uncommon', color: 'Shadow Dark', type: 'Realm — Land', set: 'Genesis (2022)', year: 2022, rules: 'Exhaust: Add 1 Shadow energy. Pay 2 Life, Exhaust: Draw 1 card.', img: '' },
-        { name: 'Radiant Citadel', cost: 0, atk: null, hp: null, rarity: 'Rare', color: 'Light Radiant', type: 'Realm — Land', set: 'Genesis (2022)', year: 2022, rules: 'Exhaust: Add 1 Light energy. Friendly Guardians gain +0/+1.', img: '' },
-        { name: 'Soul Siphon', cost: 2, atk: null, hp: null, rarity: 'Common', color: 'Shadow Dark', type: 'Spell — Instant', set: 'Genesis (2022)', year: 2022, rules: 'Deal 3 damage to target Entity. You gain 3 Life.', img: '' }
-      ],
-      GWENT: [
-        { name: 'Geralt: Igni', cost: 10, atk: 2, hp: 2, rarity: 'Legendary', color: 'Neutral Gold', type: 'Unit — Witcher', set: 'Base Set (2017)', year: 2017, rules: 'Deploy: Destroy the highest-power unit(s) on an enemy row if that row has a total of 20 or more power.', img: '' },
-        { name: 'Ciri: Nova', cost: 9, atk: 8, hp: 8, rarity: 'Legendary', color: 'Neutral Gold', type: 'Unit — Witcher', set: 'Base Set (2017)', year: 2017, rules: 'Resilience, Shield, Veil (if your starting deck contains no cards costing 10 or more provisions).', img: '' },
-        { name: 'Yennefer: Conjurer', cost: 9, atk: 5, hp: 5, rarity: 'Legendary', color: 'Neutral Gold', type: 'Unit — Mage', set: 'Base Set (2017)', year: 2017, rules: 'Order (Ranged): Damage the highest-power enemy unit(s) by 1. Cooldown: 1.', img: '' },
-        { name: 'Villentretenmerth', cost: 11, atk: 4, hp: 4, rarity: 'Legendary', color: 'Neutral Gold', type: 'Unit — Dragon', set: 'Base Set (2017)', year: 2017, rules: 'After 3 turns on the battlefield, destroy all other highest-power units on the board.', img: '' },
-        { name: 'Eredin Bréacc Glas', cost: 10, atk: 6, hp: 6, rarity: 'Legendary', color: 'Monsters Dark', type: 'Unit — Wild Hunt · Warrior', set: 'Base Set (2017)', year: 2017, rules: 'Deploy: Spawn Frost on an enemy row for 2 turns. Dominance: Increase Frost damage by 1.', img: '' },
-        { name: 'Philippa: Blind Fury', cost: 12, atk: 1, hp: 1, rarity: 'Legendary', color: 'Northern Realms Light', type: 'Unit — Mage', set: 'Base Set (2017)', year: 2017, rules: 'Deploy: Deal 4, 3, 2, and 1 damage to random enemy units.', img: '' },
-        { name: 'Korathi Heatwave', cost: 10, atk: null, hp: null, rarity: 'Legendary', color: 'Neutral Gold', type: 'Special — Organic', set: 'Base Set (2017)', year: 2017, rules: 'Banish a unit or an artifact.', img: '' }
-      ],
-      FAB: [
-        { name: 'Command and Conquer', cost: 2, atk: 6, hp: null, rarity: 'Majestic', color: 'Generic Red', type: 'Generic Action — Attack', set: 'Arcane Rising (2020)', year: 2020, rules: 'Defense reaction cards cannot be played to this chain link. If this hits a hero, destroy all cards in their arsenal.', img: '' },
-        { name: 'Enlightened Strike', cost: 0, atk: 5, hp: null, rarity: 'Majestic', color: 'Generic Red', type: 'Generic Action — Attack', set: 'Welcome to Rathe (2019)', year: 2019, rules: 'As an additional cost to play Enlightened Strike, put a card from your hand on the bottom of your deck. Choose 1: Draw a card; +2 ATK; or Go again.', img: '' },
-        { name: 'Fyendal’s Spring Tunic', cost: 0, atk: null, hp: 1, rarity: 'Legendary', color: 'Generic Equipment', type: 'Generic Equipment — Chest', set: 'Welcome to Rathe (2019)', year: 2019, rules: 'At the start of your turn, if this has fewer than 3 energy counters, put an energy counter on it. Instant — Remove 3 energy counters: Gain 1 resource.', img: '' },
-        { name: 'Crippling Crush', cost: 7, atk: 11, hp: null, rarity: 'Majestic', color: 'Guardian Red', type: 'Guardian Action — Attack', set: 'Welcome to Rathe (2019)', year: 2019, rules: 'Crush — If Crippling Crush deals 4 or more damage to a hero, they discard 2 random cards.', img: '' }
-      ]
+    const STATIC_REPO_DATABASES = {
+      KRYPTIK: './data/kryptik.json',
+      GWENT: './data/gwent.json'
     };
 
     // =========================================================================
@@ -1525,6 +1444,7 @@
         title: 'Classic 1990s–2000s Collectible Card Games',
         subtitle: 'Out-of-print golden-era CCGs awaiting unified online REST/JSON card databases',
         games: [
+          { tag: 'CHAOTIC', name: 'Chaotic TCG (Backburner)', era: '2006–2010 · 4Kids / TC Digital', reason: 'Lacks public online REST/JSON image API', c1: '#ea580c', c2: '#1e1b4b', shape: 'flame' },
           { tag: 'VTES', name: 'Jyhad / Vampire: The Eternal Struggle', era: '1994 · Wizards / Black Chantry', reason: 'Lacks unified CORS-enabled card image API', c1: '#dc2626', c2: '#18181b', shape: 'ankh' },
           { tag: 'SWCCG', name: 'Star Wars Customizable Card Game (Decipher)', era: '1995 · Decipher', reason: 'Community GEMP dumps require local parsing', c1: '#eab308', c2: '#0f172a', shape: 'star' },
           { tag: 'STCCG', name: 'Star Trek Customizable Card Game', era: '1994 · Decipher', reason: 'No public hosted card art endpoint', c1: '#38bdf8', c2: '#1e3a8a', shape: 'delta' },
@@ -1701,7 +1621,8 @@
         mc: null,
         swu: null,
         fab: null,
-        gwent: null
+        gwent: null,
+        pkm: null
       },
       playtest: {
         turn: 1,
@@ -2027,8 +1948,8 @@
         id: upper,
         label: upper,
         fullName: upper,
-        badgeBg: 'bg-emerald-600/95 text-white border-emerald-300/50',
-        pillBg: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40',
+        badgeStyle: 'background:#059669;color:#ffffff;border-color:#6ee7b7;',
+        pillStyle: 'background:rgba(5,150,105,0.22);color:#a7f3d0;border-color:rgba(52,211,153,0.45);',
         accentHex: '#10b981',
         isDigitalOnly: false
       };
@@ -2249,6 +2170,7 @@
       const horizClass = isCardHorizontalByDesign(card) ? 'horizontal-card-rotated' : '';
       // Escape single quotes (%27) so names like "Urza's Saga" never break the inline onerror string
       const fallbackSvgEncoded = encodeURIComponent(buildGeneratedCardSvg(card, ver)).replace(/'/g, '%27');
+      const gwentOverlayHtml = '';
       return `
         <img
           src="${imgUrl}"
@@ -2259,6 +2181,7 @@
           onerror="this.onerror=null; this.classList.remove('horizontal-card-rotated'); this.src='data:image/svg+xml;charset=utf-8,${fallbackSvgEncoded}';"
           class="w-full h-full object-cover ${horizClass} ${extraClasses}"
         />
+        ${gwentOverlayHtml}
       `;
     }
 
@@ -2616,12 +2539,38 @@
       const hp = raw.HP !== undefined ? Number(raw.HP) : null;
       const aspects = Array.isArray(raw.Aspects) ? raw.Aspects.join(' ') : (raw.Aspects || '');
       const traits = Array.isArray(raw.Traits) ? raw.Traits.join(' · ') : '';
+      const rawType = raw.Type || 'Unit';
+      const isHorizontal = rawType.toLowerCase().includes('leader') || rawType.toLowerCase().includes('base');
+
+      const rulesParts = [];
+      if (raw.FrontText || raw.frontText) rulesParts.push(raw.FrontText || raw.frontText);
+      if (raw.BackText || raw.backText) rulesParts.push(`[Deployed / Back Side]\n${raw.BackText || raw.backText}`);
+
+      const versions = [
+        {
+          label: `1st: ${setCode} #${num}`,
+          setInfo: `Star Wars: Unlimited (${setCode} #${num})`,
+          year: 2024,
+          imageUrl
+        }
+      ];
+
+      if (raw.BackArt || raw.backArt) {
+        let backUrl = raw.BackArt || raw.backArt;
+        if (backUrl.startsWith('/')) backUrl = `https://cdn.swu-db.com${backUrl}`;
+        versions.push({
+          label: `2nd: ${setCode} #${num} (Back / Deployed)`,
+          setInfo: `Star Wars: Unlimited (${setCode} #${num} — Back)`,
+          year: 2024,
+          imageUrl: backUrl
+        });
+      }
 
       const card = {
         id: `swu_${setCode}_${num}`,
         sourceGame: 'SWU',
         name,
-        category: inferEclecticaCategory(raw.Type || 'Unit'),
+        category: inferEclecticaCategory(rawType),
         colorText: aspects || 'Neutral',
         rarity: raw.Rarity || 'Common',
         numericCost: Math.max(0, cost),
@@ -2629,18 +2578,12 @@
         defNum: hp,
         originalYear: 2024,
         isDigitalOnly: false,
+        isHorizontal,
         statsText: `${cost} Cost${pwr !== null && hp !== null ? ` · ${pwr}/${hp}` : ''}`,
-        typeLine: `${raw.Type || 'Unit'}${traits ? ' — ' + traits : ''}`,
-        rulesText: raw.FrontText || raw.frontText || 'Star Wars: Unlimited card.',
+        typeLine: `${rawType}${traits ? ' — ' + traits : ''}`,
+        rulesText: rulesParts.join('\n\n') || 'Star Wars: Unlimited card.',
         selectedVersionIdx: 0,
-        versions: [
-          {
-            label: `1st: ${setCode} #${num}`,
-            setInfo: `Star Wars: Unlimited (${setCode} #${num})`,
-            year: 2024,
-            imageUrl
-          }
-        ]
+        versions
       };
       card.selectedVersionIdx = getPreferredVersionIdx(card);
       return card;
@@ -2659,7 +2602,10 @@
         defNum: entry.hp !== undefined && entry.hp !== null ? Number(entry.hp) : null,
         originalYear: entry.year || 2015,
         isDigitalOnly: getBadgeStyleForGame(gameId).isDigitalOnly,
-        statsText: `${entry.cost ?? 0} Cost${entry.atk !== null && entry.hp !== null ? ` · ${entry.atk}/${entry.hp}` : (entry.atk !== null ? ` · ATK ${entry.atk}` : '')}`,
+        isHorizontal: Boolean(entry.isHorizontal),
+        statsText: gameId === 'GWENT'
+          ? (entry.atk !== null && entry.atk !== undefined ? `Strength ${entry.atk}` : 'Special / Weather')
+          : `${entry.cost ?? 0} Cost${entry.atk !== null && entry.hp !== null ? ` · ${entry.atk}/${entry.hp}` : (entry.atk !== null ? ` · ATK ${entry.atk}` : '')}`,
         typeLine: entry.type || `${gameId} Card`,
         rulesText: entry.rules || '',
         selectedVersionIdx: 0,
@@ -2836,7 +2782,7 @@
     }
 
     // =========================================================================
-    // 10. UNIFIED SCRYFALL & SWUDB SEARCH SYNTAX PARSER ACROSS ALL 19 GAMES
+    // 10. UNIFIED SCRYFALL & SWUDB SEARCH SYNTAX PARSER ACROSS ALL GAMES
     // =========================================================================
     function parseUnifiedSearchQuery(rawQuery) {
       const clauses = [];
@@ -2898,7 +2844,7 @@
       if (f === 'g' || f === 'game') {
         const gCode = (card.sourceGame || '').toLowerCase();
         const gMeta = getBadgeStyleForGame(card.sourceGame);
-        return gCode === c.val || gMeta.label.toLowerCase() === c.val || gMeta.fullName.toLowerCase().includes(c.val);
+        return gCode === c.val || gMeta.label.toLowerCase() === c.val;
       }
       if (f === 's' || f === 'e' || f === 'set') {
         return (card.versions || []).some(v => (v.setInfo || '').toLowerCase().includes(c.val));
@@ -2947,7 +2893,7 @@
     }
 
     // =========================================================================
-    // 11. FULL DATABASE FETCHERS + INDEXEDDB PERSISTENT CACHE (ALL 19 GAMES)
+    // 11. FULL DATABASE FETCHERS + INDEXEDDB PERSISTENT CACHE (STRICTLY ISOLATED)
     // =========================================================================
     async function fetchCachedJson(cacheKey, url) {
       if (state.apiCaches[cacheKey]) return state.apiCaches[cacheKey];
@@ -2972,10 +2918,16 @@
       for (const u of urls) {
         try {
           const res = await fetch(u);
-          if (res.ok) {
-            const data = await res.json();
-            if (data) return data;
+          if (!res.ok) continue;
+          const text = await res.text();
+          if (!text || text.trim().startsWith('<')) continue;
+          let parsed = JSON.parse(text);
+          // Unwrap allorigins /get wrapper if present
+          if (parsed && typeof parsed.contents === 'string') {
+            if (parsed.contents.trim().startsWith('<')) continue;
+            parsed = JSON.parse(parsed.contents);
           }
+          if (parsed) return parsed;
         } catch (e) { /* try next mirror */ }
       }
       return null;
@@ -2987,7 +2939,7 @@
       const groupedByName = new Map();
       for (const c of rawAll) {
         if (!c.id || !c.name) continue;
-        // Exclude Hero Skins, Playable Hero Portraits, & Hero Powers
+        // Strictly exclude Hero Skins, Playable Hero Portraits, & Hero Powers
         if (c.type === 'HERO' || c.type === 'HERO_SKIN' || c.type === 'HERO_POWER' || c.type === 'ENCHANTMENT') continue;
         if (c.set === 'HERO_SKINS' || c.set === 'BATTLEGROUNDS' || c.set === 'MERCENARIES' || c.set === 'TAVERN_BRAWL') continue;
         if (c.collectible === false) continue;
@@ -3002,47 +2954,126 @@
       return normalized;
     }
 
+    // Full Multi-Set Pokémon TCG Pool via CORS-open GitHub JSON repository (PokemonTCG/pokemon-tcg-data)
+    async function getCompletePokemonPool(nameFilter = '') {
+      if (!state.apiCaches.pkmSetIndex) {
+        const setsIndex = await fetchWithCorsMirrorFallback([
+          'https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/sets/en.json',
+          'https://cdn.jsdelivr.net/gh/PokemonTCG/pokemon-tcg-data@master/sets/en.json'
+        ]);
+        if (Array.isArray(setsIndex) && setsIndex.length > 0) {
+          state.apiCaches.pkmSetIndex = setsIndex;
+        }
+      }
+
+      if (state.apiCaches.pkm && state.apiCaches.pkm.length > 0 && !nameFilter) return state.apiCaches.pkm;
+      const fromIdb = await idbGetDataset('norm_pkm_v5');
+      if (Array.isArray(fromIdb) && fromIdb.length > 1000 && !nameFilter) {
+        state.apiCaches.pkm = fromIdb;
+        return fromIdb;
+      }
+
+      const defaultSetIds = [
+        'base1', 'base2', 'base3', 'base4', 'base5', 'gym1', 'gym2',
+        'neo1', 'neo2', 'neo3', 'neo4', 'ecard1', 'ex1', 'ex3', 'ex8',
+        'dp1', 'pl1', 'hgss1', 'bw1', 'bw11', 'xy1', 'xy7', 'xy12',
+        'sm1', 'sm9', 'sm12', 'swsh1', 'swsh4', 'swsh7', 'swsh12pt5',
+        'sv1', 'sv2', 'sv3pt5', 'sv4pt5', 'sv6', 'sv8'
+      ];
+      const allSetMeta = Array.isArray(state.apiCaches.pkmSetIndex) ? state.apiCaches.pkmSetIndex : [];
+      const setMap = new Map(allSetMeta.map(s => [s.id, s]));
+
+      const targetIds = nameFilter && allSetMeta.length > 0
+        ? allSetMeta.map(s => s.id)
+        : defaultSetIds;
+
+      const settled = await Promise.allSettled(
+        targetIds.map(async (sid) => {
+          const cachedSet = state.apiCaches[`pkm_set_${sid}`];
+          if (cachedSet) return cachedSet;
+          const rawArr = await fetchWithCorsMirrorFallback([
+            `https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/cards/en/${sid}.json`,
+            `https://cdn.jsdelivr.net/gh/PokemonTCG/pokemon-tcg-data@master/cards/en/${sid}.json`
+          ]);
+          if (!Array.isArray(rawArr)) return [];
+          const meta = setMap.get(sid) || { id: sid, name: sid.toUpperCase(), releaseDate: '2000-01-01' };
+          const norm = rawArr.map(r => normalizePokemonCard({
+            ...r,
+            set: r.set || meta
+          }));
+          state.apiCaches[`pkm_set_${sid}`] = norm;
+          return norm;
+        })
+      );
+
+      const combined = settled.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
+      if (combined.length > 0) {
+        state.apiCaches.pkm = combined;
+        if (!nameFilter) idbSetDataset('norm_pkm_v5', combined);
+        return combined;
+      }
+      return [];
+    }
+
+    // LIVE SWU Pool: Dynamically retrieves all sets from api.swu-db.com (auto-updates with new sets)
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const fromIdb = await idbGetDataset('norm_swu_v3');
-      if (Array.isArray(fromIdb) && fromIdb.length > 30) {
+      const fromIdb = await idbGetDataset('norm_swu_live_v9');
+      if (Array.isArray(fromIdb) && fromIdb.length > 0) {
         state.apiCaches.swu = fromIdb;
         return fromIdb;
       }
 
-      const sets = ['sor', 'shd', 'twi', 'jtl', 'lof'];
-      const fetched = [];
-      for (const s of sets) {
-        const directUrl = `https://api.swu-db.com/cards/${s}`;
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(directUrl)}`;
-        const corsProxyIo = `https://corsproxy.io/?${encodeURIComponent(directUrl)}`;
-        const payload = await fetchWithCorsMirrorFallback([directUrl, corsProxyIo, proxyUrl]);
-        const arr = Array.isArray(payload) ? payload : (Array.isArray(payload?.data) ? payload.data : []);
-        if (arr.length > 0) {
-          fetched.push(...arr.map(normalizeSwuRawCard));
-        }
-      }
+      const sets = ['sor', 'shd', 'twi', 'jtl', 'lof', 'sec'];
+      const settledSets = await Promise.allSettled(
+        sets.map(async (s) => {
+          const directUrl = `https://api.swu-db.com/cards/${s}`;
+          const payload = await fetchWithCorsMirrorFallback([
+            directUrl,
+            `https://corsproxy.io/?${encodeURIComponent(directUrl)}`,
+            `https://api.allorigins.win/get?url=${encodeURIComponent(directUrl)}`,
+            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(directUrl)}`
+          ]);
+          const arr = Array.isArray(payload) ? payload : (Array.isArray(payload?.data) ? payload.data : []);
+          return arr
+            .filter(r => (r.Set || r.set) && (r.Number || r.number) && (r.Name || r.name))
+            .map(normalizeSwuRawCard);
+        })
+      );
+
+      const fetched = settledSets
+        .filter(r => r.status === 'fulfilled')
+        .flatMap(r => r.value);
 
       if (fetched.length > 0) {
-        // Deduplicate by set+number while preserving exact 1:1 FrontArt & text
         const dedup = new Map();
         fetched.forEach(c => { if (!dedup.has(c.id)) dedup.set(c.id, c); });
         const finalSwu = Array.from(dedup.values());
         state.apiCaches.swu = finalSwu;
-        idbSetDataset('norm_swu_v3', finalSwu);
+        idbSetDataset('norm_swu_live_v9', finalSwu);
         return finalSwu;
       }
-
-      const fallback = EXTENDED_GAME_CARD_DATABASES.SWU.map(e => normalizeBuiltInDatabaseEntry('SWU', e));
-      state.apiCaches.swu = fallback;
-      return fallback;
+      return [];
     }
 
-    // Full Flesh and Blood (3,000+ cards) via CORS-open GitHub JSON
+    // STATIC REPO JSON LOADER (Used identically for KRYPTIK and Witcher 3 Tabletop GWENT)
+    async function getStaticRepoPool(gameId) {
+      const cacheKey = gameId.toLowerCase();
+      if (state.apiCaches[cacheKey] && state.apiCaches[cacheKey].length > 0) return state.apiCaches[cacheKey];
+      const url = STATIC_REPO_DATABASES[gameId];
+      if (!url) return [];
+      const rawArr = await fetchCachedJson(cacheKey, url);
+      const norm = rawArr.map(entry => normalizeBuiltInDatabaseEntry(gameId, entry));
+      state.apiCaches[cacheKey] = norm;
+      return norm;
+    }
+
+    // Full GWENT Card Database via api.gwent.one CORS mirror fallback
+    // Full Flesh and Blood Card Database via CORS-open GitHub JSON dataset (the-fab-cube/flesh-and-blood-cards)
     async function getCompleteFabPool() {
-      if (state.apiCaches.fab && state.apiCaches.fab.length > 0) return state.apiCaches.fab;
-      const fromIdb = await idbGetDataset('norm_fab_v2');
-      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
+      if (state.apiCaches.fab && state.apiCaches.fab.length > 50) return state.apiCaches.fab;
+      const fromIdb = await idbGetDataset('norm_fab_v3');
+      if (Array.isArray(fromIdb) && fromIdb.length > 50) {
         state.apiCaches.fab = fromIdb;
         return fromIdb;
       }
@@ -3094,7 +3125,7 @@
         });
 
         state.apiCaches.fab = mapped;
-        idbSetDataset('norm_fab_v2', mapped);
+        idbSetDataset('norm_fab_v3', mapped);
         return mapped;
       }
 
@@ -3103,19 +3134,21 @@
       return fallback;
     }
 
-    // Full GWENT Card Database via open GWENT JSON dataset (rendered with full stats & ability frame)
+    // Full GWENT Card Database via api.gwent.one CORS mirror fallback (with real artwork + stats/ability overlay)
     async function getCompleteGwentPool() {
-      if (state.apiCaches.gwent && state.apiCaches.gwent.length > 0) return state.apiCaches.gwent;
-      const fromIdb = await idbGetDataset('norm_gwent_v3');
-      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
+      if (state.apiCaches.gwent && state.apiCaches.gwent.length > 50) return state.apiCaches.gwent;
+      const fromIdb = await idbGetDataset('norm_gwent_v6');
+      if (Array.isArray(fromIdb) && fromIdb.length > 50) {
         state.apiCaches.gwent = fromIdb;
         return fromIdb;
       }
 
       const gwentApiUrl = 'https://api.gwent.one/?key=data&response=json';
       const rawObj = await fetchWithCorsMirrorFallback([
-        gwentApiUrl,
         `https://corsproxy.io/?${encodeURIComponent(gwentApiUrl)}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(gwentApiUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(gwentApiUrl)}`,
+        gwentApiUrl,
         'https://raw.githubusercontent.com/GwentCommunityDevelopers/gwent-data/master/cards.json'
       ]);
 
@@ -3136,8 +3169,9 @@
 
           const prov = Number(attr.provision ?? 0);
           const pwr = attr.power !== undefined && attr.power !== null ? Number(attr.power) : null;
+          const artId = idObj.art || idObj.card || '';
+          const imageUrl = artId ? `https://gwent.one/image/gwent/assets/card/art/medium/${artId}.jpg` : '';
 
-          // Keep imageUrl empty so Gwent renders the full SVG card frame with Provision, Power, Faction, & Ability Text (instead of raw borderless art-only crops)
           const card = {
             id: `gwent_${idObj.card || name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
             sourceGame: 'GWENT',
@@ -3158,7 +3192,7 @@
               label: `1st: ${attr.set || 'Base Set'}`,
               setInfo: `GWENT (${attr.set || 'Base Set'})`,
               year: 2017,
-              imageUrl: ''
+              imageUrl
             }]
           };
           card.selectedVersionIdx = getPreferredVersionIdx(card);
@@ -3167,7 +3201,7 @@
 
         if (mapped.length > 0) {
           state.apiCaches.gwent = mapped;
-          idbSetDataset('norm_gwent_v3', mapped);
+          idbSetDataset('norm_gwent_v6', mapped);
           return mapped;
         }
       }
@@ -3182,125 +3216,102 @@
       const strippedPlain = rawSearchString.replace(/-?[a-zA-Z]+(?:<=|>=|=|<|>|:)"[^"]+"/g, '').replace(/-?[a-zA-Z]+(?:<=|>=|=|<|>|:)[^\s]+/g, '').trim();
       const nameToken = explicitNameTok || strippedPlain || '';
 
+      let rawResults = [];
+
       if (gameId === 'CUSTOM') {
-        return state.customCardPool
+        rawResults = state.customCardPool
           .filter(c => cardMatchesUnifiedSyntax(c, clauses))
           .map(c => ({ ...c, selectedVersionIdx: getPreferredVersionIdx(c) }));
-      }
-
-      if (gameId === 'SWU') {
+      } else if (gameId === 'SWU') {
         const pool = await getCompleteSwuPool();
-        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
-      }
-
-      if (gameId === 'FAB') {
+        rawResults = pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+      } else if (STATIC_REPO_DATABASES[gameId]) {
+        const pool = await getStaticRepoPool(gameId);
+        rawResults = pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+      } else if (gameId === 'FAB') {
         const pool = await getCompleteFabPool();
-        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+        rawResults = pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+      } else {
+        try {
+          if (gameId === 'MTG') {
+            const scryfallQ = rawSearchString.replace(/\bg:[a-zA-Z0-9_]+\b/gi, '').trim() || nameToken || 'year>=1993';
+            if (exactFuzzy && nameToken) {
+              const res = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(nameToken)}`);
+              if (res.ok) {
+                const data = await res.json();
+                const normalized = data.object === 'card' ? [normalizeScryfallCard(data)].filter(c => cardMatchesUnifiedSyntax(c, clauses)) : [];
+                if (normalized.length > 0) await hydrateScryfallAllPrintings(normalized[0]);
+                rawResults = normalized;
+              }
+            } else {
+              // Paginate beyond Scryfall's 175-card page cap (up to 4 pages = 700 unique cards)
+              let nextUrl = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(scryfallQ)}&order=released&dir=asc&unique=cards`;
+              const rawList = [];
+              let pageCount = 0;
+              while (nextUrl && pageCount < 4) {
+                pageCount++;
+                const res = await fetch(nextUrl);
+                if (!res.ok) break;
+                const data = await res.json();
+                if (Array.isArray(data.data)) rawList.push(...data.data);
+                nextUrl = data.has_more && data.next_page ? data.next_page : null;
+              }
+              rawResults = rawList.map(normalizeScryfallCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+            }
+          } else if (gameId === 'YGO') {
+            const allYgo = await fetchCachedJson('ygo', 'https://db.ygoprodeck.com/api/v7/cardinfo.php');
+            if (allYgo.length > 0) {
+              const sub = exactFuzzy && nameToken
+                ? allYgo.filter(r => r.name.toLowerCase().includes(nameToken.toLowerCase()))
+                : allYgo;
+              rawResults = sub.map(normalizeYugiohCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+            }
+          } else if (gameId === 'PKM') {
+            const pool = await getCompletePokemonPool(nameToken);
+            if (pool.length > 0) {
+              const matches = pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+              if (matches.length > 0 || !nameToken) rawResults = matches;
+            }
+            if (rawResults.length === 0 && nameToken) {
+              const qParam = exactFuzzy
+                ? `q=name:"${encodeURIComponent(nameToken.replace(/"/g, ''))}"`
+                : `q=name:*${encodeURIComponent(nameToken.replace(/"/g, ''))}*`;
+              const res = await fetch(`https://api.pokemontcg.io/v2/cards?${qParam}&orderBy=set.releaseDate&pageSize=120`);
+              if (res.ok) {
+                const data = await res.json();
+                rawResults = (Array.isArray(data.data) ? data.data : []).map(normalizePokemonCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+              }
+            }
+          } else if (gameId === 'HS') {
+            const cleanHs = await getCleanHearthstonePool();
+            rawResults = cleanHs.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          } else if (gameId === 'LOR') {
+            const queryTerm = nameToken || 'a';
+            const res = await fetch(`https://api.lorcast.com/v0/cards/search?q=${encodeURIComponent(queryTerm)}`);
+            if (res.ok) {
+              const data = await res.json();
+              rawResults = (Array.isArray(data.results) ? data.results : []).map(normalizeLorcanaCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+            }
+          } else if (gameId === 'ANR') {
+            const allAnr = await fetchCachedJson('anr', 'https://netrunnerdb.com/api/2.0/public/cards');
+            rawResults = allAnr.map(normalizeNetrunnerCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          } else if (gameId === 'AHC') {
+            const allArkham = await fetchCachedJson('arkham', 'https://arkhamdb.com/api/public/cards/');
+            rawResults = allArkham.filter(c => c.imagesrc).map(normalizeArkhamCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          } else if (gameId === 'LOTR') {
+            const allLotr = await fetchCachedJson('lotr', 'https://ringsdb.com/api/public/cards/');
+            rawResults = allLotr.filter(c => c.imagesrc).map(normalizeLotrCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          } else if (gameId === 'MC') {
+            const allMc = await fetchCachedJson('mc', 'https://marvelcdb.com/api/public/cards/');
+            rawResults = allMc.filter(c => c.imagesrc).map(normalizeMarvelCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          }
+        } catch (e) {
+          rawResults = [];
+        }
       }
 
-      if (gameId === 'GWENT') {
-        const pool = await getCompleteGwentPool();
-        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
-      }
-
-      if (EXTENDED_GAME_CARD_DATABASES[gameId]) {
-        const pool = EXTENDED_GAME_CARD_DATABASES[gameId].map(e => normalizeBuiltInDatabaseEntry(gameId, e));
-        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
-      }
-
-      try {
-        if (gameId === 'MTG') {
-          const scryfallQ = rawSearchString.replace(/\bg:[a-zA-Z0-9_]+\b/gi, '').trim() || nameToken || 'year>=1993';
-          if (exactFuzzy && nameToken) {
-            const res = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(nameToken)}`);
-            if (!res.ok) return [];
-            const data = await res.json();
-            const normalized = data.object === 'card' ? [normalizeScryfallCard(data)].filter(c => cardMatchesUnifiedSyntax(c, clauses)) : [];
-            if (normalized.length > 0) await hydrateScryfallAllPrintings(normalized[0]);
-            return normalized;
-          }
-
-          // Paginate beyond Scryfall's 175-card page cap (up to 4 pages = 700 unique cards)
-          let nextUrl = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(scryfallQ)}&order=released&dir=asc&unique=cards`;
-          const rawList = [];
-          let pageCount = 0;
-          while (nextUrl && pageCount < 4) {
-            pageCount++;
-            const res = await fetch(nextUrl);
-            if (!res.ok) break;
-            const data = await res.json();
-            if (Array.isArray(data.data)) rawList.push(...data.data);
-            nextUrl = data.has_more && data.next_page ? data.next_page : null;
-          }
-          return rawList.map(normalizeScryfallCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'YGO') {
-          const allYgo = await fetchCachedJson('ygo', 'https://db.ygoprodeck.com/api/v7/cardinfo.php');
-          if (allYgo.length > 0) {
-            const sub = exactFuzzy && nameToken
-              ? allYgo.filter(r => r.name.toLowerCase().includes(nameToken.toLowerCase()))
-              : allYgo;
-            return sub.map(normalizeYugiohCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-          }
-          return [];
-        }
-
-        if (gameId === 'PKM') {
-          const qParam = nameToken
-            ? (exactFuzzy ? `q=name:"${encodeURIComponent(nameToken.replace(/"/g, ''))}"` : `q=name:*${encodeURIComponent(nameToken.replace(/"/g, ''))}*`)
-            : '';
-          const pkmResults = [];
-          // Fetch up to 2 pages (240 distinct Pokémon cards) without merging different cards that share a Pokémon name
-          for (let pg = 1; pg <= 2; pg++) {
-            const url = `https://api.pokemontcg.io/v2/cards?${qParam ? qParam + '&' : ''}orderBy=set.releaseDate&pageSize=120&page=${pg}`;
-            const res = await fetch(url);
-            if (!res.ok) break;
-            const data = await res.json();
-            const arr = Array.isArray(data.data) ? data.data : [];
-            pkmResults.push(...arr.map(normalizePokemonCard));
-            if (arr.length < 120) break;
-          }
-          return pkmResults.filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'HS') {
-          const cleanHs = await getCleanHearthstonePool();
-          return cleanHs.filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'LOR') {
-          const queryTerm = nameToken || 'a';
-          const res = await fetch(`https://api.lorcast.com/v0/cards/search?q=${encodeURIComponent(queryTerm)}`);
-          if (!res.ok) return [];
-          const data = await res.json();
-          return (Array.isArray(data.results) ? data.results : []).map(normalizeLorcanaCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'ANR') {
-          const allAnr = await fetchCachedJson('anr', 'https://netrunnerdb.com/api/2.0/public/cards');
-          return allAnr.map(normalizeNetrunnerCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'AHC') {
-          const allArkham = await fetchCachedJson('arkham', 'https://arkhamdb.com/api/public/cards/');
-          return allArkham.filter(c => c.imagesrc).map(normalizeArkhamCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'LOTR') {
-          const allLotr = await fetchCachedJson('lotr', 'https://ringsdb.com/api/public/cards/');
-          return allLotr.filter(c => c.imagesrc).map(normalizeLotrCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'MC') {
-          const allMc = await fetchCachedJson('mc', 'https://marvelcdb.com/api/public/cards/');
-          return allMc.filter(c => c.imagesrc).map(normalizeMarvelCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-      } catch (e) {
-        return [];
-      }
-
-      return [];
+      // Hard invariant: every card returned from querySingleGameSource(gameId) MUST carry sourceGame === gameId
+      return rawResults.map(c => ({ ...c, sourceGame: gameId }));
     }
 
     async function executeMultiverseSearch() {
@@ -3373,7 +3384,7 @@
       countsBar.innerHTML = `<span class="text-starlight-300 font-bold">${merged.length} Total:</span>` +
         gameCounts.map(gc => {
           const theme = getBadgeStyleForGame(gc.gameId);
-          return `<span class="px-1.5 py-0.2 rounded border ${theme.pillBg}">${escapeXml(gc.gameId)}: ${gc.count}</span>`;
+          return `<span style="${theme.pillStyle}" class="px-1.5 py-0.2 rounded border font-bold">${escapeXml(gc.gameId)}: ${gc.count}</span>`;
         }).join('');
 
       renderSearchResults();
@@ -3403,7 +3414,7 @@
           <div class="group relative bg-abyss-950 border border-abyss-700 hover:border-starlight-300/70 rounded-xl overflow-hidden flex flex-col shadow-md transition">
             <div class="relative tcg-aspect w-full bg-abyss-900 overflow-hidden cursor-pointer" data-inspect-search-idx="${index}">
               ${renderCardVisualHtml(card)}
-              <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border shadow ${theme.badgeBg}">
+              <span style="${theme.badgeStyle}" class="absolute top-1.5 left-1.5 z-10 px-2 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase tracking-wider border shadow-md">
                 ${escapeXml(card.sourceGame)}
               </span>
               <button type="button" data-bookmark-search-idx="${index}" title="${bookmarked ? 'Remove Bookmark' : 'Bookmark Card (Without Adding to Deck)'}" class="absolute top-1.5 right-1.5 z-10 w-7 h-7 rounded-lg bg-abyss-950/90 hover:bg-abyss-800 border ${bookmarked ? 'border-starlight-300 text-starlight-300' : 'border-abyss-600 text-slate-300'} font-bold text-sm flex items-center justify-center shadow transition cursor-pointer">
@@ -3520,19 +3531,17 @@
           fetch('https://api.scryfall.com/cards/random').then(r => r.ok ? r.json() : null).then(raw => raw?.object === 'card' ? [normalizeScryfallCard(raw)] : []).catch(() => [])
         ),
         fetchCachedJson('ygo', 'https://db.ygoprodeck.com/api/v7/cardinfo.php').then(a => pickRandomItems(a, 2).map(normalizeYugiohCard)).catch(() => []),
-        fetch(`https://api.pokemontcg.io/v2/cards?pageSize=16&page=${randPkmPage}`).then(r => r.ok ? r.json() : null).then(d => pickRandomItems(d?.data || [], 2).map(normalizePokemonCard)).catch(() => []),
+        getCompletePokemonPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
         getCleanHearthstonePool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
         getCompleteSwuPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
+        getStaticRepoPool('KRYPTIK').then(pool => pickRandomItems(pool, 2)).catch(() => []),
         fetch(`https://api.lorcast.com/v0/cards/search?q=${randLetter}`).then(r => r.ok ? r.json() : null).then(d => pickRandomItems((d?.results || []).filter(c => c.image_uris), 2).map(normalizeLorcanaCard)).catch(() => []),
         fetchCachedJson('anr', 'https://netrunnerdb.com/api/2.0/public/cards').then(a => pickRandomItems(a.filter(c => c.code), 2).map(normalizeNetrunnerCard)).catch(() => []),
         fetchCachedJson('arkham', 'https://arkhamdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeArkhamCard)).catch(() => []),
         fetchCachedJson('lotr', 'https://ringsdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeLotrCard)).catch(() => []),
         fetchCachedJson('mc', 'https://marvelcdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeMarvelCard)).catch(() => []),
         getCompleteFabPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
-        getCompleteGwentPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
-        ...['CHAOTIC', 'KRYPTIK'].map(gid =>
-          Promise.resolve(pickRandomItems(EXTENDED_GAME_CARD_DATABASES[gid], 2).map(e => normalizeBuiltInDatabaseEntry(gid, e)))
-        )
+        getStaticRepoPool('GWENT').then(pool => pickRandomItems(pool, 2)).catch(() => [])
       ];
 
       const settled = await Promise.allSettled(tasks);
@@ -3546,7 +3555,7 @@
         return `
           <div data-collage-idx="${idx}" title="${escapeXml(card.name)} [${escapeXml(card.sourceGame)}]" class="group relative tcg-aspect rounded-lg overflow-hidden bg-abyss-950 border border-abyss-700 hover:border-starlight-300 cursor-pointer shadow-md hover:scale-105 hover:z-10 transition-all duration-150">
             ${renderCardVisualHtml(card)}
-            <span class="absolute bottom-0.5 left-0.5 px-1 py-0.2 rounded text-[7.5px] font-mono font-bold border shadow ${theme.badgeBg}">
+            <span style="${theme.badgeStyle}" class="absolute bottom-0.5 left-0.5 z-10 px-1 py-0.2 rounded text-[7.5px] font-mono font-extrabold border shadow">
               ${escapeXml(card.sourceGame)}
             </span>
           </div>
@@ -4160,7 +4169,7 @@
         return `
           <div data-sample-hand-idx="${idx}" title="${escapeXml(c.name)} [${escapeXml(c.sourceGame)}]" class="relative tcg-aspect rounded-xl overflow-hidden bg-abyss-900 border border-abyss-600 hover:border-sky-300 shadow-md cursor-pointer transition hover:scale-105">
             ${renderCardVisualHtml(c)}
-            <span class="absolute top-1 left-1 px-1 py-0.2 rounded text-[8px] font-mono font-bold border ${theme.badgeBg}">${escapeXml(c.sourceGame)}</span>
+            <span style="${theme.badgeStyle}" class="absolute top-1 left-1 z-10 px-1.5 py-0.2 rounded text-[8px] font-mono font-extrabold border">${escapeXml(c.sourceGame)}</span>
           </div>
         `;
       }).join('');
@@ -4267,7 +4276,7 @@
           <div class="relative tcg-aspect w-full bg-abyss-950 cursor-pointer overflow-hidden" data-inspect-deck-id="${escapeXml(card.id)}">
             ${renderCardVisualHtml(card)}
 
-            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider border shadow-md backdrop-blur-sm transition-opacity ${badgeVisibility} ${theme.badgeBg}">
+            <span style="${theme.badgeStyle}" class="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-md text-[10px] font-mono font-extrabold uppercase tracking-wider border shadow-md transition-opacity ${badgeVisibility}">
               ${escapeXml(card.sourceGame)}
             </span>
 
@@ -4318,7 +4327,7 @@
         .sort((a, b) => b[1] - a[1])
         .map(([game, count]) => {
           const theme = getBadgeStyleForGame(game);
-          return `<span class="px-2 py-0.5 rounded-md border font-mono text-[11px] font-semibold ${theme.pillBg}">${count} ${escapeXml(game)}</span>`;
+          return `<span style="${theme.pillStyle}" class="px-2 py-0.5 rounded-md border font-mono text-[11px] font-semibold">${count} ${escapeXml(game)}</span>`;
         }).join('');
 
       const allTagsSet = new Set();
@@ -4417,7 +4426,7 @@
                   return `
                     <tr class="hover:bg-abyss-850/90 transition">
                       <td class="py-2.5 px-4 font-mono font-bold text-starlight-300">${card.quantity}x</td>
-                      <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded font-mono text-[10px] font-bold border ${theme.badgeBg}">${escapeXml(card.sourceGame)}</span></td>
+                      <td class="py-2.5 px-3"><span style="${theme.badgeStyle}" class="px-2 py-0.5 rounded font-mono text-[10px] font-extrabold border">${escapeXml(card.sourceGame)}</span></td>
                       <td class="py-2.5 px-3 cursor-pointer" data-inspect-deck-id="${escapeXml(card.id)}">
                         <div class="font-semibold text-starlight-50 hover:text-starlight-300">${escapeXml(card.name)}</div>
                         <div class="text-[10px] font-mono text-slate-400">${escapeXml(ver.label)}</div>
@@ -4505,7 +4514,7 @@
           <div class="group relative bg-abyss-950 border border-starlight-300/40 hover:border-starlight-300 rounded-xl overflow-hidden flex flex-col shadow-md transition">
             <div class="relative tcg-aspect w-full bg-abyss-900 overflow-hidden cursor-pointer" data-inspect-bookmark-idx="${idx}">
               ${renderCardVisualHtml(card)}
-              <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border shadow ${theme.badgeBg}">
+              <span style="${theme.badgeStyle}" class="absolute top-1.5 left-1.5 z-10 px-2 py-0.5 rounded text-[10px] font-mono font-extrabold border shadow">
                 ${escapeXml(card.sourceGame)}
               </span>
               <button type="button" data-unbookmark-idx="${idx}" title="Remove Bookmark" class="absolute top-1.5 right-1.5 z-10 w-7 h-7 rounded-lg bg-abyss-950/90 hover:bg-rose-600 border border-starlight-300 text-starlight-300 hover:text-white font-bold text-sm flex items-center justify-center shadow transition cursor-pointer">
@@ -4909,7 +4918,8 @@
 
         const badge = document.getElementById('inspectorGameBadge');
         badge.textContent = card.sourceGame;
-        badge.className = `px-2.5 py-0.5 rounded-md text-xs font-mono font-bold uppercase tracking-wider border ${theme.badgeBg}`;
+        badge.setAttribute('style', theme.badgeStyle);
+        badge.className = 'px-2.5 py-0.5 rounded-md text-xs font-mono font-extrabold uppercase tracking-wider border shadow';
 
         document.getElementById('inspectorCardName').textContent = card.name;
         document.getElementById('inspectorCategory').textContent = card.category || 'Universal Card';
@@ -5276,8 +5286,8 @@
       container.innerHTML = ALL_SUPPORTED_GAMES.map(src => {
         const checked = state.selectedSearchGames.has(src.id);
         return `
-          <button type="button" data-toggle-game="${src.id}" title="${escapeXml(src.fullName)}" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border transition cursor-pointer flex items-center gap-1 ${
-            checked ? `${src.badgeBg} shadow-sm` : 'bg-abyss-950 text-slate-400 border-abyss-700 hover:text-starlight-100'
+          <button type="button" data-toggle-game="${src.id}" title="${escapeXml(src.fullName)}" style="${checked ? src.badgeStyle : ''}" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border transition cursor-pointer flex items-center gap-1 ${
+            checked ? 'shadow-sm' : 'bg-abyss-950 text-slate-400 border-abyss-700 hover:text-starlight-100'
           }">
             <span>${checked ? '✓' : '+'}</span>
             <span>${escapeXml(src.label)}</span>
