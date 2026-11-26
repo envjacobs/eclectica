@@ -100,6 +100,19 @@
       transform: rotate(90deg) scale(0.84);
       filter: brightness(0.82);
     }
+
+    /* Auto-rotate horizontally-designed cards (Arkham Investigators, SWU Leaders/Bases, MTG Battles/Planes) 90 degrees inside portrait slots */
+    .horizontal-card-rotated {
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 140% !important;
+      height: 71.4285% !important;
+      max-width: none !important;
+      max-height: none !important;
+      transform: translate(-50%, -50%) rotate(90deg) !important;
+      object-fit: cover !important;
+    }
   </style>
 </head>
 <body class="bg-abyss-950 text-starlight-50 font-sans antialiased selection:bg-starlight-300/30 selection:text-starlight-100 overflow-x-hidden">
@@ -263,13 +276,13 @@
       <div class="w-full flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-4">
         <div id="homeLogosLeft" class="w-full lg:w-44 xl:w-52 flex flex-wrap lg:grid lg:grid-cols-2 items-center justify-center gap-2"></div>
 
-        <!-- CENTERED SQUARE COLLAGE (2 RANDOM CARDS FROM EACH OF THE 19 SUPPORTED GAMES) -->
+        <!-- CENTERED SQUARE COLLAGE (2 RANDOM CARDS FROM EACH OF THE 14 ACTIVE SUPPORTED GAMES) -->
         <div class="w-full max-w-[540px] sm:max-w-[620px] xl:max-w-[660px] aspect-square bg-abyss-900/95 border-2 border-starlight-300/60 rounded-3xl p-2.5 sm:p-3.5 shadow-2xl collage-frame-glow flex flex-col justify-between relative overflow-hidden">
           <div class="flex items-center justify-between gap-2 pb-2 px-1 border-b border-abyss-700 shrink-0">
             <div class="flex items-center gap-2">
               <span id="collageLiveSpinner" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
               <span class="font-display text-xs sm:text-sm font-bold tracking-wider text-starlight-200 uppercase">
-                19-Universe Live Random Collage
+                14-Universe Live Random Collage
               </span>
             </div>
             <div class="flex items-center gap-1.5">
@@ -285,7 +298,7 @@
           <div id="homeCollageGrid" class="flex-1 grid grid-cols-6 gap-1.5 py-2 overflow-hidden"></div>
 
           <div class="pt-1.5 px-1 border-t border-abyss-700 flex items-center justify-between text-[10px] text-slate-300 font-mono shrink-0">
-            <span id="homeCollageStatsText">Drawing 2 random cards from each of the 19 supported games...</span>
+            <span id="homeCollageStatsText">Drawing 2 random cards from each of the 14 active supported games...</span>
             <span class="text-starlight-300">Click any card to inspect / +Add</span>
           </div>
         </div>
@@ -298,26 +311,26 @@
   </section>
 
   <!-- ===================================================================== -->
-  <!-- PAGE 1: DECKBUILDER & VISUAL SPOILER WORKSPACE                        -->
-  <!-- ===================================================================== -->
-  <div id="pageStudio" class="hidden max-w-[1920px] mx-auto flex-col lg:flex-row min-h-[calc(100vh-61px)]">
-
-    <!-- LEFT SIDEBAR: UNIFIED SCRYFALL/SWUDB SYNTAX SEARCH + CUSTOM CREATOR -->
+    <!-- LEFT SIDEBAR: UNIFIED SCRYFALL/SWUDB SYNTAX SEARCH + BOOKMARKS + CUSTOM CREATOR -->
     <aside id="studioLeftSidebar" class="w-full lg:w-[440px] xl:w-[470px] shrink-0 bg-abyss-900/95 border-b lg:border-b-0 lg:border-r border-abyss-700 flex flex-col">
       <div class="p-3 border-b border-abyss-700 space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-starlight-200">19 Supported Databases + Custom</span>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-starlight-200">14 Supported Databases + Custom</span>
           <span class="text-[11px] font-mono text-emerald-300 flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 1st Printing Default
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-1.5 bg-abyss-950 p-1 rounded-xl border border-abyss-700">
+        <div class="grid grid-cols-3 gap-1 bg-abyss-950 p-1 rounded-xl border border-abyss-700">
           <button id="sidebarModeSearchBtn" class="py-1.5 px-2 rounded-lg text-xs font-bold bg-starlight-300 text-abyss-950 shadow transition cursor-pointer">
-            Unified Syntax Search
+            Syntax Search
+          </button>
+          <button id="sidebarModeBookmarksBtn" class="py-1.5 px-2 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer flex items-center justify-center gap-1">
+            <span>★ Bookmarks</span>
+            <span id="sidebarBookmarkCountBadge" class="px-1.5 py-0.2 rounded-full bg-abyss-800 text-starlight-300 font-mono text-[10px]">0</span>
           </button>
           <button id="sidebarModeCustomBtn" class="py-1.5 px-2 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer">
-            + Custom Card Studio
+            + Custom Card
           </button>
         </div>
       </div>
@@ -345,12 +358,12 @@
             </button>
           </form>
 
-          <!-- ALL 19+ ACTIVE GAME DATABASES TOGGLE MATRIX -->
+          <!-- ALL 14+ ACTIVE GAME DATABASES TOGGLE MATRIX -->
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-starlight-200 font-semibold">
-              <span>Active Game Databases (<span id="selectedGameCountLabel">20</span> / 20)</span>
+              <span>Active Game Databases (<span id="selectedGameCountLabel">15</span> / 15)</span>
               <div class="flex items-center gap-2">
-                <button type="button" id="selectAllGamesBtn" class="text-starlight-300 hover:underline cursor-pointer">All 20</button>
+                <button type="button" id="selectAllGamesBtn" class="text-starlight-300 hover:underline cursor-pointer">All 15</button>
                 <span>·</span>
                 <button type="button" id="clearGamesBtn" class="text-slate-400 hover:text-starlight-100 cursor-pointer">None</button>
               </div>
@@ -440,12 +453,37 @@
         </div>
 
         <!-- Search Results Grid -->
-        <div id="searchResultsContainer" class="flex-1 overflow-y-auto p-3 max-h-[560px] lg:max-h-[calc(100vh-300px)]">
+        <div id="searchResultsContainer" class="flex-1 overflow-y-auto p-3 max-h-[560px] lg:max-h-[calc(100vh-300px)] space-y-2.5">
+          <div id="searchResultCountsBar" class="hidden flex flex-wrap items-center gap-1.5 pb-2 border-b border-abyss-800 text-[10px] font-mono"></div>
           <div id="searchStatusMsg" class="text-xs text-slate-300 text-center py-4 px-3 leading-relaxed">
-            Use Scryfall/SWUDB syntax across <strong class="text-starlight-300">all 19 supported games</strong> (MTG, YGO, HS, PKM, SWU, GWENT, Chaotic, Kryptik, Lorcana, Digimon, Netrunner, FaB, Arkham, LOTR, Marvel, Runeterra, Shadowverse, Eternal, KeyForge).<br/>
-            Every card defaults to its <strong class="text-starlight-300">1st / Oldest Printing</strong> and syncs your preferred version across devices!
+            Use Scryfall/SWUDB syntax across <strong class="text-starlight-300">all 14 active supported games</strong>—or search <code class="text-starlight-300">g:swu</code>, <code class="text-starlight-300">g:fab</code>, <code class="text-starlight-300">g:gwent</code>, <code class="text-starlight-300">g:chaotic</code>, <code class="text-starlight-300">g:kryptik</code>, or leave blank to browse full pools.<br/>
+            Click <strong class="text-starlight-300">★</strong> on any card to bookmark it without adding it to a deck!
           </div>
           <div id="searchResultsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2.5"></div>
+          <div id="searchLoadMoreWrap" class="hidden pt-2 pb-4 flex justify-center">
+            <button id="searchLoadMoreBtn" type="button" class="w-full py-2.5 px-4 rounded-xl bg-abyss-850 hover:bg-starlight-300 hover:text-abyss-950 border border-starlight-300/50 text-starlight-200 font-bold text-xs shadow transition cursor-pointer">
+              Load More Results (+30)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL A2: BOOKMARKED CARDS VAULT (SAVED WITHOUT ADDING TO A DECK) -->
+      <div id="sidebarBookmarksSection" class="hidden flex-1 flex flex-col min-h-0">
+        <div class="p-3 border-b border-abyss-700 bg-abyss-900/80 flex items-center justify-between gap-2">
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-starlight-300">★ Bookmarked Cards</h3>
+            <p class="text-[11px] text-slate-300">Saved for quick reference without cluttering any deckslot.</p>
+          </div>
+          <button id="clearAllBookmarksBtn" type="button" class="px-2.5 py-1 rounded-lg bg-abyss-800 hover:bg-rose-600 text-xs text-slate-200 hover:text-white transition cursor-pointer">
+            Clear All
+          </button>
+        </div>
+        <div id="bookmarksResultsContainer" class="flex-1 overflow-y-auto p-3 max-h-[560px] lg:max-h-[calc(100vh-220px)]">
+          <div id="bookmarksEmptyMsg" class="text-xs text-slate-400 text-center py-8 px-4 leading-relaxed">
+            No bookmarked cards yet. Click the <strong class="text-starlight-300">★</strong> button on any card in search results or the Card Inspector to bookmark it here.
+          </div>
+          <div id="bookmarksGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2.5"></div>
         </div>
       </div>
 
@@ -1026,10 +1064,25 @@
         <div class="md:col-span-5 flex flex-col items-center gap-3">
           <div id="inspectorImageContainer" class="w-full max-w-[290px] rounded-2xl overflow-hidden shadow-2xl border border-abyss-600 bg-abyss-950"></div>
 
-          <!-- Sticky Version Selector -->
+          <!-- Bookmark Card Action Button -->
+          <button id="inspectorBookmarkBtn" type="button" class="w-full max-w-[290px] py-2 px-3 rounded-xl bg-abyss-950 hover:bg-abyss-800 border border-starlight-300/50 text-starlight-200 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer">
+            <span id="inspectorBookmarkIcon">☆</span>
+            <span id="inspectorBookmarkLabel">Bookmark Card (Save Without Adding)</span>
+          </button>
+
+          <!-- Deck-Specific Preferred Version Selector -->
+          <div id="inspectorDeckSpecificVersionBox" class="w-full max-w-[290px] bg-indigo-950/50 border border-indigo-400/50 rounded-xl p-2.5 space-y-1">
+            <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-indigo-200 font-bold">
+              <span>Preferred Version FOR THIS SPECIFIC DECK</span>
+            </div>
+            <select id="inspectorDeckVersionSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-indigo-400/40 cursor-pointer">
+            </select>
+          </div>
+
+          <!-- Global Sticky Version Selector -->
           <div class="w-full max-w-[290px] bg-abyss-950 border border-abyss-600 rounded-xl p-2.5 space-y-1">
             <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-starlight-300 font-bold">
-              <span>Preferred Version (Saved)</span>
+              <span>Global Default Version</span>
               <span id="inspectorVersionCountBadge" class="font-mono text-slate-300">1</span>
             </div>
             <select id="inspectorVersionSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-abyss-600 cursor-pointer">
@@ -1263,17 +1316,17 @@
 
     /**
      * =========================================================================
-     * 0. FIREBASE INITIALIZATION (eclectica-676ae)
+     * 0. FIREBASE INITIALIZATION (eclectica-676ae — VERIFIED UPPERCASE 'I' KEY)
      * =========================================================================
      */
     const firebaseConfig = {
-    apiKey: "AIzaSyCrSdi3JRIgLc_JBmgFPdkQlIKHEAXgt78",
-    authDomain: "eclectica-676ae.firebaseapp.com",
-    projectId: "eclectica-676ae",
-    storageBucket: "eclectica-676ae.firebasestorage.app",
-    messagingSenderId: "801771551924",
-    appId: "1:801771551924:web:17fa28cf0a060263816be1"
-};
+      apiKey: "AIzaSyCrSdi3JRIgLc_JBmgFPdkQLIKHEAXgt78",
+      authDomain: "eclectica-676ae.firebaseapp.com",
+      projectId: "eclectica-676ae",
+      storageBucket: "eclectica-676ae.firebasestorage.app",
+      messagingSenderId: "801771551924",
+      appId: "1:801771551924:web:17fa28cf0a060263816be1"
+    };
 
     const firebaseApp = initializeApp(firebaseConfig);
     const auth = getAuth(firebaseApp);
@@ -1284,9 +1337,10 @@
     const STORAGE_FORMATS_KEY = 'ecg_multiverse_formats_v5';
     const STORAGE_CUSTOM_CARDS_KEY = 'ecg_custom_cards_v5';
     const STORAGE_PREFERRED_VERSIONS_KEY = 'eclectica_preferred_versions_v5';
-
+    const STORAGE_BOOKMARKS_KEY = 'eclectica_bookmarked_cards_v1';
+// ... existing code ... -->
     // =========================================================================
-    // 1. ALL 19 SUPPORTED DATABASES + CUSTOM POOL
+    // 1. ALL 14 ACTIVE SUPPORTED DATABASES + CUSTOM POOL
     // =========================================================================
     const ALL_SUPPORTED_GAMES = [
       { id: 'MTG', label: 'MTG', fullName: 'Magic: the Gathering', badgeBg: 'bg-indigo-600/95 text-white border-indigo-300/50', pillBg: 'bg-indigo-500/20 text-indigo-200 border-indigo-400/40', accentHex: '#6366f1', isDigitalOnly: false },
@@ -1298,22 +1352,16 @@
       { id: 'CHAOTIC', label: 'Chaotic', fullName: 'Chaotic TCG', badgeBg: 'bg-orange-600/95 text-white border-orange-300/50', pillBg: 'bg-orange-500/20 text-orange-200 border-orange-400/40', accentHex: '#ea580c', isDigitalOnly: false },
       { id: 'KRYPTIK', label: 'Kryptik', fullName: 'Kryptik TCG', badgeBg: 'bg-violet-600/95 text-white border-violet-300/50', pillBg: 'bg-violet-500/20 text-violet-200 border-violet-400/40', accentHex: '#7c3aed', isDigitalOnly: false },
       { id: 'LOR', label: 'Lorcana', fullName: 'Disney Lorcana', badgeBg: 'bg-purple-600/95 text-white border-purple-300/50', pillBg: 'bg-purple-500/20 text-purple-200 border-purple-400/40', accentHex: '#9333ea', isDigitalOnly: false },
-      { id: 'DGM', label: 'Digimon', fullName: 'Digimon Card Game', badgeBg: 'bg-cyan-600/95 text-white border-cyan-300/50', pillBg: 'bg-cyan-500/20 text-cyan-200 border-cyan-400/40', accentHex: '#0891b2', isDigitalOnly: false },
       { id: 'ANR', label: 'Netrunner', fullName: 'Android: Netrunner', badgeBg: 'bg-emerald-600/95 text-white border-emerald-300/50', pillBg: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40', accentHex: '#059669', isDigitalOnly: false },
       { id: 'FAB', label: 'FaB', fullName: 'Flesh and Blood', badgeBg: 'bg-amber-700/95 text-white border-amber-300/50', pillBg: 'bg-amber-500/20 text-amber-200 border-amber-400/40', accentHex: '#b45309', isDigitalOnly: false },
       { id: 'AHC', label: 'Arkham', fullName: 'Arkham Horror LCG', badgeBg: 'bg-lime-700/95 text-white border-lime-300/50', pillBg: 'bg-lime-500/20 text-lime-200 border-lime-400/40', accentHex: '#4d7c0f', isDigitalOnly: false },
       { id: 'LOTR', label: 'LOTR LCG', fullName: 'Lord of the Rings LCG', badgeBg: 'bg-yellow-700/95 text-white border-yellow-300/50', pillBg: 'bg-yellow-500/20 text-yellow-200 border-yellow-400/40', accentHex: '#a16207', isDigitalOnly: false },
       { id: 'MC', label: 'Marvel', fullName: 'Marvel Champions LCG', badgeBg: 'bg-rose-700/95 text-white border-rose-300/50', pillBg: 'bg-rose-500/20 text-rose-200 border-rose-400/40', accentHex: '#be123c', isDigitalOnly: false },
-      { id: 'LOR_R', label: 'Runeterra', fullName: 'Legends of Runeterra', badgeBg: 'bg-blue-600/95 text-white border-blue-300/50', pillBg: 'bg-blue-500/20 text-blue-200 border-blue-400/40', accentHex: '#2563eb', isDigitalOnly: true },
-      { id: 'SV', label: 'Shadowverse', fullName: 'Shadowverse', badgeBg: 'bg-fuchsia-600/95 text-white border-fuchsia-300/50', pillBg: 'bg-fuchsia-500/20 text-fuchsia-200 border-fuchsia-400/40', accentHex: '#c026d3', isDigitalOnly: true },
-      { id: 'ETN', label: 'Eternal', fullName: 'Eternal Card Game', badgeBg: 'bg-slate-600/95 text-white border-slate-300/50', pillBg: 'bg-slate-500/20 text-slate-200 border-slate-400/40', accentHex: '#475569', isDigitalOnly: true },
-      { id: 'KF', label: 'KeyForge', fullName: 'KeyForge', badgeBg: 'bg-pink-600/95 text-white border-pink-300/50', pillBg: 'bg-pink-500/20 text-pink-200 border-pink-400/40', accentHex: '#db2777', isDigitalOnly: false },
       { id: 'CUSTOM', label: 'Custom', fullName: 'Custom Card Pool', badgeBg: 'bg-starlight-300 text-abyss-950 border-starlight-100', pillBg: 'bg-starlight-300/20 text-starlight-200 border-starlight-300/40', accentHex: '#fde047', isDigitalOnly: false }
     ];
 
     // =========================================================================
-    // 2. COMPLETE BUILT-IN DATABASE POOLS FOR SWU, CHAOTIC, KRYPTIK, GWENT,
-    //    FAB, RUNETERRA, SHADOWVERSE, ETERNAL, & KEYFORGE
+    // 2. EXPANDED MULTI-SET CARD POOLS FOR SWU, CHAOTIC, KRYPTIK, & GWENT
     // =========================================================================
     const EXTENDED_GAME_CARD_DATABASES = {
       SWU: [
@@ -1326,19 +1374,44 @@
         { name: 'Admiral Ackbar, Brilliant Strategist', cost: 3, atk: 1, hp: 4, rarity: 'Uncommon', color: 'Heroism Command Green', type: 'Unit — Rebel · Official', set: 'SOR #097', year: 2024, rules: 'When Played: You may deal damage to a unit equal to the number of units you control in its arena.', img: 'https://cdn.swu-db.com/images/cards/SOR/097.png' },
         { name: 'Overwhelming Barrage', cost: 5, atk: null, hp: null, rarity: 'Uncommon', color: 'Villainy Command Green', type: 'Event — Tactic', set: 'SOR #092', year: 2024, rules: 'Give a friendly unit +2/+2 for this phase. Then, it deals damage equal to its power divided as you choose among any number of other units.', img: 'https://cdn.swu-db.com/images/cards/SOR/092.png' },
         { name: 'Han Solo, Reluctant Hero', cost: 6, atk: 6, hp: 6, rarity: 'Rare', color: 'Heroism Cunning Yellow', type: 'Unit — Underworld · Rebel', set: 'SOR #198', year: 2024, rules: 'Ambush. While this unit is attacking, it deals combat damage before the defender.', img: 'https://cdn.swu-db.com/images/cards/SOR/198.png' },
-        { name: 'Kylo Ren, Killing the Past', cost: 6, atk: 5, hp: 6, rarity: 'Legendary', color: 'Villainy Vigilance Blue', type: 'Unit — Force · First Order · Sith', set: 'SHD #037', year: 2024, rules: 'When Played: You may discard a card from your hand. If you do, give a unit +2/0 and Saboteur for this phase.', img: 'https://cdn.swu-db.com/images/cards/SHD/037.png' },
+        { name: 'Emperor Palpatine, Master of the Dark Side', cost: 8, atk: 6, hp: 6, rarity: 'Legendary', color: 'Villainy Command Green', type: 'Unit — Force · Imperial · Sith', set: 'SOR #135', year: 2024, rules: 'When Played: Deal 6 damage divided as you choose among enemy units.', img: 'https://cdn.swu-db.com/images/cards/SOR/135.png' },
+        { name: 'Mace Windu, Party Crasher', cost: 7, atk: 7, hp: 6, rarity: 'Legendary', color: 'Heroism Aggression Red', type: 'Unit — Force · Republic · Jedi', set: 'SOR #149', year: 2024, rules: 'Ambush. When this unit attacks and defeats a unit, ready this unit.', img: 'https://cdn.swu-db.com/images/cards/SOR/149.png' },
+        { name: 'Avenger, Hunting Star Destroyer', cost: 9, atk: 8, hp: 8, rarity: 'Legendary', color: 'Villainy Vigilance Blue', type: 'Space Unit — Imperial · Capital Ship', set: 'SOR #040', year: 2024, rules: 'When Played / On Attack: An opponent chooses a non-leader unit they control. Defeat that unit.', img: 'https://cdn.swu-db.com/images/cards/SOR/040.png' },
+        { name: 'Home One, Alliance Flagship', cost: 8, atk: 7, hp: 7, rarity: 'Legendary', color: 'Heroism Command Green', type: 'Space Unit — Rebel · Capital Ship', set: 'SOR #102', year: 2024, rules: 'Each other friendly unit gains Restore 1. When Played: Play a Heroism unit from your discard pile. It costs 3 less.', img: 'https://cdn.swu-db.com/images/cards/SOR/102.png' },
+        { name: 'Supreme Leader Snoke, Shadow Ruler', cost: 8, atk: 6, hp: 6, rarity: 'Legendary', color: 'Villainy Vigilance Blue', type: 'Unit — Force · First Order · Official', set: 'SHD #037', year: 2024, rules: 'Each enemy non-leader unit gets -2/-2.', img: 'https://cdn.swu-db.com/images/cards/SHD/037.png' },
+        { name: 'Kylo Ren, Killing the Past', cost: 6, atk: 5, hp: 6, rarity: 'Legendary', color: 'Villainy Aggression Red', type: 'Unit — Force · First Order · Sith', set: 'SHD #140', year: 2024, rules: 'When Played: You may discard a card from your hand. If you do, give a unit +2/0 and Saboteur for this phase.', img: 'https://cdn.swu-db.com/images/cards/SHD/140.png' },
         { name: 'Poe Dameron, Quick to Improvise', cost: 5, atk: 6, hp: 6, rarity: 'Legendary', color: 'Heroism Aggression Red', type: 'Unit — Resistance · Pilot', set: 'SHD #153', year: 2024, rules: 'On Attack: You may discard a card from your hand. If you do, deal 2 damage to a unit or base, or defeat an upgrade.', img: 'https://cdn.swu-db.com/images/cards/SHD/153.png' },
-        { name: 'General Grievous, Trophy Collector', cost: 4, atk: 4, hp: 4, rarity: 'Rare', color: 'Villainy Cunning Yellow', type: 'Unit — Separatist · Droid · General', set: 'TWI #184', year: 2024, rules: 'Grievous can have up to 4 Lightsaber upgrades attached to him. When a friendly Droid unit is defeated, draw a card.', img: 'https://cdn.swu-db.com/images/cards/TWI/184.png' }
+        { name: 'Cad Bane, Hostage Taker', cost: 7, atk: 6, hp: 7, rarity: 'Legendary', color: 'Villainy Cunning Yellow', type: 'Unit — Underworld · Bounty Hunter', set: 'SHD #188', year: 2024, rules: 'When Played: Capture up to 3 enemy non-leader units with combined cost 6 or less.', img: 'https://cdn.swu-db.com/images/cards/SHD/188.png' },
+        { name: 'Tactical Droid Commander', cost: 5, atk: 4, hp: 4, rarity: 'Uncommon', color: 'Villainy Cunning Yellow', type: 'Unit — Separatist · Droid', set: 'TWI #184', year: 2024, rules: 'Exploit 2. When you play another Separatist unit: You may exhaust a unit that costs the same as or less than the played unit.', img: 'https://cdn.swu-db.com/images/cards/TWI/184.png' },
+        { name: 'General Grievous, Trophy Collector', cost: 4, atk: 4, hp: 4, rarity: 'Rare', color: 'Villainy Cunning Yellow', type: 'Unit — Separatist · Droid · General', set: 'TWI #186', year: 2024, rules: 'Grievous can have up to 4 Lightsaber upgrades attached to him. When a friendly Droid unit is defeated, draw a card.', img: 'https://cdn.swu-db.com/images/cards/TWI/186.png' },
+        { name: 'Ahsoka Tano, Chasing Shadows', cost: 5, atk: 5, hp: 4, rarity: 'Legendary', color: 'Heroism Cunning Yellow', type: 'Unit — Force · Republic · Jedi', set: 'TWI #199', year: 2024, rules: 'Ambush. When Played: Return an enemy non-leader unit that costs 4 or less to its owner’s hand.', img: 'https://cdn.swu-db.com/images/cards/TWI/199.png' }
       ],
       CHAOTIC: [
         { name: 'Maxxor', cost: 6, atk: 60, hp: 65, rarity: 'Ultra Rare', color: 'OverWorld Fire Earth', type: 'Creature — OverWorld Hero', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 10, Earth 10. Pay 2 Mugic Counters: Target Creature gains 15 Energy and deals 10 bonus Fire damage on its next attack.', img: '' },
         { name: 'Chaor', cost: 7, atk: 75, hp: 70, rarity: 'Ultra Rare', color: 'UnderWorld Fire Power', type: 'Creature — UnderWorld Conqueror', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 15. Recklessness 10. Whenever Chaor wins combat, draw 1 Attack card and gain 1 Mugic Counter.', img: '' },
         { name: 'Iparu, Metallic Ally', cost: 5, atk: 55, hp: 60, rarity: 'Super Rare', color: 'OverWorld Water', type: 'Creature — OverWorld Elemental', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Shapeshift: Iparu gains all Elemental types and disciplines of the engaged opposing Creature.', img: '' },
         { name: 'Lord Van Bloot', cost: 6, atk: 50, hp: 55, rarity: 'Ultra Rare', color: 'UnderWorld Dark', type: 'Creature — UnderWorld Taskmaster', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Intimidate: Opposing engaged Creatures lose 15 Courage and cannot play Mugic.', img: '' },
+        { name: 'Tangath Toborn', cost: 5, atk: 65, hp: 60, rarity: 'Ultra Rare', color: 'OverWorld Earth', type: 'Creature — OverWorld Warrior', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Earth 10. Courage 85. OverWorld Creatures you control gain +10 Courage.', img: '' },
+        { name: 'Takinom', cost: 6, atk: 60, hp: 60, rarity: 'Ultra Rare', color: 'UnderWorld Air Fire', type: 'Creature — UnderWorld Warrior', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Swift 1. Innate: Air 10, Fire 10. Pay 1 Mugic Counter: Takinom gains +15 Speed until end of combat.', img: '' },
+        { name: 'Odu-Bathax', cost: 6, atk: 70, hp: 65, rarity: 'Ultra Rare', color: 'Danian Earth', type: 'Creature — Danian Hive Monarch', set: 'Zenith of the Hive (2008)', year: 2008, rules: 'Hive: Odu-Bathax gains +5 Energy and +10 Power for each Mandiblor Creature you control.', img: '' },
+        { name: 'Najarin', cost: 5, atk: 35, hp: 55, rarity: 'Ultra Rare', color: 'OverWorld Water Air', type: 'Creature — OverWorld Muge', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Wisdom 100. Pay 2 Mugic Counters: Return target Mugic card from your Discard Pile to your hand.', img: '' },
+        { name: 'Bodal', cost: 3, atk: 25, hp: 35, rarity: 'Rare', color: 'OverWorld Water', type: 'Creature — OverWorld Muge', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Pay 1 Mugic Counter: Negate target Battlegear ability.', img: '' },
+        { name: 'Ulmar', cost: 4, atk: 30, hp: 40, rarity: 'Rare', color: 'UnderWorld Fire', type: 'Creature — UnderWorld Inventor', set: 'Dawn of Perim (2007)', year: 2007, rules: 'UnderWorld Creatures you control with Battlegear equipped deal +5 Fire damage.', img: '' },
+        { name: 'Aa’une the Oligarch', cost: 8, atk: 90, hp: 85, rarity: 'Ultra Rare', color: 'M’arrillian Water', type: 'Creature — M’arrillian Chieftain', set: 'Rise of the Oligarch (2009)', year: 2009, rules: 'Fluidmorph: Whenever Aa’une deals Water damage, gain 1 Mugic Counter. Minions you control gain +15 to all disciplines.', img: '' },
+        { name: 'Ursis', cost: 7, atk: 80, hp: 75, rarity: 'Ultra Rare', color: 'Tribeless Earth Air', type: 'Creature — Tribeless Beast', set: 'Silent Sands (2008)', year: 2008, rules: 'Innate: Earth 15, Air 15. Ursis cannot equip Battlegear or play Mugic, but deals +15 damage on all attacks.', img: '' },
+        { name: 'Cromaxx', cost: 7, atk: 85, hp: 80, rarity: 'Ultra Rare', color: 'Tribeless Fire Earth', type: 'Creature — Tribeless Behemoth', set: 'Silent Sands (2008)', year: 2008, rules: 'Outperform Power 10: Cromaxx deals +10 damage if its Power exceeds the opposing Creature’s Power.', img: '' },
+        { name: 'Heptadd', cost: 6, atk: 60, hp: 65, rarity: 'Ultra Rare', color: 'OverWorld Fire Water Earth Air', type: 'Creature — OverWorld Elemental', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 10, Water 10, Earth 10, Air 10. Heptadd can play Mugic from any Tribe.', img: '' },
+        { name: 'Intress', cost: 5, atk: 55, hp: 50, rarity: 'Super Rare', color: 'OverWorld Water Earth', type: 'Creature — OverWorld Warrior', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Water 10, Earth 5. Pay 1 Mugic Counter: Target OverWorld Creature gains +10 Power and +10 Speed.', img: '' },
+        { name: 'Raimusa', cost: 4, atk: 45, hp: 45, rarity: 'Rare', color: 'OverWorld Air', type: 'Creature — OverWorld Scout', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Swift 1. Air attacks made by Raimusa deal +5 damage.', img: '' },
+        { name: 'Pyrithion', cost: 5, atk: 60, hp: 55, rarity: 'Super Rare', color: 'UnderWorld Fire', type: 'Creature — UnderWorld Reptile', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Innate: Fire 10. Recklessness 5. Deals +10 Fire damage when attacking an OverWorld Creature.', img: '' },
+        { name: 'Khybon', cost: 4, atk: 40, hp: 45, rarity: 'Rare', color: 'UnderWorld Earth', type: 'Creature — UnderWorld Mechanic', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Pay 1 Mugic Counter: Restore target destroyed Battlegear equipped to a Creature you control.', img: '' },
         { name: 'Song of Revival', cost: 2, atk: null, hp: null, rarity: 'Super Rare', color: 'OverWorld Mugic', type: 'Mugic — OverWorld', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Return target Creature from your Discard Pile to play with half its printed Energy.', img: '' },
         { name: 'Cannon of Casualty', cost: 2, atk: null, hp: null, rarity: 'Rare', color: 'UnderWorld Mugic', type: 'Mugic — UnderWorld', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Deal 20 damage to target Creature.', img: '' },
+        { name: 'Song of Geonova', cost: 3, atk: null, hp: null, rarity: 'Ultra Rare', color: 'Generic Mugic', type: 'Mugic — Generic', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Deal 15 damage to all engaged Creatures and negate all Location abilities until end of turn.', img: '' },
         { name: 'Vlaric Shard', cost: 1, atk: null, hp: null, rarity: 'Rare', color: 'Colorless Battlegear', type: 'Battlegear — Relic', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Equipped Creature gains +10 Power and +5 Fire damage.', img: '' },
-        { name: 'Mount Pillar', cost: 0, atk: null, hp: null, rarity: 'Super Rare', color: 'Danian Earth', type: 'Location — Danian Hive', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Initiative: Highest Speed. Danian Creatures gain +15 Energy and Hive synergy.', img: '' }
+        { name: 'Torwegg', cost: 1, atk: null, hp: null, rarity: 'Super Rare', color: 'Colorless Battlegear', type: 'Battlegear — Vehicle', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Equipped Creature gains Range and Swift 2.', img: '' },
+        { name: 'Mount Pillar', cost: 0, atk: null, hp: null, rarity: 'Super Rare', color: 'Danian Earth', type: 'Location — Danian Hive', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Initiative: Highest Speed. Danian Creatures gain +15 Energy and Hive synergy.', img: '' },
+        { name: 'Lava Pond', cost: 0, atk: null, hp: null, rarity: 'Rare', color: 'UnderWorld Fire', type: 'Location — UnderWorld', set: 'Dawn of Perim (2007)', year: 2007, rules: 'Initiative: Highest Power. Fire attacks deal +10 damage.', img: '' }
       ],
       KRYPTIK: [
         { name: 'Umbra Dragon', cost: 7, atk: 7, hp: 7, rarity: 'Mythic', color: 'Shadow Dark', type: 'Entity — Dragon · Shadow', set: 'Genesis (2022)', year: 2022, rules: 'Flight. Entry: Banish up to 2 cards from any graveyard; Umbra Dragon deals 2 damage to all opposing Entities.', img: '' },
@@ -1346,7 +1419,17 @@
         { name: 'Rift Weaver', cost: 2, atk: 2, hp: 2, rarity: 'Rare', color: 'Arcane Blue', type: 'Entity — Mage', set: 'Genesis (2022)', year: 2022, rules: 'Entry: Look at the top 3 cards of your deck, put 1 into your hand, and place the rest on the bottom.', img: '' },
         { name: 'Abyssal Eclipse', cost: 4, atk: null, hp: null, rarity: 'Rare', color: 'Shadow Dark', type: 'Spell — Cataclysm', set: 'Genesis (2022)', year: 2022, rules: 'Destroy target Entity with cost 5 or less. Draw a card.', img: '' },
         { name: 'Pyre Wyvern', cost: 4, atk: 4, hp: 3, rarity: 'Uncommon', color: 'Flame Red', type: 'Entity — Dragon · Wyvern', set: 'Wicked Prophecy (2023)', year: 2023, rules: 'Swift. Attack: Deal 2 damage to defending player.', img: '' },
-        { name: 'Chrono Obelisk', cost: 3, atk: null, hp: null, rarity: 'Rare', color: 'Neutral Relic', type: 'Relic — Artifact', set: 'Genesis (2022)', year: 2022, rules: 'Exhaust: Generate 1 generic resource of any element.', img: '' }
+        { name: 'Chrono Obelisk', cost: 3, atk: null, hp: null, rarity: 'Rare', color: 'Neutral Relic', type: 'Relic — Artifact', set: 'Genesis (2022)', year: 2022, rules: 'Exhaust: Generate 1 generic resource of any element.', img: '' },
+        { name: 'Vespera, Nightblade Assassin', cost: 3, atk: 3, hp: 2, rarity: 'Rare', color: 'Shadow Dark', type: 'Entity — Rogue · Assassin', set: 'Genesis (2022)', year: 2022, rules: 'Stealth. Lethal: Any damage Vespera deals to an Entity destroys it.', img: '' },
+        { name: 'Thornwood Colossus', cost: 6, atk: 6, hp: 8, rarity: 'Rare', color: 'Nature Green', type: 'Entity — Elemental · Giant', set: 'Genesis (2022)', year: 2022, rules: 'Guardian. Trample. Entry: Restore 4 Life.', img: '' },
+        { name: 'Arcane Singularity', cost: 5, atk: null, hp: null, rarity: 'Mythic', color: 'Arcane Blue', type: 'Spell — Sorcery', set: 'Wicked Prophecy (2023)', year: 2023, rules: 'Return all non-Relic Entities to their owners’ hands. Draw 2 cards.', img: '' },
+        { name: 'Cinder Pup', cost: 1, atk: 2, hp: 1, rarity: 'Common', color: 'Flame Red', type: 'Entity — Beast', set: 'Genesis (2022)', year: 2022, rules: 'Swift. Last Breath: Deal 1 damage to any target.', img: '' },
+        { name: 'Sanctum Shieldbearer', cost: 2, atk: 1, hp: 4, rarity: 'Common', color: 'Light Radiant', type: 'Entity — Soldier', set: 'Genesis (2022)', year: 2022, rules: 'Guardian. Shield 1.', img: '' },
+        { name: 'Malakor, Lich Sovereign', cost: 8, atk: 6, hp: 7, rarity: 'Mythic', color: 'Shadow Dark', type: 'Entity — Undead · Lich', set: 'Wicked Prophecy (2023)', year: 2023, rules: 'Entry: Reanimate up to 2 Entities with cost 4 or less from your graveyard.', img: '' },
+        { name: 'Aether Drake', cost: 3, atk: 3, hp: 2, rarity: 'Uncommon', color: 'Arcane Blue', type: 'Entity — Dragon · Drake', set: 'Genesis (2022)', year: 2022, rules: 'Flight. Entry: Draw 1 card, then discard 1 card.', img: '' },
+        { name: 'Blighted Bog', cost: 0, atk: null, hp: null, rarity: 'Uncommon', color: 'Shadow Dark', type: 'Realm — Land', set: 'Genesis (2022)', year: 2022, rules: 'Exhaust: Add 1 Shadow energy. Pay 2 Life, Exhaust: Draw 1 card.', img: '' },
+        { name: 'Radiant Citadel', cost: 0, atk: null, hp: null, rarity: 'Rare', color: 'Light Radiant', type: 'Realm — Land', set: 'Genesis (2022)', year: 2022, rules: 'Exhaust: Add 1 Light energy. Friendly Guardians gain +0/+1.', img: '' },
+        { name: 'Soul Siphon', cost: 2, atk: null, hp: null, rarity: 'Common', color: 'Shadow Dark', type: 'Spell — Instant', set: 'Genesis (2022)', year: 2022, rules: 'Deal 3 damage to target Entity. You gain 3 Life.', img: '' }
       ],
       GWENT: [
         { name: 'Geralt: Igni', cost: 10, atk: 2, hp: 2, rarity: 'Legendary', color: 'Neutral Gold', type: 'Unit — Witcher', set: 'Base Set (2017)', year: 2017, rules: 'Deploy: Destroy the highest-power unit(s) on an enemy row if that row has a total of 20 or more power.', img: '' },
@@ -1362,28 +1445,11 @@
         { name: 'Enlightened Strike', cost: 0, atk: 5, hp: null, rarity: 'Majestic', color: 'Generic Red', type: 'Generic Action — Attack', set: 'Welcome to Rathe (2019)', year: 2019, rules: 'As an additional cost to play Enlightened Strike, put a card from your hand on the bottom of your deck. Choose 1: Draw a card; +2 ATK; or Go again.', img: '' },
         { name: 'Fyendal’s Spring Tunic', cost: 0, atk: null, hp: 1, rarity: 'Legendary', color: 'Generic Equipment', type: 'Generic Equipment — Chest', set: 'Welcome to Rathe (2019)', year: 2019, rules: 'At the start of your turn, if this has fewer than 3 energy counters, put an energy counter on it. Instant — Remove 3 energy counters: Gain 1 resource.', img: '' },
         { name: 'Crippling Crush', cost: 7, atk: 11, hp: null, rarity: 'Majestic', color: 'Guardian Red', type: 'Guardian Action — Attack', set: 'Welcome to Rathe (2019)', year: 2019, rules: 'Crush — If Crippling Crush deals 4 or more damage to a hero, they discard 2 random cards.', img: '' }
-      ],
-      LOR_R: [
-        { name: 'Aurelion Sol', cost: 10, atk: 10, hp: 10, rarity: 'Champion', color: 'Targon Celestial', type: 'Unit — Champion · Dragon', set: 'Call of the Mountain (2020)', year: 2020, rules: 'Fury, SpellShield. Play: Invoke a Celestial card. Round Start: Create a random Celestial card in hand.', img: '' },
-        { name: 'Ashe', cost: 4, atk: 5, hp: 3, rarity: 'Champion', color: 'Freljord Frost', type: 'Unit — Champion', set: 'Foundations (2020)', year: 2020, rules: 'Attack: Frostbite the Strongest enemy.', img: '' },
-        { name: 'Deny', cost: 4, atk: null, hp: null, rarity: 'Rare', color: 'Ionia Wind', type: 'Spell — Fast', set: 'Foundations (2020)', year: 2020, rules: 'Stop a Fast spell, Slow spell, or Skill.', img: '' }
-      ],
-      SV: [
-        { name: 'Bahamut', cost: 10, atk: 13, hp: 13, rarity: 'Legendary', color: 'Neutral Dragon', type: 'Follower — Dragon', set: 'Rise of Bahamut (2016)', year: 2016, rules: 'Fanfare: Destroy all other followers and amulets on the field.', img: '' },
-        { name: 'Dimension Shift', cost: 18, atk: null, hp: null, rarity: 'Legendary', color: 'Runecraft Arcane', type: 'Spell — Runecraft', set: 'Classic (2016)', year: 2016, rules: 'Spellboost: Subtract 1 from the cost of this card. Take an extra turn after this one.', img: '' }
-      ],
-      ETN: [
-        { name: 'Sandstorm Titan', cost: 4, atk: 5, hp: 6, rarity: 'Legendary', color: 'Time Yellow', type: 'Unit — Giant', set: 'The Empty Throne (2016)', year: 2016, rules: 'Endurance. Units cannot have Flying.', img: '' },
-        { name: 'Torch', cost: 1, atk: null, hp: null, rarity: 'Common', color: 'Fire Red', type: 'Spell — Fast', set: 'The Empty Throne (2016)', year: 2016, rules: 'Deal 3 damage to a unit or player.', img: '' }
-      ],
-      KF: [
-        { name: 'Library Access', cost: 0, atk: null, hp: null, rarity: 'Rare', color: 'Logos Blue', type: 'Action — Logos', set: 'Call of the Archons (2018)', year: 2018, rules: 'Play: For the remainder of the turn, each time you play another card, draw a card.', img: '' },
-        { name: 'Bait and Switch', cost: 0, atk: null, hp: null, rarity: 'Uncommon', color: 'Shadows Dark', type: 'Action — Shadows', set: 'Call of the Archons (2018)', year: 2018, rules: 'Play: If your opponent has more Æmber than you, steal 1 Æmber. Repeat if your opponent still has more Æmber than you.', img: '' }
       ]
     };
 
     // =========================================================================
-    // 3. TO-BE-SUPPORTED GAMES CATALOG (WITH PURE VECTOR SVG LOGOS)
+    // 3. TO-BE-SUPPORTED GAMES CATALOG (INCLUDING BACKBURNERED GAMES)
     // =========================================================================
     const TO_BE_SUPPORTED_SUBCATEGORIES = [
       {
@@ -1420,8 +1486,9 @@
       {
         id: 'modern_anime_jp',
         title: 'Modern Anime & Japanese Trading Card Games',
-        subtitle: 'Japanese & global anime TCGs awaiting open public browser APIs',
+        subtitle: 'Japanese & global anime TCGs queued / on backburner',
         games: [
+          { tag: 'DGM', name: 'Digimon Card Game (Backburner)', era: '2020–Present · Bandai', reason: 'On backburner for upcoming database pass', c1: '#0891b2', c2: '#1e3a8a', shape: 'crest' },
           { tag: 'CFV', name: 'Cardfight!! Vanguard', era: '2011–Present · Bushiroad', reason: 'Official decklog lacks open search API', c1: '#2563eb', c2: '#facc15', shape: 'vanguard' },
           { tag: 'WEISS', name: 'Weiß Schwarz', era: '2008–Present · Bushiroad', reason: 'No public unauthenticated CORS API', c1: '#f8fafc', c2: '#1e293b', shape: 'yin' },
           { tag: 'OPTCG', name: 'One Piece Card Game', era: '2022–Present · Bandai', reason: 'Bandai TCG+ blocks browser CORS requests', c1: '#ef4444', c2: '#38bdf8', shape: 'helm' },
@@ -1441,8 +1508,9 @@
       {
         id: 'modern_western_indie',
         title: 'Modern Western & Indie TCGs / Kickstarters',
-        subtitle: 'Contemporary Western and independent TCGs awaiting public API endpoints',
+        subtitle: 'Contemporary Western and independent TCGs queued / on backburner',
         games: [
+          { tag: 'KF', name: 'KeyForge (Backburner)', era: '2018–Present · Ghost Galaxy', reason: 'On backburner for procedural deck database integration', c1: '#db2777', c2: '#312e81', shape: 'crest' },
           { tag: 'SORCERY', name: 'Sorcery: Contested Realm', era: '2023–Present · Erik’s Curiosa', reason: 'Curiosa.io API CORS integration pending', c1: '#d97706', c2: '#1c1917', shape: 'atlas' },
           { tag: 'ALTERED', name: 'Altered TCG', era: '2024–Present · Equinox', reason: 'Official API requires OAuth user tokens', c1: '#06b6d4', c2: '#f59e0b', shape: 'tumult' },
           { tag: 'ALPHACLASH', name: 'Alpha Clash TCG', era: '2023–Present · Rising Empire', reason: 'No public REST card endpoint', c1: '#ef4444', c2: '#18181b', shape: 'alpha' },
@@ -1476,8 +1544,11 @@
       {
         id: 'digital_video_game',
         title: 'Digital-First & Video Game Card Systems',
-        subtitle: 'Digital CCGs and video game card systems awaiting public APIs',
+        subtitle: 'Digital CCGs and video game card systems queued / on backburner',
         games: [
+          { tag: 'LOR_R', name: 'Legends of Runeterra (Backburner)', era: '2020–Present · Riot Games', reason: 'On backburner for upcoming database pass', c1: '#2563eb', c2: '#0f172a', shape: 'shield' },
+          { tag: 'SV', name: 'Shadowverse (Backburner)', era: '2016–Present · Cygames', reason: 'On backburner for upcoming database pass', c1: '#c026d3', c2: '#1e1b4b', shape: 'wing' },
+          { tag: 'ETN', name: 'Eternal Card Game (Backburner)', era: '2016–Present · Dire Wolf Digital', reason: 'On backburner for upcoming database pass', c1: '#475569', c2: '#0f172a', shape: 'crest' },
           { tag: 'ARTIFACT', name: 'Artifact Classic / Foundry', era: '2018 · Valve', reason: 'Steam CDN card JSON requires proxy', c1: '#dc2626', c2: '#10b981', shape: 'triad' },
           { tag: 'MYTHGARD', name: 'Mythgard', era: '2019 · Rhino Games', reason: 'No public REST endpoint', c1: '#38bdf8', c2: '#f59e0b', shape: 'valkyrie' },
           { tag: 'FAERIA', name: 'Faeria', era: '2016 · Abrakam', reason: 'No public REST endpoint', c1: '#22c55e', c2: '#0ea5e9', shape: 'hex' },
@@ -1536,6 +1607,8 @@
       sidebarMode: 'search',
       selectedSearchGames: new Set(ALL_SUPPORTED_GAMES.map(g => g.id)),
       searchResults: [],
+      searchVisibleCount: 30,
+      bookmarkedCards: [],
       customCardPool: [],
       preferredVersions: {},
       decks: [],
@@ -1558,7 +1631,9 @@
         arkham: null,
         lotr: null,
         mc: null,
-        swu: null
+        swu: null,
+        fab: null,
+        gwent: null
       },
       playtest: {
         turn: 1,
@@ -1609,15 +1684,32 @@
 
       try {
         const userRef = doc(db, 'users', state.currentUser.uid);
+        // Compact card versions arrays before Firestore upload so 1 MiB document limit is never exceeded
+        const compactDecks = JSON.parse(JSON.stringify(state.decks)).map(deck => ({
+          ...deck,
+          cards: (deck.cards || []).map(c => {
+            if (Array.isArray(c.versions) && c.versions.length > 3) {
+              const activeIdx = getPreferredVersionIdx(c);
+              const firstVer = c.versions[0];
+              const chosenVer = c.versions[activeIdx] || firstVer;
+              c.versions = activeIdx === 0 ? [firstVer] : [firstVer, chosenVer];
+              c.selectedVersionIdx = activeIdx === 0 ? 0 : 1;
+              c._printsHydrated = false;
+            }
+            return c;
+          })
+        }));
+
         const payload = {
           email: state.currentUser.email || '',
           displayName: state.currentUser.displayName || '',
           activeDeckId: state.activeDeckId,
           activeFormatId: state.activeFormatId,
-          decks: JSON.parse(JSON.stringify(state.decks)),
+          decks: compactDecks,
           formats: JSON.parse(JSON.stringify(state.formats)),
           customCardPool: JSON.parse(JSON.stringify(state.customCardPool)),
           preferredVersions: JSON.parse(JSON.stringify(state.preferredVersions)),
+          bookmarkedCards: JSON.parse(JSON.stringify(state.bookmarkedCards)),
           updatedAt: serverTimestamp()
         };
         await setDoc(userRef, payload, { merge: true });
@@ -1655,6 +1747,9 @@
         }
         if (Array.isArray(data.customCardPool)) {
           state.customCardPool = data.customCardPool;
+        }
+        if (Array.isArray(data.bookmarkedCards)) {
+          state.bookmarkedCards = data.bookmarkedCards;
         }
         if (data.preferredVersions && typeof data.preferredVersions === 'object') {
           state.preferredVersions = data.preferredVersions;
@@ -1872,17 +1967,64 @@
     }
 
     function getCardPreferenceKey(card) {
+      if (card.sourceGame === 'PKM' && card.id) {
+        return `PKM::${card.id}`;
+      }
       return `${(card.sourceGame || 'CUSTOM').toUpperCase()}::${(card.name || '').trim().toLowerCase()}`;
     }
 
-    function getPreferredVersionIdx(card) {
+    function getPreferredVersionIdx(card, deckOverride = null) {
+      const targetDeck = deckOverride || getActiveDeck();
       const key = getCardPreferenceKey(card);
-      const saved = state.preferredVersions[key];
       const maxIdx = Math.max(0, (card.versions?.length || 1) - 1);
+
+      // 1. Check deck-specific preferred version first
+      if (targetDeck && targetDeck.deckPreferredVersions && targetDeck.deckPreferredVersions[key] !== undefined) {
+        return Math.min(maxIdx, Math.max(0, Number(targetDeck.deckPreferredVersions[key]) || 0));
+      }
+
+      // 2. Fallback to global preferred version
+      const saved = state.preferredVersions[key];
       if (saved !== undefined && saved !== null) {
         return Math.min(maxIdx, Math.max(0, Number(saved) || 0));
       }
       return Math.min(maxIdx, Math.max(0, Number(card.selectedVersionIdx) || 0));
+    }
+
+    function setDeckSpecificPreferredVersion(card, versionIdx) {
+      if (state.sharedViewData) return;
+      const deck = getActiveDeck();
+      if (!deck) return;
+      const idx = Math.max(0, Number(versionIdx) || 0);
+      const key = getCardPreferenceKey(card);
+      if (!deck.deckPreferredVersions) deck.deckPreferredVersions = {};
+      deck.deckPreferredVersions[key] = idx;
+
+      deck.cards.forEach(dc => {
+        if (getCardPreferenceKey(dc) === key) {
+          dc.selectedVersionIdx = idx;
+          if (Array.isArray(card.versions) && card.versions.length > (dc.versions?.length || 0)) {
+            dc.versions = JSON.parse(JSON.stringify(card.versions));
+          }
+        }
+      });
+
+      saveAllStateToStorage();
+    }
+
+    function clearDeckSpecificPreferredVersion(card) {
+      if (state.sharedViewData) return;
+      const deck = getActiveDeck();
+      if (!deck || !deck.deckPreferredVersions) return;
+      const key = getCardPreferenceKey(card);
+      delete deck.deckPreferredVersions[key];
+      const globalIdx = getPreferredVersionIdx(card, { deckPreferredVersions: {} });
+      deck.cards.forEach(dc => {
+        if (getCardPreferenceKey(dc) === key) {
+          dc.selectedVersionIdx = globalIdx;
+        }
+      });
+      saveAllStateToStorage();
     }
 
     function setPreferredVersionForCard(card, versionIdx) {
@@ -1892,9 +2034,10 @@
       state.preferredVersions[key] = idx;
 
       state.decks.forEach(deck => {
+        const hasDeckOverride = deck.deckPreferredVersions && deck.deckPreferredVersions[key] !== undefined;
         deck.cards.forEach(dc => {
           if (getCardPreferenceKey(dc) === key) {
-            dc.selectedVersionIdx = idx;
+            if (!hasDeckOverride) dc.selectedVersionIdx = idx;
             if (Array.isArray(card.versions) && card.versions.length > (dc.versions?.length || 0)) {
               dc.versions = JSON.parse(JSON.stringify(card.versions));
             }
@@ -1909,6 +2052,49 @@
 
       saveAllStateToStorage();
     }
+
+    function isCardBookmarked(card) {
+      if (!card) return false;
+      const key = getCardPreferenceKey(card);
+      return state.bookmarkedCards.some(b => getCardPreferenceKey(b) === key || b.id === card.id);
+    }
+
+    function toggleCardBookmark(card) {
+      if (!card) return false;
+      const key = getCardPreferenceKey(card);
+      const existingIdx = state.bookmarkedCards.findIndex(b => getCardPreferenceKey(b) === key || b.id === card.id);
+      if (existingIdx !== -1) {
+        state.bookmarkedCards.splice(existingIdx, 1);
+        saveAllStateToStorage();
+        renderBookmarksView();
+        return false;
+      } else {
+        state.bookmarkedCards.unshift(JSON.parse(JSON.stringify(card)));
+        saveAllStateToStorage();
+        renderBookmarksView();
+        return true;
+      }
+    }
+
+    function isCardHorizontalByDesign(card) {
+      if (!card) return false;
+      if (card.isHorizontal === true) return true;
+      const g = (card.sourceGame || '').toUpperCase();
+      const t = `${card.typeLine || ''} ${card.category || ''}`.toLowerCase();
+      if (g === 'AHC' && (t.includes('investigator') || t.includes('agenda') || t.includes('act'))) return true;
+      if (g === 'SWU' && (t.includes('leader') || t.includes('base'))) return true;
+      if (g === 'MTG' && (t.includes('battle') || t.includes('plane') || t.includes('phenomenon') || t.includes('scheme'))) return true;
+      if (g === 'LOTR' && t.includes('quest')) return true;
+      if (g === 'MC' && (t.includes('main scheme') || t.includes('side scheme'))) return true;
+      return false;
+    }
+
+    window.__ecgCheckHorizontalImg = function(imgEl) {
+      if (!imgEl || !imgEl.naturalWidth || !imgEl.naturalHeight) return;
+      if (imgEl.naturalWidth > imgEl.naturalHeight * 1.08) {
+        imgEl.classList.add('horizontal-card-rotated');
+      }
+    };
 
     function getActiveVersion(card) {
       if (Array.isArray(card.versions) && card.versions.length > 0) {
@@ -1992,15 +2178,18 @@
       if (!imgUrl) {
         return `<div class="w-full h-full ${extraClasses}">${buildGeneratedCardSvg(card, ver)}</div>`;
       }
-      const fallbackSvgEncoded = encodeURIComponent(buildGeneratedCardSvg(card, ver));
+      const horizClass = isCardHorizontalByDesign(card) ? 'horizontal-card-rotated' : '';
+      // Escape single quotes (%27) so names like "Urza's Saga" never break the inline onerror string
+      const fallbackSvgEncoded = encodeURIComponent(buildGeneratedCardSvg(card, ver)).replace(/'/g, '%27');
       return `
         <img
           src="${imgUrl}"
           alt="${escapeXml(card.name)}"
           referrerpolicy="no-referrer"
           loading="lazy"
-          onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf-8,${fallbackSvgEncoded}';"
-          class="w-full h-full object-cover ${extraClasses}"
+          onload="window.__ecgCheckHorizontalImg(this)"
+          onerror="this.onerror=null; this.classList.remove('horizontal-card-rotated'); this.src='data:image/svg+xml;charset=utf-8,${fallbackSvgEncoded}';"
+          class="w-full h-full object-cover ${horizClass} ${extraClasses}"
         />
       `;
     }
@@ -2124,26 +2313,25 @@
       if (raw.power !== undefined && raw.toughness !== undefined) statsParts.push(`${raw.power}/${raw.toughness}`);
 
       const card = {
-        id: `mtg_${raw.oracle_id || raw.id}`,
-        sourceGame: 'MTG',
+        id: `pkm_${raw.id || `${raw.set?.id || 'set'}_${raw.number || raw.name}`}`,
+        sourceGame: 'PKM',
         name: raw.name,
-        category: inferEclecticaCategory(raw.type_line),
-        colorText: colorStr,
-        rarity: raw.rarity || 'common',
-        numericCost: Math.max(0, Math.round(Number(raw.cmc) || 0)),
-        atkNum: raw.power !== undefined && !isNaN(Number(raw.power)) ? Number(raw.power) : null,
-        defNum: raw.toughness !== undefined && !isNaN(Number(raw.toughness)) ? Number(raw.toughness) : null,
+        category: inferEclecticaCategory(raw.supertype),
+        colorText: types || 'Colorless',
+        rarity: raw.rarity || 'Common',
+        numericCost,
+        atkNum: null,
+        defNum: raw.hp ? Number(raw.hp) : null,
         originalYear: releaseYear,
-        isDigitalOnly: Boolean(raw.digital),
-        statsText: statsParts.join(' · ') || `MV ${raw.cmc ?? 0}`,
-        typeLine: raw.type_line || 'Magic Card',
-        rulesText: oracleText || 'No rules text.',
-        printsSearchUri: raw.prints_search_uri || `https://api.scryfall.com/cards/search?order=released&dir=asc&q=!"${encodeURIComponent(raw.name)}"&unique=prints`,
+        isDigitalOnly: false,
+        statsText: `${raw.hp ? `HP ${raw.hp} · ` : ''}${raw.set?.name || 'Pokémon'} #${raw.number || ''}`,
+        typeLine: [types, raw.supertype, subtypes].filter(Boolean).join(' · ') || 'Pokémon Card',
+        rulesText: rulesLines.join('\n') || 'Standard Pokémon TCG card.',
         selectedVersionIdx: 0,
         versions: [
           {
-            label: `1st: ${raw.set_name || 'Original'} (${releaseYear}) #${raw.collector_number || ''}`,
-            setInfo: `${raw.set_name || 'MTG'} (${(raw.set || '').toUpperCase()})`,
+            label: `1st: ${raw.set?.name || 'Original'} (${releaseYear}) #${raw.number || ''}`,
+            setInfo: `${raw.set?.name || 'Pokémon TCG'} #${raw.number || ''} (${raw.set?.releaseDate || releaseYear})`,
             year: releaseYear,
             imageUrl
           }
@@ -2690,58 +2878,441 @@
     }
 
     // =========================================================================
-    // 11. DATA FETCHERS ACROSS ALL 19 SUPPORTED DATABASES
+    // 11. FULL DATABASE FETCHERS + INDEXEDDB PERSISTENT CACHE (ALL 19 GAMES)
     // =========================================================================
     async function fetchCachedJson(cacheKey, url) {
       if (state.apiCaches[cacheKey]) return state.apiCaches[cacheKey];
+      const fromIdb = await idbGetDataset(`raw_${cacheKey}`);
+      if (Array.isArray(fromIdb) && fromIdb.length > 0) {
+        state.apiCaches[cacheKey] = fromIdb;
+        return fromIdb;
+      }
       const res = await fetch(url);
       if (!res.ok) return [];
       const data = await res.json();
       const arr = Array.isArray(data) ? data : (data.data || Object.values(data.response || {}));
-      state.apiCaches[cacheKey] = Array.isArray(arr) ? arr : [];
-      return state.apiCaches[cacheKey];
+      const cleanArr = Array.isArray(arr) ? arr : [];
+      if (cleanArr.length > 0) {
+        state.apiCaches[cacheKey] = cleanArr;
+        idbSetDataset(`raw_${cacheKey}`, cleanArr);
+      }
+      return cleanArr;
+    }
+
+    async function fetchWithCorsMirrorFallback(urls) {
+      for (const u of urls) {
+        try {
+          const res = await fetch(u);
+          if (res.ok) {
+            const data = await res.json();
+            if (data) return data;
+          }
+        } catch (e) { /* try next mirror */ }
+      }
+      return null;
     }
 
     async function getCleanHearthstonePool() {
+      if (state.apiCaches.hs_norm) return state.apiCaches.hs_norm;
       const rawAll = await fetchCachedJson('hs', 'https://api.hearthstonejson.com/v1/latest/enUS/cards.collectible.json');
       const groupedByName = new Map();
       for (const c of rawAll) {
         if (!c.id || !c.name) continue;
-        if (c.type === 'HERO_SKIN' || c.type === 'ENCHANTMENT') continue;
-        if (c.set === 'BATTLEGROUNDS' || c.set === 'MERCENARIES' || c.set === 'TAVERN_BRAWL') continue;
+        // Exclude Hero Skins, Playable Hero Portraits, & Hero Powers
+        if (c.type === 'HERO' || c.type === 'HERO_SKIN' || c.type === 'HERO_POWER' || c.type === 'ENCHANTMENT') continue;
+        if (c.set === 'HERO_SKINS' || c.set === 'BATTLEGROUNDS' || c.set === 'MERCENARIES' || c.set === 'TAVERN_BRAWL') continue;
+        if (c.collectible === false) continue;
         const normKey = c.name.trim().toLowerCase();
         if (!groupedByName.has(normKey)) {
           groupedByName.set(normKey, []);
         }
         groupedByName.get(normKey).push(c);
       }
-      return Array.from(groupedByName.values()).map(normalizeHearthstoneGroup);
+      const normalized = Array.from(groupedByName.values()).map(normalizeHearthstoneGroup);
+      state.apiCaches.hs_norm = normalized;
+      return normalized;
     }
 
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const sets = ['sor', 'shd', 'twi'];
+      const fromIdb = await idbGetDataset('norm_swu_v3');
+      if (Array.isArray(fromIdb) && fromIdb.length > 30) {
+        state.apiCaches.swu = fromIdb;
+        return fromIdb;
+      }
+
+      const sets = ['sor', 'shd', 'twi', 'jtl', 'lof'];
       const fetched = [];
       for (const s of sets) {
-        try {
-          const res = await fetch(`https://api.swu-db.com/cards/${s}`);
-          if (res.ok) {
-            const arr = await res.json();
-            if (Array.isArray(arr)) fetched.push(...arr.map(normalizeSwuRawCard));
-          }
-        } catch (e) { /* fallback below */ }
+        const directUrl = `https://api.swu-db.com/cards/${s}`;
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(directUrl)}`;
+        const corsProxyIo = `https://corsproxy.io/?${encodeURIComponent(directUrl)}`;
+        const payload = await fetchWithCorsMirrorFallback([directUrl, corsProxyIo, proxyUrl]);
+        const arr = Array.isArray(payload) ? payload : (Array.isArray(payload?.data) ? payload.data : []);
+        if (arr.length > 0) {
+          fetched.push(...arr.map(normalizeSwuRawCard));
+        }
       }
+
       if (fetched.length > 0) {
-        state.apiCaches.swu = fetched;
-        return fetched;
+        // Deduplicate by set+number while preserving exact 1:1 FrontArt & text
+        const dedup = new Map();
+        fetched.forEach(c => { if (!dedup.has(c.id)) dedup.set(c.id, c); });
+        const finalSwu = Array.from(dedup.values());
+        state.apiCaches.swu = finalSwu;
+        idbSetDataset('norm_swu_v3', finalSwu);
+        return finalSwu;
       }
+
       const fallback = EXTENDED_GAME_CARD_DATABASES.SWU.map(e => normalizeBuiltInDatabaseEntry('SWU', e));
       state.apiCaches.swu = fallback;
       return fallback;
     }
 
+    // Full Flesh and Blood (3,000+ cards) via CORS-open GitHub JSON
+    async function getCompleteFabPool() {
+      if (state.apiCaches.fab && state.apiCaches.fab.length > 0) return state.apiCaches.fab;
+      const fromIdb = await idbGetDataset('norm_fab_v2');
+      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
+        state.apiCaches.fab = fromIdb;
+        return fromIdb;
+      }
+
+      const rawData = await fetchWithCorsMirrorFallback([
+        'https://raw.githubusercontent.com/the-fab-cube/flesh-and-blood-cards/develop/json/english/card.json',
+        'https://cdn.jsdelivr.net/gh/the-fab-cube/flesh-and-blood-cards@develop/json/english/card.json'
+      ]);
+
+      if (Array.isArray(rawData) && rawData.length > 0) {
+        const mapped = rawData.map(raw => {
+          const printings = Array.isArray(raw.printings) ? raw.printings : [];
+          const firstPrint = printings[0] || {};
+          const pitchLabel = raw.pitch === '1' ? 'Red' : (raw.pitch === '2' ? 'Yellow' : (raw.pitch === '3' ? 'Blue' : 'Generic'));
+          const fullName = raw.pitch ? `${raw.name} (${pitchLabel})` : raw.name;
+          const costNum = raw.cost !== undefined && raw.cost !== '' && !isNaN(Number(raw.cost)) ? Number(raw.cost) : 0;
+          const pwrNum = raw.power !== undefined && raw.power !== '' && !isNaN(Number(raw.power)) ? Number(raw.power) : null;
+          const defNum = raw.defense !== undefined && raw.defense !== '' && !isNaN(Number(raw.defense)) ? Number(raw.defense) : (raw.health ? Number(raw.health) : null);
+
+          const versions = printings.length > 0
+            ? printings.map((p, idx) => ({
+                label: `${idx === 0 ? '1st: ' : `#${idx + 1}: `}${p.set_id || 'FAB'} (${p.id || ''})`,
+                setInfo: `Flesh and Blood (${p.set_id || 'FAB'} #${p.id || ''})`,
+                year: 2019,
+                imageUrl: p.image_url || ''
+              }))
+            : [{ label: '1st: Original Printing', setInfo: 'Flesh and Blood', year: 2019, imageUrl: '' }];
+
+          const card = {
+            id: `fab_${(raw.unique_id || fullName).toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+            sourceGame: 'FAB',
+            name: fullName,
+            category: inferEclecticaCategory(raw.type_text || (raw.types || []).join(' ')),
+            colorText: `${pitchLabel} ${(raw.classes || []).join(' ')}`.trim(),
+            rarity: firstPrint.rarity || 'Common',
+            numericCost: Math.max(0, costNum),
+            atkNum: pwrNum,
+            defNum: defNum,
+            originalYear: 2019,
+            isDigitalOnly: false,
+            statsText: `Cost ${raw.cost ?? 0}${pwrNum !== null ? ` · ATK ${pwrNum}` : ''}${defNum !== null ? ` · DEF ${defNum}` : ''}`,
+            typeLine: raw.type_text || (raw.types || []).join(' ') || 'FaB Card',
+            rulesText: raw.functional_text_plain || raw.functional_text || 'Flesh and Blood card.',
+            selectedVersionIdx: 0,
+            versions
+          };
+          card.selectedVersionIdx = getPreferredVersionIdx(card);
+          return card;
+        });
+
+        state.apiCaches.fab = mapped;
+        idbSetDataset('norm_fab_v2', mapped);
+        return mapped;
+      }
+
+      const fallback = EXTENDED_GAME_CARD_DATABASES.FAB.map(e => normalizeBuiltInDatabaseEntry('FAB', e));
+      state.apiCaches.fab = fallback;
+      return fallback;
+    }
+
+    // Full Legends of Runeterra (1,400+ cards) via Riot Data Dragon CORS-open JSON
+    async function getCompleteRuneterraPool() {
+      if (state.apiCaches.lor_r && state.apiCaches.lor_r.length > 0) return state.apiCaches.lor_r;
+      const fromIdb = await idbGetDataset('norm_lor_r_v2');
+      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
+        state.apiCaches.lor_r = fromIdb;
+        return fromIdb;
+      }
+
+      const sets = ['set1', 'set2', 'set3', 'set4', 'set5', 'set6', 'set6cde', 'set7', 'set7b', 'set8'];
+      const results = await Promise.allSettled(
+        sets.map(s =>
+          fetch(`https://dd.b.pvp.net/latest/${s}/en_us/data/${s}-en_us.json`)
+            .then(r => r.ok ? r.json() : [])
+            .then(arr => ({ setCode: s, cards: Array.isArray(arr) ? arr : [] }))
+            .catch(() => ({ setCode: s, cards: [] }))
+        )
+      );
+
+      const mapped = [];
+      const seenCodes = new Set();
+      for (const r of results) {
+        if (r.status !== 'fulfilled') continue;
+        const { setCode, cards } = r.value;
+        for (const raw of cards) {
+          if (!raw.cardCode || !raw.name || seenCodes.has(raw.cardCode)) continue;
+          if (raw.collectible === false && raw.supertype !== 'Champion') continue;
+          seenCodes.add(raw.cardCode);
+          const imgUrl = raw.assets?.[0]?.gameAbsolutePath
+            || `https://dd.b.pvp.net/latest/${setCode}/en_us/img/cards/${raw.cardCode}.png`;
+          const regions = Array.isArray(raw.regions) ? raw.regions.join(' ') : (raw.region || 'Neutral');
+          const typeStr = `${raw.supertype ? raw.supertype + ' ' : ''}${raw.type || 'Unit'}${(raw.subtypes && raw.subtypes.length) ? ' — ' + raw.subtypes.join(' · ') : ''}`;
+          const card = {
+            id: `lor_r_${raw.cardCode}`,
+            sourceGame: 'LOR_R',
+            name: raw.name,
+            category: inferEclecticaCategory(typeStr),
+            colorText: regions,
+            rarity: raw.rarity || 'Common',
+            numericCost: Math.max(0, Number(raw.cost) || 0),
+            atkNum: raw.attack !== undefined ? Number(raw.attack) : null,
+            defNum: raw.health !== undefined ? Number(raw.health) : null,
+            originalYear: 2020,
+            isDigitalOnly: true,
+            statsText: `${raw.cost ?? 0} Mana${raw.type === 'Unit' ? ` · ${raw.attack ?? 0}/${raw.health ?? 0}` : ''}`,
+            typeLine: typeStr,
+            rulesText: stripHtmlTags(raw.descriptionRaw || raw.description || '') || 'Legends of Runeterra card.',
+            selectedVersionIdx: 0,
+            versions: [{
+              label: `1st: ${setCode.toUpperCase()} (${raw.cardCode})`,
+              setInfo: `Legends of Runeterra (${setCode.toUpperCase()} · ${raw.cardCode})`,
+              year: 2020,
+              imageUrl: imgUrl
+            }]
+          };
+          card.selectedVersionIdx = getPreferredVersionIdx(card);
+          mapped.push(card);
+        }
+      }
+
+      if (mapped.length > 0) {
+        state.apiCaches.lor_r = mapped;
+        idbSetDataset('norm_lor_r_v2', mapped);
+        return mapped;
+      }
+
+      const fallback = EXTENDED_GAME_CARD_DATABASES.LOR_R.map(e => normalizeBuiltInDatabaseEntry('LOR_R', e));
+      state.apiCaches.lor_r = fallback;
+      return fallback;
+    }
+
+    // Full GWENT Card Database via open GWENT JSON dataset
+    async function getCompleteGwentPool() {
+      if (state.apiCaches.gwent && state.apiCaches.gwent.length > 0) return state.apiCaches.gwent;
+      const fromIdb = await idbGetDataset('norm_gwent_v2');
+      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
+        state.apiCaches.gwent = fromIdb;
+        return fromIdb;
+      }
+
+      const rawObj = await fetchWithCorsMirrorFallback([
+        'https://api.gwent.one/?key=data&response=json',
+        'https://raw.githubusercontent.com/GwentCommunityDevelopers/gwent-data/master/cards.json'
+      ]);
+
+      const rawList = Array.isArray(rawObj)
+        ? rawObj
+        : (rawObj?.response ? Object.values(rawObj.response) : []);
+
+      if (rawList.length > 0) {
+        const seen = new Set();
+        const mapped = [];
+        for (const raw of rawList) {
+          const idObj = raw.id || {};
+          const attr = raw.attributes || raw;
+          const name = attr.name || raw.name;
+          if (!name || seen.has(name.toLowerCase())) continue;
+          if (attr.type === 'Leader' || attr.type === 'Strategem') continue;
+          seen.add(name.toLowerCase());
+
+          const artId = idObj.art || idObj.card || raw.artId || '';
+          const imgUrl = artId ? `https://gwent.one/image/gwent/assets/card/art/low/${artId}.jpg` : '';
+          const prov = Number(attr.provision ?? 0);
+          const pwr = attr.power !== undefined && attr.power !== null ? Number(attr.power) : null;
+
+          const card = {
+            id: `gwent_${idObj.card || name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+            sourceGame: 'GWENT',
+            name,
+            category: inferEclecticaCategory(attr.type || 'Unit'),
+            colorText: `${attr.faction || 'Neutral'} ${attr.color || ''}`.trim(),
+            rarity: attr.rarity || 'Legendary',
+            numericCost: Math.max(0, prov),
+            atkNum: pwr,
+            defNum: pwr,
+            originalYear: 2017,
+            isDigitalOnly: true,
+            statsText: `${prov} Prov${pwr !== null ? ` · Power ${pwr}` : ''}`,
+            typeLine: `${attr.type || 'Unit'}${attr.category ? ' — ' + attr.category : ''}`,
+            rulesText: stripHtmlTags(attr.ability || attr.ability_html || '') || 'GWENT card.',
+            selectedVersionIdx: 0,
+            versions: [{
+              label: `1st: ${attr.set || 'Base Set'}`,
+              setInfo: `GWENT (${attr.set || 'Base Set'})`,
+              year: 2017,
+              imageUrl: imgUrl
+            }]
+          };
+          card.selectedVersionIdx = getPreferredVersionIdx(card);
+          mapped.push(card);
+        }
+
+        if (mapped.length > 0) {
+          state.apiCaches.gwent = mapped;
+          idbSetDataset('norm_gwent_v2', mapped);
+          return mapped;
+        }
+      }
+
+      const fallback = EXTENDED_GAME_CARD_DATABASES.GWENT.map(e => normalizeBuiltInDatabaseEntry('GWENT', e));
+      state.apiCaches.gwent = fallback;
+      return fallback;
+    }
+
+    // Full Shadowverse Card Database via Shadowverse Portal / CORS-open mirror
+    async function getCompleteShadowversePool() {
+      if (state.apiCaches.sv && state.apiCaches.sv.length > 0) return state.apiCaches.sv;
+      const fromIdb = await idbGetDataset('norm_sv_v2');
+      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
+        state.apiCaches.sv = fromIdb;
+        return fromIdb;
+      }
+
+      const svDirect = 'https://shadowverse-portal.com/api/v1/cards?format=json&lang=en';
+      const payload = await fetchWithCorsMirrorFallback([
+        svDirect,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(svDirect)}`
+      ]);
+      const rawCards = payload?.data?.cards || [];
+      if (Array.isArray(rawCards) && rawCards.length > 0) {
+        const classNames = ['Neutral', 'Forestcraft', 'Swordcraft', 'Runecraft', 'Dragoncraft', 'Shadowcraft', 'Bloodcraft', 'Havencraft', 'Portalcraft'];
+        const typeNames = { 1: 'Follower', 2: 'Amulet', 3: 'Countdown Amulet', 4: 'Spell' };
+        const seen = new Set();
+        const mapped = [];
+        for (const raw of rawCards) {
+          if (!raw.card_name || seen.has(raw.card_name.toLowerCase())) continue;
+          seen.add(raw.card_name.toLowerCase());
+          const clan = classNames[raw.clan] || 'Neutral';
+          const charType = typeNames[raw.char_type] || 'Follower';
+          const imgUrl = raw.card_id ? `https://shadowverse-portal.com/image/card/phase2/common/C/C_${raw.card_id}.png` : '';
+          const card = {
+            id: `sv_${raw.card_id || raw.card_name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+            sourceGame: 'SV',
+            name: raw.card_name,
+            category: inferEclecticaCategory(charType),
+            colorText: clan,
+            rarity: String(raw.rarity || 'Bronze'),
+            numericCost: Math.max(0, Number(raw.cost) || 0),
+            atkNum: raw.atk !== undefined ? Number(raw.atk) : null,
+            defNum: raw.life !== undefined ? Number(raw.life) : null,
+            originalYear: 2016,
+            isDigitalOnly: true,
+            statsText: `${raw.cost ?? 0} PP${charType === 'Follower' ? ` · ${raw.atk}/${raw.life}` : ''}`,
+            typeLine: `${clan} ${charType}${raw.tribe_name && raw.tribe_name !== '-' ? ' — ' + raw.tribe_name : ''}`,
+            rulesText: stripHtmlTags(raw.skill_disc || '') || 'Shadowverse card.',
+            selectedVersionIdx: 0,
+            versions: [{
+              label: `1st: ${raw.card_set_name || 'Shadowverse'}`,
+              setInfo: raw.card_set_name || 'Shadowverse',
+              year: 2016,
+              imageUrl: imgUrl
+            }]
+          };
+          card.selectedVersionIdx = getPreferredVersionIdx(card);
+          mapped.push(card);
+        }
+        if (mapped.length > 0) {
+          state.apiCaches.sv = mapped;
+          idbSetDataset('norm_sv_v2', mapped);
+          return mapped;
+        }
+    // Full GWENT Card Database via open GWENT JSON dataset (rendered with full stats & ability frame)
+    async function getCompleteGwentPool() {
+      if (state.apiCaches.gwent && state.apiCaches.gwent.length > 0) return state.apiCaches.gwent;
+      const fromIdb = await idbGetDataset('norm_gwent_v3');
+      if (Array.isArray(fromIdb) && fromIdb.length > 20) {
+        state.apiCaches.gwent = fromIdb;
+        return fromIdb;
+      }
+
+      const gwentApiUrl = 'https://api.gwent.one/?key=data&response=json';
+      const rawObj = await fetchWithCorsMirrorFallback([
+        gwentApiUrl,
+        `https://corsproxy.io/?${encodeURIComponent(gwentApiUrl)}`,
+        'https://raw.githubusercontent.com/GwentCommunityDevelopers/gwent-data/master/cards.json'
+      ]);
+
+      const rawList = Array.isArray(rawObj)
+        ? rawObj
+        : (rawObj?.response ? Object.values(rawObj.response) : []);
+
+      if (rawList.length > 0) {
+        const seen = new Set();
+        const mapped = [];
+        for (const raw of rawList) {
+          const idObj = raw.id || {};
+          const attr = raw.attributes || raw;
+          const name = attr.name || raw.name;
+          if (!name || seen.has(name.toLowerCase())) continue;
+          if (attr.type === 'Leader' || attr.type === 'Strategem') continue;
+          seen.add(name.toLowerCase());
+
+          const prov = Number(attr.provision ?? 0);
+          const pwr = attr.power !== undefined && attr.power !== null ? Number(attr.power) : null;
+
+          // Keep imageUrl empty so Gwent renders the full SVG card frame with Provision, Power, Faction, & Ability Text (instead of raw borderless art-only crops)
+          const card = {
+            id: `gwent_${idObj.card || name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+            sourceGame: 'GWENT',
+            name,
+            category: inferEclecticaCategory(attr.type || 'Unit'),
+            colorText: `${attr.faction || 'Neutral'} ${attr.color || ''}`.trim(),
+            rarity: attr.rarity || 'Legendary',
+            numericCost: Math.max(0, prov),
+            atkNum: pwr,
+            defNum: pwr,
+            originalYear: 2017,
+            isDigitalOnly: true,
+            statsText: `${prov} Prov${pwr !== null ? ` · Power ${pwr}` : ''}`,
+            typeLine: `${attr.type || 'Unit'}${attr.category ? ' — ' + attr.category : ''}`,
+            rulesText: stripHtmlTags(attr.ability || attr.ability_html || '') || 'GWENT card.',
+            selectedVersionIdx: 0,
+            versions: [{
+              label: `1st: ${attr.set || 'Base Set'}`,
+              setInfo: `GWENT (${attr.set || 'Base Set'})`,
+              year: 2017,
+              imageUrl: ''
+            }]
+          };
+          card.selectedVersionIdx = getPreferredVersionIdx(card);
+          mapped.push(card);
+        }
+
+        if (mapped.length > 0) {
+          state.apiCaches.gwent = mapped;
+          idbSetDataset('norm_gwent_v3', mapped);
+          return mapped;
+        }
+      }
+
+      const fallback = EXTENDED_GAME_CARD_DATABASES.GWENT.map(e => normalizeBuiltInDatabaseEntry('GWENT', e));
+      state.apiCaches.gwent = fallback;
+      return fallback;
+    }
+
     async function querySingleGameSource(gameId, clauses, rawSearchString, exactFuzzy = false) {
-      const nameToken = clauses.find(c => c.op === 'NAME' && !c.negated)?.val || rawSearchString.replace(/[^\w\s'-]/g, '').trim() || 'Dragon';
+      const explicitNameTok = clauses.find(c => c.op === 'NAME' && !c.negated)?.val || '';
+      const strippedPlain = rawSearchString.replace(/-?[a-zA-Z]+(?:<=|>=|=|<|>|:)"[^"]+"/g, '').replace(/-?[a-zA-Z]+(?:<=|>=|=|<|>|:)[^\s]+/g, '').trim();
+      const nameToken = explicitNameTok || strippedPlain || '';
 
       if (gameId === 'CUSTOM') {
         return state.customCardPool
@@ -2749,96 +3320,113 @@
           .map(c => ({ ...c, selectedVersionIdx: getPreferredVersionIdx(c) }));
       }
 
-      if (EXTENDED_GAME_CARD_DATABASES[gameId] && gameId !== 'SWU') {
+      if (gameId === 'SWU') {
+        const pool = await getCompleteSwuPool();
+        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+      }
+
+      if (gameId === 'FAB') {
+        const pool = await getCompleteFabPool();
+        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+      }
+
+      if (gameId === 'GWENT') {
+        const pool = await getCompleteGwentPool();
+        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
+      }
+
+      if (EXTENDED_GAME_CARD_DATABASES[gameId]) {
         const pool = EXTENDED_GAME_CARD_DATABASES[gameId].map(e => normalizeBuiltInDatabaseEntry(gameId, e));
         return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses));
       }
 
-      if (gameId === 'SWU') {
-        const pool = await getCompleteSwuPool();
-        return pool.filter(c => cardMatchesUnifiedSyntax(c, clauses)).slice(0, 12);
-      }
-
       try {
         if (gameId === 'MTG') {
-          const scryfallQ = rawSearchString.replace(/\bg:[a-zA-Z0-9_]+\b/gi, '').trim() || nameToken;
-          const url = exactFuzzy
-            ? `https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(nameToken)}`
-            : `https://api.scryfall.com/cards/search?q=${encodeURIComponent(scryfallQ)}&order=released&dir=asc&unique=cards`;
-          const res = await fetch(url);
-          if (!res.ok) return [];
-          const data = await res.json();
-          const rawList = exactFuzzy && data.object === 'card' ? [data] : (data.data || []);
-          const normalized = rawList.slice(0, 10).map(normalizeScryfallCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-          if (normalized.length > 0) await hydrateScryfallAllPrintings(normalized[0]);
-          return normalized;
+          const scryfallQ = rawSearchString.replace(/\bg:[a-zA-Z0-9_]+\b/gi, '').trim() || nameToken || 'year>=1993';
+          if (exactFuzzy && nameToken) {
+            const res = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(nameToken)}`);
+            if (!res.ok) return [];
+            const data = await res.json();
+            const normalized = data.object === 'card' ? [normalizeScryfallCard(data)].filter(c => cardMatchesUnifiedSyntax(c, clauses)) : [];
+            if (normalized.length > 0) await hydrateScryfallAllPrintings(normalized[0]);
+            return normalized;
+          }
+
+          // Paginate beyond Scryfall's 175-card page cap (up to 4 pages = 700 unique cards)
+          let nextUrl = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(scryfallQ)}&order=released&dir=asc&unique=cards`;
+          const rawList = [];
+          let pageCount = 0;
+          while (nextUrl && pageCount < 4) {
+            pageCount++;
+            const res = await fetch(nextUrl);
+            if (!res.ok) break;
+            const data = await res.json();
+            if (Array.isArray(data.data)) rawList.push(...data.data);
+            nextUrl = data.has_more && data.next_page ? data.next_page : null;
+          }
+          return rawList.map(normalizeScryfallCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
 
         if (gameId === 'YGO') {
-          const param = exactFuzzy ? `name=${encodeURIComponent(nameToken)}` : `fname=${encodeURIComponent(nameToken)}`;
-          let res = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?${param}`);
-          if (!res.ok && exactFuzzy) res = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${encodeURIComponent(nameToken)}`);
-          if (!res.ok) return [];
-          const data = await res.json();
-          return (data.data || []).slice(0, 12).map(normalizeYugiohCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          const allYgo = await fetchCachedJson('ygo', 'https://db.ygoprodeck.com/api/v7/cardinfo.php');
+          if (allYgo.length > 0) {
+            const sub = exactFuzzy && nameToken
+              ? allYgo.filter(r => r.name.toLowerCase().includes(nameToken.toLowerCase()))
+              : allYgo;
+            return sub.map(normalizeYugiohCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          }
+          return [];
         }
 
         if (gameId === 'PKM') {
-          const formatted = exactFuzzy ? `name:"${nameToken.replace(/"/g, '')}"` : `name:*${nameToken.replace(/"/g, '')}*`;
-          const res = await fetch(`https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(formatted)}&orderBy=set.releaseDate&pageSize=25`);
-          if (!res.ok) return [];
-          const data = await res.json();
-          const grouped = new Map();
-          for (const raw of (data.data || [])) {
-            const norm = normalizePokemonCard(raw);
-            if (!grouped.has(norm.name)) grouped.set(norm.name, norm);
-            else {
-              const ex = grouped.get(norm.name);
-              const ver = norm.versions[0];
-              ver.label = `#${ex.versions.length + 1}: ${ver.label.replace(/^1st:\s*/, '')}`;
-              ex.versions.push(ver);
-            }
+          const qParam = nameToken
+            ? (exactFuzzy ? `q=name:"${encodeURIComponent(nameToken.replace(/"/g, ''))}"` : `q=name:*${encodeURIComponent(nameToken.replace(/"/g, ''))}*`)
+            : '';
+          const pkmResults = [];
+          // Fetch up to 2 pages (240 distinct Pokémon cards) without merging different cards that share a Pokémon name
+          for (let pg = 1; pg <= 2; pg++) {
+            const url = `https://api.pokemontcg.io/v2/cards?${qParam ? qParam + '&' : ''}orderBy=set.releaseDate&pageSize=120&page=${pg}`;
+            const res = await fetch(url);
+            if (!res.ok) break;
+            const data = await res.json();
+            const arr = Array.isArray(data.data) ? data.data : [];
+            pkmResults.push(...arr.map(normalizePokemonCard));
+            if (arr.length < 120) break;
           }
-          return Array.from(grouped.values()).slice(0, 10).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          return pkmResults.filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
 
         if (gameId === 'HS') {
           const cleanHs = await getCleanHearthstonePool();
-          return cleanHs.filter(c => cardMatchesUnifiedSyntax(c, clauses)).slice(0, 12);
+          return cleanHs.filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
 
         if (gameId === 'LOR') {
-          const res = await fetch(`https://api.lorcast.com/v0/cards/search?q=${encodeURIComponent(nameToken)}`);
+          const queryTerm = nameToken || 'a';
+          const res = await fetch(`https://api.lorcast.com/v0/cards/search?q=${encodeURIComponent(queryTerm)}`);
           if (!res.ok) return [];
           const data = await res.json();
-          return (Array.isArray(data.results) ? data.results : []).slice(0, 10).map(normalizeLorcanaCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
-        }
-
-        if (gameId === 'DGM') {
-          const res = await fetch(`https://digimoncard.io/api-public/search.php?n=${encodeURIComponent(nameToken)}`);
-          if (!res.ok) return [];
-          const data = await res.json();
-          return (Array.isArray(data) ? data : []).slice(0, 10).map(normalizeDigimonCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
+          return (Array.isArray(data.results) ? data.results : []).map(normalizeLorcanaCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
 
         if (gameId === 'ANR') {
           const allAnr = await fetchCachedJson('anr', 'https://netrunnerdb.com/api/2.0/public/cards');
-          return allAnr.map(normalizeNetrunnerCard).filter(c => cardMatchesUnifiedSyntax(c, clauses)).slice(0, 10);
+          return allAnr.map(normalizeNetrunnerCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
 
         if (gameId === 'AHC') {
           const allArkham = await fetchCachedJson('arkham', 'https://arkhamdb.com/api/public/cards/');
-          return allArkham.filter(c => c.imagesrc).map(normalizeArkhamCard).filter(c => cardMatchesUnifiedSyntax(c, clauses)).slice(0, 10);
+          return allArkham.filter(c => c.imagesrc).map(normalizeArkhamCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
 
         if (gameId === 'LOTR') {
           const allLotr = await fetchCachedJson('lotr', 'https://ringsdb.com/api/public/cards/');
-          return allLotr.filter(c => c.imagesrc).map(normalizeLotrCard).filter(c => cardMatchesUnifiedSyntax(c, clauses)).slice(0, 10);
+          return allLotr.filter(c => c.imagesrc).map(normalizeLotrCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
 
         if (gameId === 'MC') {
           const allMc = await fetchCachedJson('mc', 'https://marvelcdb.com/api/public/cards/');
-          return allMc.filter(c => c.imagesrc).map(normalizeMarvelCard).filter(c => cardMatchesUnifiedSyntax(c, clauses)).slice(0, 10);
+          return allMc.filter(c => c.imagesrc).map(normalizeMarvelCard).filter(c => cardMatchesUnifiedSyntax(c, clauses));
         }
       } catch (e) {
         return [];
@@ -2865,18 +3453,31 @@
       }
 
       const statusMsg = document.getElementById('searchStatusMsg');
+      const countsBar = document.getElementById('searchResultCountsBar');
+      const loadMoreWrap = document.getElementById('searchLoadMoreWrap');
       const grid = document.getElementById('searchResultsGrid');
+
       statusMsg.classList.remove('hidden');
-      statusMsg.innerHTML = `<span class="inline-block animate-pulse text-starlight-300 font-semibold">Running unified syntax query across ${targetGames.length} game databases...</span>`;
+      countsBar.classList.add('hidden');
+      loadMoreWrap.classList.add('hidden');
+      statusMsg.innerHTML = `<span class="inline-block animate-pulse text-starlight-300 font-semibold">Querying ${targetGames.length} full card databases (cached in IndexedDB)...</span>`;
       grid.innerHTML = '';
 
       const settled = await Promise.allSettled(
-        targetGames.map(g => querySingleGameSource(g, clauses, rawQuery, false))
+        targetGames.map(async (g) => {
+          const list = await querySingleGameSource(g, clauses, rawQuery, false);
+          return { gameId: g, list: Array.isArray(list) ? list : [] };
+        })
       );
 
-      const buckets = settled
-        .filter(r => r.status === 'fulfilled' && Array.isArray(r.value) && r.value.length > 0)
-        .map(r => r.value);
+      const gameCounts = [];
+      const buckets = [];
+      for (const r of settled) {
+        if (r.status === 'fulfilled' && r.value.list.length > 0) {
+          gameCounts.push({ gameId: r.value.gameId, count: r.value.list.length });
+          buckets.push(r.value.list);
+        }
+      }
 
       const merged = [];
       const seenIds = new Set();
@@ -2892,21 +3493,43 @@
       }
 
       state.searchResults = merged;
+      state.searchVisibleCount = 30;
+
       if (merged.length === 0) {
         statusMsg.textContent = 'No cards matched your search syntax across the active databases.';
         return;
       }
 
       statusMsg.classList.add('hidden');
-      renderSearchResults(merged);
+      countsBar.classList.remove('hidden');
+      countsBar.innerHTML = `<span class="text-starlight-300 font-bold">${merged.length} Total:</span>` +
+        gameCounts.map(gc => {
+          const theme = getBadgeStyleForGame(gc.gameId);
+          return `<span class="px-1.5 py-0.2 rounded border ${theme.pillBg}">${escapeXml(gc.gameId)}: ${gc.count}</span>`;
+        }).join('');
+
+      renderSearchResults();
     }
 
-    function renderSearchResults(cards) {
+    function renderSearchResults() {
       const grid = document.getElementById('searchResultsGrid');
-      grid.innerHTML = cards.map((card, index) => {
+      const loadMoreWrap = document.getElementById('searchLoadMoreWrap');
+      const loadMoreBtn = document.getElementById('searchLoadMoreBtn');
+      const visibleCards = state.searchResults.slice(0, state.searchVisibleCount);
+
+      if (state.searchResults.length > state.searchVisibleCount) {
+        const remaining = state.searchResults.length - state.searchVisibleCount;
+        loadMoreWrap.classList.remove('hidden');
+        loadMoreBtn.textContent = `Load More Results (+${Math.min(30, remaining)} of ${remaining} remaining)`;
+      } else {
+        loadMoreWrap.classList.add('hidden');
+      }
+
+      grid.innerHTML = visibleCards.map((card, index) => {
         const theme = getBadgeStyleForGame(card.sourceGame);
         const versions = card.versions || [{ label: '1st: Original Printing' }];
         const activeIdx = getPreferredVersionIdx(card);
+        const bookmarked = isCardBookmarked(card);
 
         return `
           <div class="group relative bg-abyss-950 border border-abyss-700 hover:border-starlight-300/70 rounded-xl overflow-hidden flex flex-col shadow-md transition">
@@ -2915,6 +3538,9 @@
               <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border shadow ${theme.badgeBg}">
                 ${escapeXml(card.sourceGame)}
               </span>
+              <button type="button" data-bookmark-search-idx="${index}" title="${bookmarked ? 'Remove Bookmark' : 'Bookmark Card (Without Adding to Deck)'}" class="absolute top-1.5 right-1.5 z-10 w-7 h-7 rounded-lg bg-abyss-950/90 hover:bg-abyss-800 border ${bookmarked ? 'border-starlight-300 text-starlight-300' : 'border-abyss-600 text-slate-300'} font-bold text-sm flex items-center justify-center shadow transition cursor-pointer">
+                ${bookmarked ? '★' : '☆'}
+              </button>
               <div class="absolute inset-0 bg-abyss-950/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-2">
                 <button type="button" data-add-search-idx="${index}" class="w-full py-2 px-3 rounded-lg bg-starlight-300 hover:bg-starlight-200 text-abyss-950 font-bold text-xs shadow-lg transition cursor-pointer">
                   + Add to Deck
@@ -2941,12 +3567,24 @@
         `;
       }).join('');
 
+      grid.querySelectorAll('[data-bookmark-search-idx]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const card = state.searchResults[Number(btn.dataset.bookmarkSearchIdx)];
+          if (card) {
+            const added = toggleCardBookmark(card);
+            renderSearchResults();
+            showToast(added ? `Bookmarked ${card.name}` : `Removed bookmark for ${card.name}`, 'gold');
+          }
+        });
+      });
+
       grid.querySelectorAll('[data-search-version-idx]').forEach(sel => {
         sel.addEventListener('change', (e) => {
           e.stopPropagation();
           const idx = Number(sel.dataset.searchVersionIdx);
           setPreferredVersionForCard(state.searchResults[idx], Number(sel.value));
-          renderSearchResults(state.searchResults);
+          renderSearchResults();
           syncAllViews();
           showToast('Saved preferred printing version', 'gold');
         });
@@ -3004,7 +3642,7 @@
       const spinner = document.getElementById('collageLiveSpinner');
       const statsText = document.getElementById('homeCollageStatsText');
       if (spinner) spinner.classList.remove('hidden');
-      if (statsText) statsText.textContent = 'Drawing 2 random cards from each of the 19 supported games...';
+      if (statsText) statsText.textContent = 'Drawing 2 random cards from each of the 14 active supported games...';
 
       const randLetter = ['a', 'e', 'i', 'o', 'u', 's', 'r', 'd'][Math.floor(Math.random() * 8)];
       const randPkmPage = Math.floor(Math.random() * 600) + 1;
@@ -3018,12 +3656,13 @@
         getCleanHearthstonePool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
         getCompleteSwuPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
         fetch(`https://api.lorcast.com/v0/cards/search?q=${randLetter}`).then(r => r.ok ? r.json() : null).then(d => pickRandomItems((d?.results || []).filter(c => c.image_uris), 2).map(normalizeLorcanaCard)).catch(() => []),
-        fetch(`https://digimoncard.io/api-public/search.php?n=${randLetter}`).then(r => r.ok ? r.json() : null).then(a => pickRandomItems(Array.isArray(a) ? a : [], 2).map(normalizeDigimonCard)).catch(() => []),
         fetchCachedJson('anr', 'https://netrunnerdb.com/api/2.0/public/cards').then(a => pickRandomItems(a.filter(c => c.code), 2).map(normalizeNetrunnerCard)).catch(() => []),
         fetchCachedJson('arkham', 'https://arkhamdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeArkhamCard)).catch(() => []),
         fetchCachedJson('lotr', 'https://ringsdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeLotrCard)).catch(() => []),
         fetchCachedJson('mc', 'https://marvelcdb.com/api/public/cards/').then(a => pickRandomItems(a.filter(c => c.imagesrc), 2).map(normalizeMarvelCard)).catch(() => []),
-        ...['GWENT', 'CHAOTIC', 'KRYPTIK', 'FAB', 'LOR_R', 'SV', 'ETN', 'KF'].map(gid =>
+        getCompleteFabPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
+        getCompleteGwentPool().then(pool => pickRandomItems(pool, 2)).catch(() => []),
+        ...['CHAOTIC', 'KRYPTIK'].map(gid =>
           Promise.resolve(pickRandomItems(EXTENDED_GAME_CARD_DATABASES[gid], 2).map(e => normalizeBuiltInDatabaseEntry(gid, e)))
         )
       ];
@@ -3110,6 +3749,7 @@
         localStorage.setItem(STORAGE_FORMATS_KEY, JSON.stringify({ activeFormatId: state.activeFormatId, formats: state.formats }));
         localStorage.setItem(STORAGE_CUSTOM_CARDS_KEY, JSON.stringify(state.customCardPool));
         localStorage.setItem(STORAGE_PREFERRED_VERSIONS_KEY, JSON.stringify(state.preferredVersions));
+        localStorage.setItem(STORAGE_BOOKMARKS_KEY, JSON.stringify(state.bookmarkedCards));
       } catch (e) { console.warn(e); }
     }
 
@@ -3122,6 +3762,9 @@
       try {
         const rawPref = localStorage.getItem(STORAGE_PREFERRED_VERSIONS_KEY);
         if (rawPref) state.preferredVersions = JSON.parse(rawPref) || {};
+
+        const rawBookmarks = localStorage.getItem(STORAGE_BOOKMARKS_KEY);
+        if (rawBookmarks) state.bookmarkedCards = JSON.parse(rawBookmarks) || [];
 
         const rawCustom = localStorage.getItem(STORAGE_CUSTOM_CARDS_KEY);
         if (rawCustom) state.customCardPool = JSON.parse(rawCustom) || [];
@@ -3668,305 +4311,72 @@
       renderDeckWorkspace();
       renderDeckVault();
       renderFormatsStudio();
+      renderBookmarksView();
     }
 
-    function renderDeckSelector() {
-      const selector = document.getElementById('deckSelector');
-      selector.innerHTML = state.decks.map(deck => {
-        const count = deck.cards.reduce((sum, c) => sum + c.quantity, 0);
-        const selected = deck.id === state.activeDeckId ? 'selected' : '';
-        return `<option value="${escapeXml(deck.id)}" ${selected}>${escapeXml(deck.name)} (${count})</option>`;
-      }).join('');
+    function renderBookmarksView() {
+      const badge = document.getElementById('sidebarBookmarkCountBadge');
+      const emptyMsg = document.getElementById('bookmarksEmptyMsg');
+      const grid = document.getElementById('bookmarksGrid');
+      if (!badge || !emptyMsg || !grid) return;
 
-      document.getElementById('navDeckCountPill').textContent = String(state.decks.length);
-      document.getElementById('vaultCapacityBadge').textContent = `${state.decks.length} Deckslots`;
-    }
-
-    function renderFormatSelectorAndAudit() {
-      const activeFmt = getActiveFormat();
-      const selector = document.getElementById('activeFormatSelector');
-      selector.innerHTML = state.formats.map(f =>
-        `<option value="${escapeXml(f.id)}" ${f.id === activeFmt.id ? 'selected' : ''}>${escapeXml(f.name)}</option>`
-      ).join('');
-
-      document.getElementById('navActiveFormatBadge').textContent = activeFmt.name;
-
-      const deck = getActiveDeck();
-      const audit = evaluateDeckAgainstFormat(deck, activeFmt);
-
-      const ptsLabel = document.getElementById('formatPointsUsedLabel');
-      ptsLabel.textContent = audit.unlimitedPoints ? `${audit.totalPoints} / ∞` : `${audit.totalPoints} / ${audit.pointCap}`;
-      const overBudget = !audit.unlimitedPoints && audit.totalPoints > audit.pointCap;
-      ptsLabel.className = overBudget ? 'font-bold text-rose-400' : 'font-bold text-emerald-300';
-
-      const statusDot = document.getElementById('formatStatusDot');
-      const statusText = document.getElementById('formatStatusSummaryText');
-      if (audit.isLegal) {
-        statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
-        statusText.textContent = 'Legal';
-        statusText.className = 'text-emerald-300';
-      } else {
-        statusDot.className = 'w-2 h-2 rounded-full bg-rose-400 animate-pulse';
-        statusText.textContent = `${audit.violations.length} Issue(s)`;
-        statusText.className = 'text-rose-300';
-      }
-
-      const auditList = document.getElementById('formatAuditList');
-      if (audit.isLegal && audit.breakdown.length === 0) {
-        auditList.innerHTML = `<div class="text-emerald-300">✓ Deck passes all rules of <strong>${escapeXml(activeFmt.name)}</strong> (${escapeXml(activeFmt.startingLifeFormula || '')}).</div>`;
-      } else {
-        const vioHtml = audit.violations.map(v => `<div class="text-rose-300">⚠ ${escapeXml(v)}</div>`).join('');
-        const ptsHtml = audit.breakdown.map(p => `<div class="text-starlight-200 font-mono text-[11px]">• ${escapeXml(p)}</div>`).join('');
-        auditList.innerHTML = vioHtml + ptsHtml;
-      }
-    }
-
-    function getSortedDeckCards(cards) {
-      const activeFmt = getActiveFormat();
-      const copy = [...cards];
-      copy.sort((a, b) => {
-        if (state.deckSortBy === 'alpha_asc') return a.name.localeCompare(b.name);
-        if (state.deckSortBy === 'alpha_desc') return b.name.localeCompare(a.name);
-        if (state.deckSortBy === 'tag') {
-          const tagA = (a.tags && a.tags[0]) ? a.tags[0].toLowerCase() : 'zzzz_untagged';
-          const tagB = (b.tags && b.tags[0]) ? b.tags[0].toLowerCase() : 'zzzz_untagged';
-          return tagA.localeCompare(tagB) || a.name.localeCompare(b.name);
-        }
-        if (state.deckSortBy === 'game') return a.sourceGame.localeCompare(b.sourceGame) || a.name.localeCompare(b.name);
-        if (state.deckSortBy === 'cost_asc') return (a.numericCost - b.numericCost) || a.name.localeCompare(b.name);
-        if (state.deckSortBy === 'points_desc') {
-          return computeSingleCardEntryPoints(b, activeFmt) - computeSingleCardEntryPoints(a, activeFmt) || a.name.localeCompare(b.name);
-        }
-        return a.name.localeCompare(b.name);
-      });
-      return copy;
-    }
-
-    function getGridColumnsClass() {
-      if (state.cardSize === 1) return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8 gap-3';
-      if (state.cardSize === 3) return 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5';
-      if (state.cardSize === 4) return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6';
-      return 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4';
-    }
-
-    function buildSpoilerCardTile(card) {
-      const theme = getBadgeStyleForGame(card.sourceGame);
-      const badgeVisibility = state.showOverlayBadges ? '' : 'opacity-0 group-hover:opacity-100';
-      const activeFmt = getActiveFormat();
-      const cardPts = computeSingleCardEntryPoints(card, activeFmt);
-      const tags = Array.isArray(card.tags) ? card.tags : [];
-      const isReadOnly = Boolean(state.sharedViewData);
-
-      return `
-        <div class="group relative rounded-2xl overflow-hidden bg-abyss-900 border border-abyss-700 hover:border-starlight-300 card-foil-shadow select-none flex flex-col">
-          <div class="relative tcg-aspect w-full bg-abyss-950 cursor-pointer overflow-hidden" data-inspect-deck-id="${escapeXml(card.id)}">
-            ${renderCardVisualHtml(card)}
-
-            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider border shadow-md backdrop-blur-sm transition-opacity ${badgeVisibility} ${theme.badgeBg}">
-              ${escapeXml(card.sourceGame)}
-            </span>
-
-            <div class="absolute top-2 right-2 flex items-center gap-1 transition-opacity ${badgeVisibility}">
-              ${cardPts > 0 ? `<span class="px-1.5 py-0.5 rounded-full bg-purple-950/95 border border-purple-400/60 text-purple-200 font-mono text-[10px] font-bold shadow">${cardPts}p</span>` : ''}
-              <span class="px-2 py-0.5 rounded-full bg-abyss-950/95 border border-starlight-300/60 text-starlight-300 font-mono text-xs font-extrabold shadow-lg">
-                x${card.quantity}
-              </span>
-            </div>
-
-            ${tags.length > 0 ? `
-              <div class="absolute bottom-9 inset-x-1.5 flex flex-wrap gap-1 pointer-events-none">
-                ${tags.map(t => `<span class="px-1.5 py-0.2 rounded bg-sky-950/90 border border-sky-400/60 text-sky-200 font-mono text-[9px] font-bold shadow">#${escapeXml(t)}</span>`).join('')}
-              </div>
-            ` : ''}
-
-            <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-abyss-950 via-abyss-950/95 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-between gap-1">
-              ${isReadOnly ? '<span class="text-[10px] text-starlight-200 font-mono">Read-Only</span>' : `
-                <div class="flex items-center gap-1">
-                  <button type="button" data-dec-id="${escapeXml(card.id)}" class="w-7 h-7 rounded-lg bg-abyss-800 hover:bg-rose-600 text-white font-bold text-sm flex items-center justify-center border border-abyss-600 transition cursor-pointer">-</button>
-                  <button type="button" data-inc-id="${escapeXml(card.id)}" class="w-7 h-7 rounded-lg bg-abyss-800 hover:bg-emerald-600 text-white font-bold text-sm flex items-center justify-center border border-abyss-600 transition cursor-pointer">+</button>
-                </div>
-              `}
-              <button type="button" data-inspect-deck-id="${escapeXml(card.id)}" class="px-2.5 py-1 rounded-lg bg-starlight-300 hover:bg-starlight-200 text-abyss-950 font-bold text-[11px] shadow transition cursor-pointer">
-                Inspect
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderDeckWorkspace() {
-      const deck = getActiveDeck();
-      if (!deck) return;
-
-      document.getElementById('activeDeckTitle').textContent = deck.name;
-      const totalCards = deck.cards.reduce((sum, c) => sum + c.quantity, 0);
-      document.getElementById('totalCardCountBadge').textContent = `${totalCards} ${totalCards === 1 ? 'Card' : 'Cards'}`;
-
-      const gameCounts = {};
-      deck.cards.forEach(c => {
-        const g = (c.sourceGame || 'CUSTOM').toUpperCase();
-        gameCounts[g] = (gameCounts[g] || 0) + c.quantity;
-      });
-      document.getElementById('gameBreakdownPills').innerHTML = Object.entries(gameCounts)
-        .sort((a, b) => b[1] - a[1])
-        .map(([game, count]) => {
-          const theme = getBadgeStyleForGame(game);
-          return `<span class="px-2 py-0.5 rounded-md border font-mono text-[11px] font-semibold ${theme.pillBg}">${count} ${escapeXml(game)}</span>`;
-        }).join('');
-
-      const allTagsSet = new Set();
-      deck.cards.forEach(c => (c.tags || []).forEach(t => allTagsSet.add(t)));
-      const tagStrip = document.getElementById('deckTagFilterStrip');
-      if (allTagsSet.size > 0) {
-        tagStrip.classList.remove('hidden');
-        tagStrip.innerHTML = `
-          <span class="text-sky-300 font-bold mr-1">Filter by Tag:</span>
-          <button type="button" data-filter-tag="" class="px-2 py-0.5 rounded-md font-mono cursor-pointer ${state.activeTagFilter === '' ? 'bg-sky-400 text-abyss-950 font-bold' : 'bg-abyss-950 text-slate-300 border border-abyss-700'}">All</button>
-          ${Array.from(allTagsSet).sort().map(t => `
-            <button type="button" data-filter-tag="${escapeXml(t)}" class="px-2 py-0.5 rounded-md font-mono cursor-pointer ${state.activeTagFilter === t ? 'bg-sky-400 text-abyss-950 font-bold' : 'bg-abyss-950 text-sky-200 border border-sky-500/40'}">#${escapeXml(t)}</button>
-          `).join('')}
-        `;
-        tagStrip.querySelectorAll('[data-filter-tag]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            state.activeTagFilter = btn.dataset.filterTag;
-            renderDeckWorkspace();
-          });
-        });
-      } else {
-        tagStrip.classList.add('hidden');
-      }
-
-      const canvas = document.getElementById('deckCanvas');
-      if (deck.cards.length === 0) {
-        canvas.innerHTML = `
-          <div class="h-full min-h-[380px] flex flex-col items-center justify-center text-center max-w-md mx-auto px-4">
-            <h3 class="font-display text-lg font-bold text-starlight-50 mb-1.5">${escapeXml(deck.name)} is Empty</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Search across all 19 supported games using unified Scryfall/SWUDB syntax on the left, or import a validated decklist via <span class="text-starlight-300 font-semibold">Bulk Import</span>.
-            </p>
-          </div>
-        `;
+      badge.textContent = String(state.bookmarkedCards.length);
+      if (state.bookmarkedCards.length === 0) {
+        emptyMsg.classList.remove('hidden');
+        grid.innerHTML = '';
         return;
       }
 
-      const filteredCards = state.activeTagFilter
-        ? deck.cards.filter(c => Array.isArray(c.tags) && c.tags.includes(state.activeTagFilter))
-        : deck.cards;
-
-      const sortedCards = getSortedDeckCards(filteredCards);
-
-      if (state.viewMode === 'grid') {
-        canvas.innerHTML = `<div class="grid ${getGridColumnsClass()}">${sortedCards.map(buildSpoilerCardTile).join('')}</div>`;
-      } else if (state.viewMode === 'stacks') {
-        const groups = new Map();
-        sortedCards.forEach(card => {
-          let keys = [card.sourceGame];
-          if (state.groupBy === 'tag') {
-            keys = (card.tags && card.tags.length > 0) ? card.tags : ['Untagged'];
-          } else if (state.groupBy === 'alpha') {
-            keys = [(card.name[0] || '#').toUpperCase()];
-          } else if (state.groupBy === 'category') {
-            keys = [card.category || 'Other'];
-          } else if (state.groupBy === 'cost') {
-            keys = [`Cost ${card.numericCost ?? 0}`];
-          }
-          keys.forEach(k => {
-            if (!groups.has(k)) groups.set(k, []);
-            groups.get(k).push(card);
-          });
-        });
-
-        const sortedGroupEntries = Array.from(groups.entries()).sort((a, b) => a[0].localeCompare(b[0]));
-        canvas.innerHTML = `
-          <div class="space-y-6">
-            ${sortedGroupEntries.map(([title, gCards]) => `
-              <section class="bg-abyss-900/65 border border-abyss-700 rounded-2xl p-4">
-                <div class="flex items-center gap-2.5 pb-3 mb-4 border-b border-abyss-700">
-                  <h3 class="font-display text-base font-bold text-starlight-100">${escapeXml(title)}</h3>
-                  <span class="px-2 py-0.5 rounded-full bg-abyss-800 text-starlight-300 font-mono text-xs font-semibold">${gCards.reduce((s, c) => s + c.quantity, 0)}</span>
-                </div>
-                <div class="grid ${getGridColumnsClass()}">${gCards.map(buildSpoilerCardTile).join('')}</div>
-              </section>
-            `).join('')}
+      emptyMsg.classList.add('hidden');
+      grid.innerHTML = state.bookmarkedCards.map((card, idx) => {
+        const theme = getBadgeStyleForGame(card.sourceGame);
+        return `
+          <div class="group relative bg-abyss-950 border border-starlight-300/40 hover:border-starlight-300 rounded-xl overflow-hidden flex flex-col shadow-md transition">
+            <div class="relative tcg-aspect w-full bg-abyss-900 overflow-hidden cursor-pointer" data-inspect-bookmark-idx="${idx}">
+              ${renderCardVisualHtml(card)}
+              <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border shadow ${theme.badgeBg}">
+                ${escapeXml(card.sourceGame)}
+              </span>
+              <button type="button" data-unbookmark-idx="${idx}" title="Remove Bookmark" class="absolute top-1.5 right-1.5 z-10 w-7 h-7 rounded-lg bg-abyss-950/90 hover:bg-rose-600 border border-starlight-300 text-starlight-300 hover:text-white font-bold text-sm flex items-center justify-center shadow transition cursor-pointer">
+                ★
+              </button>
+              <div class="absolute inset-x-0 bottom-0 p-1.5 bg-abyss-950/90 opacity-0 group-hover:opacity-100 transition flex items-center gap-1">
+                <button type="button" data-add-bookmark-idx="${idx}" class="flex-1 py-1 rounded bg-starlight-300 text-abyss-950 font-bold text-[11px] cursor-pointer">+ Add to Deck</button>
+              </div>
+            </div>
+            <div class="p-2 flex items-center justify-between gap-1 bg-abyss-900">
+              <span class="text-[11px] font-semibold text-starlight-50 truncate">${escapeXml(card.name)}</span>
+              <button type="button" data-add-bookmark-idx="${idx}" title="Add to Active Deck" class="shrink-0 w-6 h-6 rounded-md bg-abyss-800 hover:bg-starlight-300 hover:text-abyss-950 text-starlight-300 font-bold text-xs flex items-center justify-center cursor-pointer">+</button>
+            </div>
           </div>
         `;
-      } else {
-        canvas.innerHTML = `
-          <div class="bg-abyss-900/90 border border-abyss-700 rounded-2xl overflow-hidden shadow-xl">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="border-b border-abyss-700 bg-abyss-950/70 text-[11px] uppercase tracking-wider text-starlight-200">
-                  <th class="py-3 px-4">Qty</th>
-                  <th class="py-3 px-3">Game</th>
-                  <th class="py-3 px-3">Card Name &amp; Selected Version</th>
-                  <th class="py-3 px-3">Custom Deck Tags</th>
-                  <th class="py-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-abyss-800 text-xs">
-                ${sortedCards.map(card => {
-                  const theme = getBadgeStyleForGame(card.sourceGame);
-                  const ver = getActiveVersion(card);
-                  const tags = card.tags || [];
-                  return `
-                    <tr class="hover:bg-abyss-850/90 transition">
-                      <td class="py-2.5 px-4 font-mono font-bold text-starlight-300">${card.quantity}x</td>
-                      <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded font-mono text-[10px] font-bold border ${theme.badgeBg}">${escapeXml(card.sourceGame)}</span></td>
-                      <td class="py-2.5 px-3 cursor-pointer" data-inspect-deck-id="${escapeXml(card.id)}">
-                        <div class="font-semibold text-starlight-50 hover:text-starlight-300">${escapeXml(card.name)}</div>
-                        <div class="text-[10px] font-mono text-slate-400">${escapeXml(ver.label)}</div>
-                      </td>
-                      <td class="py-2.5 px-3">
-                        <div class="flex flex-wrap items-center gap-1">
-                          ${tags.map(t => `
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-sky-500/20 border border-sky-400/40 text-sky-200 font-mono text-[10px]">
-                              #${escapeXml(t)}
-                              <button type="button" data-del-tag-card="${escapeXml(card.id)}" data-del-tag-val="${escapeXml(t)}" class="hover:text-rose-300 cursor-pointer">×</button>
-                            </span>
-                          `).join('')}
-                          <button type="button" data-quick-tag-card="${escapeXml(card.id)}" class="px-2 py-0.5 rounded bg-abyss-800 hover:bg-sky-500 hover:text-abyss-950 text-sky-300 font-mono text-[10px] cursor-pointer">+ Tag</button>
-                        </div>
-                      </td>
-                      <td class="py-2.5 px-4 text-right">
-                        <div class="inline-flex items-center gap-1">
-                          <button type="button" data-dec-id="${escapeXml(card.id)}" class="w-6 h-6 rounded bg-abyss-800 hover:bg-rose-600 text-white font-bold cursor-pointer">-</button>
-                          <button type="button" data-inc-id="${escapeXml(card.id)}" class="w-6 h-6 rounded bg-abyss-800 hover:bg-emerald-600 text-white font-bold cursor-pointer">+</button>
-                        </div>
-                      </td>
-                    </tr>
-                  `;
-                }).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
+      }).join('');
 
-      canvas.querySelectorAll('[data-inc-id]').forEach(btn => {
-        btn.addEventListener('click', (e) => { e.stopPropagation(); updateCardQuantity(btn.dataset.incId, 1); });
-      });
-      canvas.querySelectorAll('[data-dec-id]').forEach(btn => {
-        btn.addEventListener('click', (e) => { e.stopPropagation(); updateCardQuantity(btn.dataset.decId, -1); });
-      });
-      canvas.querySelectorAll('[data-inspect-deck-id]').forEach(el => {
-        el.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const card = getActiveDeck()?.cards.find(c => c.id === el.dataset.inspectDeckId);
+      grid.querySelectorAll('[data-inspect-bookmark-idx]').forEach(el => {
+        el.addEventListener('click', () => {
+          const card = state.bookmarkedCards[Number(el.dataset.inspectBookmarkIdx)];
           if (card) openCardInspector(card);
         });
       });
-      canvas.querySelectorAll('[data-del-tag-card]').forEach(btn => {
+      grid.querySelectorAll('[data-unbookmark-idx]').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          removeTagFromDeckCard(btn.dataset.delTagCard, btn.dataset.delTagVal);
+          const card = state.bookmarkedCards[Number(btn.dataset.unbookmarkIdx)];
+          if (card) {
+            toggleCardBookmark(card);
+            if (state.searchResults.length > 0) renderSearchResults();
+            showToast(`Removed bookmark for ${card.name}`, 'info');
+          }
         });
       });
-      canvas.querySelectorAll('[data-quick-tag-card]').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
+      grid.querySelectorAll('[data-add-bookmark-idx]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const tag = await showCustomDialog({ title: 'Add Custom Tag to Card', defaultValue: '', confirmText: 'Add Tag' });
-          if (tag) addTagToDeckCard(btn.dataset.quickTagCard, tag);
+          const card = state.bookmarkedCards[Number(btn.dataset.addBookmarkIdx)];
+          if (card) {
+            addCardToDeck(card, 1);
+            showToast(`Added ${card.name} [${card.sourceGame}] to deck`, 'success');
+          }
         });
       });
     }
@@ -4318,6 +4728,14 @@
         const versions = card.versions || [ver];
         const activeIdx = getPreferredVersionIdx(card);
 
+        // Reset gallery status so MTG status messages never bleed onto SWU/YGO/PKM/etc.
+        const statusEl = document.getElementById('inspectorGalleryStatus');
+        if (statusEl) {
+          statusEl.textContent = versions.length > 1
+            ? `${versions.length} printings available (click to set default)`
+            : '1st / Original printing';
+        }
+
         const badge = document.getElementById('inspectorGameBadge');
         badge.textContent = card.sourceGame;
         badge.className = `px-2.5 py-0.5 rounded-md text-xs font-mono font-bold uppercase tracking-wider border ${theme.badgeBg}`;
@@ -4334,17 +4752,69 @@
           <div class="tcg-aspect w-full">${renderCardVisualHtml(card)}</div>
         `;
 
+        // Bookmark button state inside Card Inspector
+        const bmBtn = document.getElementById('inspectorBookmarkBtn');
+        const bmIcon = document.getElementById('inspectorBookmarkIcon');
+        const bmLabel = document.getElementById('inspectorBookmarkLabel');
+        const updateBmButton = () => {
+          const isBm = isCardBookmarked(card);
+          bmIcon.textContent = isBm ? '★' : '☆';
+          bmLabel.textContent = isBm ? 'Bookmarked (Click to Remove)' : 'Bookmark Card (Save Without Adding)';
+          bmBtn.className = isBm
+            ? 'w-full max-w-[290px] py-2 px-3 rounded-xl bg-starlight-300/20 hover:bg-starlight-300/30 border border-starlight-300 text-starlight-200 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer'
+            : 'w-full max-w-[290px] py-2 px-3 rounded-xl bg-abyss-950 hover:bg-abyss-800 border border-starlight-300/50 text-starlight-200 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer';
+        };
+        updateBmButton();
+        bmBtn.onclick = () => {
+          const added = toggleCardBookmark(card);
+          updateBmButton();
+          if (state.searchResults.length > 0) renderSearchResults();
+          showToast(added ? `Bookmarked ${card.name}` : `Removed bookmark for ${card.name}`, 'gold');
+        };
+
+        // Preferred Version FOR THIS SPECIFIC DECK
+        const activeDeckObj = getActiveDeck();
+        const deckVerBox = document.getElementById('inspectorDeckSpecificVersionBox');
+        const deckVerSelect = document.getElementById('inspectorDeckVersionSelect');
+        if (activeDeckObj && !state.sharedViewData) {
+          deckVerBox.classList.remove('hidden');
+          const key = getCardPreferenceKey(card);
+          const hasDeckOverride = activeDeckObj.deckPreferredVersions && activeDeckObj.deckPreferredVersions[key] !== undefined;
+          const deckOverrideIdx = hasDeckOverride ? Number(activeDeckObj.deckPreferredVersions[key]) : -1;
+
+          deckVerSelect.innerHTML = `<option value="-1" ${!hasDeckOverride ? 'selected' : ''}>Use Global Default (${escapeXml(versions[Math.min(versions.length - 1, Math.max(0, Number(state.preferredVersions[key]) || 0))]?.label || '1st Printing')})</option>` +
+            versions.map((v, idx) =>
+              `<option value="${idx}" ${idx === deckOverrideIdx ? 'selected' : ''}>This Deck Only: ${escapeXml(v.label)}</option>`
+            ).join('');
+
+          deckVerSelect.onchange = (e) => {
+            const chosen = Number(e.target.value);
+            if (chosen === -1) {
+              clearDeckSpecificPreferredVersion(card);
+              showToast(`Cleared deck-specific override for "${activeDeckObj.name}"`, 'info');
+            } else {
+              setDeckSpecificPreferredVersion(card, chosen);
+              showToast(`Set preferred printing specifically for "${activeDeckObj.name}"`, 'gold');
+            }
+            syncAllViews();
+            renderModalContents();
+          };
+        } else {
+          deckVerBox.classList.add('hidden');
+        }
+
         document.getElementById('inspectorVersionCountBadge').textContent = `${versions.length} Printing(s)`;
         const verSelect = document.getElementById('inspectorVersionSelect');
+        const globalIdx = Math.min(versions.length - 1, Math.max(0, Number(state.preferredVersions[getCardPreferenceKey(card)]) || 0));
         verSelect.innerHTML = versions.map((v, idx) =>
-          `<option value="${idx}" ${idx === activeIdx ? 'selected' : ''}>${escapeXml(v.label)}</option>`
+          `<option value="${idx}" ${idx === globalIdx ? 'selected' : ''}>${escapeXml(v.label)}</option>`
         ).join('');
 
         verSelect.onchange = (e) => {
           setPreferredVersionForCard(card, Number(e.target.value));
           syncAllViews();
           renderModalContents();
-          showToast('Saved preferred printing as default for this card', 'gold');
+          showToast('Saved global default printing for this card', 'gold');
         };
 
         const galleryEl = document.getElementById('inspectorPrintingsGallery');
@@ -4606,15 +5076,22 @@
     function setSidebarMode(mode) {
       state.sidebarMode = mode;
       document.getElementById('sidebarSearchSection').classList.toggle('hidden', mode !== 'search');
+      document.getElementById('sidebarBookmarksSection').classList.toggle('hidden', mode !== 'bookmarks');
       document.getElementById('sidebarCustomSection').classList.toggle('hidden', mode !== 'custom');
 
       document.getElementById('sidebarModeSearchBtn').className = mode === 'search'
         ? 'py-1.5 px-2 rounded-lg text-xs font-bold bg-starlight-300 text-abyss-950 shadow transition cursor-pointer'
         : 'py-1.5 px-2 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer';
 
+      document.getElementById('sidebarModeBookmarksBtn').className = mode === 'bookmarks'
+        ? 'py-1.5 px-2 rounded-lg text-xs font-bold bg-starlight-300 text-abyss-950 shadow transition cursor-pointer flex items-center justify-center gap-1'
+        : 'py-1.5 px-2 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer flex items-center justify-center gap-1';
+
       document.getElementById('sidebarModeCustomBtn').className = mode === 'custom'
         ? 'py-1.5 px-2 rounded-lg text-xs font-bold bg-starlight-300 text-abyss-950 shadow transition cursor-pointer'
         : 'py-1.5 px-2 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer';
+
+      if (mode === 'bookmarks') renderBookmarksView();
     }
 
     function renderGameFilterCheckboxes() {
@@ -4700,6 +5177,9 @@
       }
       if (code === 'auth/popup-closed-by-user') {
         return 'Google sign-in popup was closed before completing.';
+      }
+      if (code === 'auth/operation-not-allowed') {
+        return 'This sign-in provider is not enabled yet in Firebase Console → Authentication → Sign-in method.';
       }
       if (code === 'auth/unauthorized-domain') {
         return 'This domain is not yet authorized in Firebase Authentication → Settings → Authorized domains.';
@@ -4871,17 +5351,15 @@
           document.getElementById('shareLinkBox').classList.remove('hidden');
           const inp = document.getElementById('shareDeckUrlInput');
           inp.value = url;
-          inp.select();
-          document.execCommand('copy');
+          await copyTextSafely(url);
           syncAllViews();
           showToast('Published deck & copied share link!', 'success');
         }
       });
 
-      document.getElementById('copyShareDeckUrlBtn').addEventListener('click', () => {
+      document.getElementById('copyShareDeckUrlBtn').addEventListener('click', async () => {
         const inp = document.getElementById('shareDeckUrlInput');
-        inp.select();
-        document.execCommand('copy');
+        await copyTextSafely(inp.value);
         showToast('Shareable deck URL copied!', 'success');
       });
 
@@ -5025,11 +5503,17 @@
       });
 
       document.getElementById('sidebarModeSearchBtn').addEventListener('click', () => setSidebarMode('search'));
+      document.getElementById('sidebarModeBookmarksBtn').addEventListener('click', () => setSidebarMode('bookmarks'));
       document.getElementById('sidebarModeCustomBtn').addEventListener('click', () => setSidebarMode('custom'));
 
-      document.getElementById('selectAllGamesBtn').addEventListener('click', () => {
-        ALL_SUPPORTED_GAMES.forEach(s => state.selectedSearchGames.add(s.id));
-        renderGameFilterCheckboxes();
+      document.getElementById('clearAllBookmarksBtn').addEventListener('click', async () => {
+        if (state.bookmarkedCards.length === 0) return;
+        const ok = await showCustomDialog({ title: 'Clear All Bookmarks?', message: 'Remove all bookmarked cards from your saved bookmarks list?', showInput: false, confirmText: 'Clear Bookmarks' });
+        if (!ok) return;
+        state.bookmarkedCards = [];
+        saveAllStateToStorage();
+        renderBookmarksView();
+        if (state.searchResults.length > 0) renderSearchResults();
       });
       document.getElementById('clearGamesBtn').addEventListener('click', () => {
         state.selectedSearchGames.clear();
@@ -5086,6 +5570,11 @@
       document.getElementById('cardSearchForm').addEventListener('submit', (e) => {
         e.preventDefault();
         executeMultiverseSearch();
+      });
+
+      document.getElementById('searchLoadMoreBtn').addEventListener('click', () => {
+        state.searchVisibleCount += 30;
+        renderSearchResults();
       });
 
       document.querySelectorAll('.quick-chip').forEach(chip => {
@@ -5279,10 +5768,9 @@
       document.getElementById('closeExportModalBtn').addEventListener('click', closeExport);
       exportModal.addEventListener('click', (e) => { if (e.target === exportModal) closeExport(); });
 
-      document.getElementById('copyTextDecklistBtn').addEventListener('click', () => {
+      document.getElementById('copyTextDecklistBtn').addEventListener('click', async () => {
         const textarea = document.getElementById('exportTextArea');
-        textarea.select();
-        document.execCommand('copy');
+        await copyTextSafely(textarea.value);
         showToast('Copied decklist to clipboard!', 'success');
       });
 
