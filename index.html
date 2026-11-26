@@ -181,7 +181,7 @@
             <h1 class="font-display text-base sm:text-lg font-black tracking-wide text-starlight-50 leading-tight">
               ECLECTICA <span class="text-starlight-300 font-sans text-[11px] font-bold uppercase tracking-widest ml-1">ECG Cloud</span>
             </h1>
-            <p class="text-[11px] text-slate-400 hidden xl:block">19-Game Scryfall-Syntax Deckbuilder · Multi-Device Sync</p>
+            <p class="text-[11px] text-slate-400 hidden xl:block">13-Game Scryfall-Syntax Deckbuilder · Multi-Device Sync</p>
           </div>
         </button>
 
@@ -276,13 +276,13 @@
       <div class="w-full flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-4">
         <div id="homeLogosLeft" class="w-full lg:w-44 xl:w-52 flex flex-wrap lg:grid lg:grid-cols-2 items-center justify-center gap-2"></div>
 
-        <!-- CENTERED SQUARE COLLAGE (2 RANDOM CARDS FROM EACH OF THE 14 ACTIVE SUPPORTED GAMES) -->
+        <!-- CENTERED SQUARE COLLAGE (2 RANDOM CARDS FROM EACH OF THE 13 ACTIVE SUPPORTED GAMES) -->
         <div class="w-full max-w-[540px] sm:max-w-[620px] xl:max-w-[660px] aspect-square bg-abyss-900/95 border-2 border-starlight-300/60 rounded-3xl p-2.5 sm:p-3.5 shadow-2xl collage-frame-glow flex flex-col justify-between relative overflow-hidden">
           <div class="flex items-center gap-2 pb-2 px-1 border-b border-abyss-700 shrink-0">
             <div class="flex items-center gap-2">
               <span id="collageLiveSpinner" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
               <span class="font-display text-xs sm:text-sm font-bold tracking-wider text-starlight-200 uppercase">
-                14-Universe Live Random Collage
+                13-Universe Live Random Collage
               </span>
             </div>
             <div class="flex items-center gap-1.5">
@@ -298,7 +298,7 @@
           <div id="homeCollageGrid" class="flex-1 grid grid-cols-6 gap-1.5 py-2 overflow-hidden"></div>
 
           <div class="pt-1.5 px-1 border-t border-abyss-700 flex items-center justify-between text-[10px] text-slate-300 font-mono shrink-0">
-            <span id="homeCollageStatsText">Drawing 2 random cards from each of the 14 active supported games...</span>
+            <span id="homeCollageStatsText">Drawing 2 random cards from each of the 13 active supported games...</span>
             <span class="text-starlight-300">Click any card to inspect / +Add</span>
           </div>
         </div>
@@ -319,7 +319,7 @@
     <aside id="studioLeftSidebar" class="w-full lg:w-[440px] xl:w-[470px] shrink-0 bg-abyss-900/95 border-b lg:border-b-0 lg:border-r border-abyss-700 flex flex-col">
       <div class="p-3 border-b border-abyss-700 space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-starlight-200">14 Supported Databases + Custom</span>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-starlight-200">13 Supported Databases + Custom</span>
           <span class="text-[11px] font-mono text-emerald-300 flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 1st Printing Default
           </span>
@@ -365,9 +365,9 @@
           <!-- ALL 14+ ACTIVE GAME DATABASES TOGGLE MATRIX -->
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-starlight-200 font-semibold">
-              <span>Active Game Databases (<span id="selectedGameCountLabel">15</span> / 15)</span>
+              <span>Active Game Databases (<span id="selectedGameCountLabel">14</span> / 14)</span>
               <div class="flex items-center gap-2">
-                <button type="button" id="selectAllGamesBtn" class="text-starlight-300 hover:underline cursor-pointer">All 15</button>
+                <button type="button" id="selectAllGamesBtn" class="text-starlight-300 hover:underline cursor-pointer">All 14</button>
                 <span>·</span>
                 <button type="button" id="clearGamesBtn" class="text-slate-400 hover:text-starlight-100 cursor-pointer">None</button>
               </div>
@@ -384,7 +384,7 @@
             </div>
 
             <div class="bg-abyss-900 border border-abyss-700 rounded-lg p-2 text-[10px] font-mono text-starlight-100 space-y-1">
-              <div class="text-starlight-300 font-bold">Unified Operators (Works on ALL 19 Games):</div>
+              <div class="text-starlight-300 font-bold">Unified Operators (Works on ALL 13 Games + Custom):</div>
               <div><code>t:</code>type/trait · <code>o:</code>rules · <code>c:</code>color/aspect · <code>a:</code>aspect · <code>g:</code>game</div>
               <div><code>cost&lt;=N</code> / <code>cmc=N</code> · <code>pow&gt;=N</code> / <code>atk&gt;=N</code> · <code>hp&gt;=N</code> / <code>def&gt;=N</code></div>
               <div><code>s:</code>set · <code>r:</code>rarity · <code>is:legendary</code> / <code>is:unit</code> / <code>-</code>negate / <code>OR</code></div>
@@ -460,7 +460,7 @@
         <div id="searchResultsContainer" class="flex-1 overflow-y-auto p-3 max-h-[560px] lg:max-h-[calc(100vh-300px)] space-y-2.5">
           <div id="searchResultCountsBar" class="hidden flex flex-wrap items-center gap-1.5 pb-2 border-b border-abyss-800 text-[10px] font-mono"></div>
           <div id="searchStatusMsg" class="text-xs text-slate-300 text-center py-4 px-3 leading-relaxed">
-            Use Scryfall/SWUDB syntax across <strong class="text-starlight-300">all 14 active supported games</strong>—or search <code class="text-starlight-300">g:swu</code>, <code class="text-starlight-300">g:fab</code>, <code class="text-starlight-300">g:gwent</code>, <code class="text-starlight-300">g:chaotic</code>, <code class="text-starlight-300">g:kryptik</code>, or leave blank to browse full pools.<br/>
+            Use Scryfall/SWUDB syntax across <strong class="text-starlight-300">all 13 active supported games</strong>—or search <code class="text-starlight-300">g:swu</code>, <code class="text-starlight-300">g:kryptik</code>, <code class="text-starlight-300">g:gwent</code>, <code class="text-starlight-300">g:fab</code>, or leave blank to browse full pools.<br/>
             Click <strong class="text-starlight-300">★</strong> on any card to bookmark it without adding it to a deck!
           </div>
           <div id="searchResultsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2.5"></div>
@@ -1199,7 +1199,7 @@
         <textarea
           id="bulkImportTextarea"
           rows="7"
-          placeholder="1 [MTG] Lightning Bolt&#10;1 [YGO] Blue-Eyes White Dragon&#10;1 [SWU] Darth Vader&#10;1 [GWENT] Geralt: Igni&#10;1 [CHAOTIC] Maxxor&#10;1 [KRYPTIK] Umbra Dragon"
+          placeholder="1 [MTG] Lightning Bolt&#10;1 [YGO] Blue-Eyes White Dragon&#10;1 [SWU] Darth Vader, Commanding the First Legion&#10;1 [KRYPTIK] Umbra Dragon&#10;1 [GWENT] Geralt of Rivia"
           class="w-full bg-abyss-950 border border-abyss-600 focus:border-starlight-300 rounded-xl p-3.5 font-mono text-xs text-starlight-50 placeholder-slate-500 focus:outline-none leading-relaxed"
         ></textarea>
 
@@ -1620,6 +1620,7 @@
         lotr: null,
         mc: null,
         swu: null,
+        kryptik: null,
         fab: null,
         gwent: null,
         pkm: null
@@ -3129,89 +3130,10 @@
         return mapped;
       }
 
-      const fallback = EXTENDED_GAME_CARD_DATABASES.FAB.map(e => normalizeBuiltInDatabaseEntry('FAB', e));
-      state.apiCaches.fab = fallback;
-      return fallback;
+      return [];
     }
 
-    // Full GWENT Card Database via api.gwent.one CORS mirror fallback (with real artwork + stats/ability overlay)
-    async function getCompleteGwentPool() {
-      if (state.apiCaches.gwent && state.apiCaches.gwent.length > 50) return state.apiCaches.gwent;
-      const fromIdb = await idbGetDataset('norm_gwent_v6');
-      if (Array.isArray(fromIdb) && fromIdb.length > 50) {
-        state.apiCaches.gwent = fromIdb;
-        return fromIdb;
-      }
-
-      const gwentApiUrl = 'https://api.gwent.one/?key=data&response=json';
-      const rawObj = await fetchWithCorsMirrorFallback([
-        `https://corsproxy.io/?${encodeURIComponent(gwentApiUrl)}`,
-        `https://api.allorigins.win/get?url=${encodeURIComponent(gwentApiUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(gwentApiUrl)}`,
-        gwentApiUrl,
-        'https://raw.githubusercontent.com/GwentCommunityDevelopers/gwent-data/master/cards.json'
-      ]);
-
-      const rawList = Array.isArray(rawObj)
-        ? rawObj
-        : (rawObj?.response ? Object.values(rawObj.response) : []);
-
-      if (rawList.length > 0) {
-        const seen = new Set();
-        const mapped = [];
-        for (const raw of rawList) {
-          const idObj = raw.id || {};
-          const attr = raw.attributes || raw;
-          const name = attr.name || raw.name;
-          if (!name || seen.has(name.toLowerCase())) continue;
-          if (attr.type === 'Leader' || attr.type === 'Strategem') continue;
-          seen.add(name.toLowerCase());
-
-          const prov = Number(attr.provision ?? 0);
-          const pwr = attr.power !== undefined && attr.power !== null ? Number(attr.power) : null;
-          const artId = idObj.art || idObj.card || '';
-          const imageUrl = artId ? `https://gwent.one/image/gwent/assets/card/art/medium/${artId}.jpg` : '';
-
-          const card = {
-            id: `gwent_${idObj.card || name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
-            sourceGame: 'GWENT',
-            name,
-            category: inferEclecticaCategory(attr.type || 'Unit'),
-            colorText: `${attr.faction || 'Neutral'} ${attr.color || ''}`.trim(),
-            rarity: attr.rarity || 'Legendary',
-            numericCost: Math.max(0, prov),
-            atkNum: pwr,
-            defNum: pwr,
-            originalYear: 2017,
-            isDigitalOnly: true,
-            statsText: `${prov} Prov${pwr !== null ? ` · Power ${pwr}` : ''}`,
-            typeLine: `${attr.type || 'Unit'}${attr.category ? ' — ' + attr.category : ''}`,
-            rulesText: stripHtmlTags(attr.ability || attr.ability_html || '') || 'GWENT card.',
-            selectedVersionIdx: 0,
-            versions: [{
-              label: `1st: ${attr.set || 'Base Set'}`,
-              setInfo: `GWENT (${attr.set || 'Base Set'})`,
-              year: 2017,
-              imageUrl
-            }]
-          };
-          card.selectedVersionIdx = getPreferredVersionIdx(card);
-          mapped.push(card);
-        }
-
-        if (mapped.length > 0) {
-          state.apiCaches.gwent = mapped;
-          idbSetDataset('norm_gwent_v6', mapped);
-          return mapped;
-        }
-      }
-
-      const fallback = EXTENDED_GAME_CARD_DATABASES.GWENT.map(e => normalizeBuiltInDatabaseEntry('GWENT', e));
-      state.apiCaches.gwent = fallback;
-      return fallback;
-    }
-
-    async function querySingleGameSource(gameId, clauses, rawSearchString, exactFuzzy = false) {
+        async function querySingleGameSource(gameId, clauses, rawSearchString, exactFuzzy = false) {
       const explicitNameTok = clauses.find(c => c.op === 'NAME' && !c.negated)?.val || '';
       const strippedPlain = rawSearchString.replace(/-?[a-zA-Z]+(?:<=|>=|=|<|>|:)"[^"]+"/g, '').replace(/-?[a-zA-Z]+(?:<=|>=|=|<|>|:)[^\s]+/g, '').trim();
       const nameToken = explicitNameTok || strippedPlain || '';
@@ -3521,7 +3443,7 @@
       const spinner = document.getElementById('collageLiveSpinner');
       const statsText = document.getElementById('homeCollageStatsText');
       if (spinner) spinner.classList.remove('hidden');
-      if (statsText) statsText.textContent = 'Drawing 2 random cards from each of the 14 active supported games...';
+      if (statsText) statsText.textContent = 'Drawing 2 random cards from each of the 13 active supported games...';
 
       const randLetter = ['a', 'e', 'i', 'o', 'u', 's', 'r', 'd'][Math.floor(Math.random() * 8)];
       const randPkmPage = Math.floor(Math.random() * 600) + 1;
@@ -4357,7 +4279,7 @@
           <div class="h-full min-h-[380px] flex flex-col items-center justify-center text-center max-w-md mx-auto px-4">
             <h3 class="font-display text-lg font-bold text-starlight-50 mb-1.5">${escapeXml(deck.name)} is Empty</h3>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Search across all 14 active supported games using unified Scryfall/SWUDB syntax on the left, or import a validated decklist via <span class="text-starlight-300 font-semibold">Bulk Import</span>.
+              Search across all 13 active supported games using unified Scryfall/SWUDB syntax on the left, or import a validated decklist via <span class="text-starlight-300 font-semibold">Bulk Import</span>.
             </p>
           </div>
         `;
@@ -5937,9 +5859,8 @@
           '1 [MTG] Lightning Bolt',
           '1 [YGO] Blue-Eyes White Dragon',
           '1 [SWU] Darth Vader, Commanding the First Legion',
-          '1 [GWENT] Geralt: Igni',
-          '1 [CHAOTIC] Maxxor',
-          '1 [KRYPTIK] Umbra Dragon'
+          '1 [KRYPTIK] Umbra Dragon',
+          '1 [GWENT] Geralt of Rivia'
         ].join('\n');
       });
       document.getElementById('runBulkImportBtn').addEventListener('click', processBulkImportWithStrictValidation);
