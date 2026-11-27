@@ -2635,10 +2635,14 @@
     }
 
     function normalizeSwuRawCard(raw) {
-      const name = raw.Subtitle ? `${raw.Name}, ${raw.Subtitle}` : (raw.Name || raw.name || 'SWU Card');
-      const setCode = (raw.Set || raw.set || 'SOR').toUpperCase();
-      const num = String(raw.Number || raw.number || '001').padStart(3, '0');
-      let imageUrl = raw.FrontArt || raw.frontArt || raw.image_url || '';
+      const subtitle = raw.Subtitle || raw.subtitle;
+      const name = subtitle ? `${raw.Name || raw.name}, ${subtitle}` : (raw.Name || raw.name || 'SWU Card');
+      const setCode = (raw.Set || raw.set || raw.setCode || raw.set_code || 'SOR').toUpperCase();
+      const fallbackNumber = typeof raw.id === 'string' ? raw.id.split('_').pop() : undefined;
+      const cardNumber = raw.Number ?? raw.number ?? raw.cardNumber ?? raw.card_number ??
+        raw.collectorNumber ?? raw.collector_number ?? fallbackNumber ?? '001';
+      const num = String(cardNumber).split('_').pop().padStart(3, '0');
+      let imageUrl = raw.FrontArt || raw.frontArt || raw.frontImageUrl || raw.front_image_url || raw.image_url || '';
       if (imageUrl && imageUrl.startsWith('/')) {
         imageUrl = `https://cdn.swu-db.com${imageUrl}`;
       }
@@ -2647,16 +2651,20 @@
       }
 
       const cost = Number(raw.Cost ?? raw.cost ?? 0);
-      const pwr = raw.Power !== undefined ? Number(raw.Power) : null;
-      const hp = raw.HP !== undefined ? Number(raw.HP) : null;
-      const aspects = Array.isArray(raw.Aspects) ? raw.Aspects.join(' ') : (raw.Aspects || '');
-      const traits = Array.isArray(raw.Traits) ? raw.Traits.join(' · ') : '';
-      const rawType = raw.Type || 'Unit';
+      const pwr = raw.Power !== undefined ? Number(raw.Power) : (raw.power !== undefined ? Number(raw.power) : null);
+      const hp = raw.HP !== undefined ? Number(raw.HP) : (raw.hp !== undefined ? Number(raw.hp) : null);
+      const rawAspects = raw.Aspects || raw.aspects || '';
+      const rawTraits = raw.Traits || raw.traits || '';
+      const aspects = Array.isArray(rawAspects) ? rawAspects.join(' ') : rawAspects;
+      const traits = Array.isArray(rawTraits) ? rawTraits.join(' · ') : rawTraits;
+      const rawType = raw.Type || raw.type || 'Unit';
 
 
       const rulesParts = [];
-      if (raw.FrontText || raw.frontText) rulesParts.push(raw.FrontText || raw.frontText);
-      if (raw.BackText || raw.backText) rulesParts.push(`[Deployed / Back Side]\n${raw.BackText || raw.backText}`);
+      const frontText = raw.FrontText || raw.frontText || raw.front_text;
+      const backText = raw.BackText || raw.backText || raw.back_text;
+      if (frontText || raw.text) rulesParts.push(frontText || raw.text);
+      if (backText) rulesParts.push(`[Deployed / Back Side]\n${backText}`);
 
       const versions = [
         {
@@ -2667,8 +2675,9 @@
         }
       ];
 
-      if (raw.BackArt || raw.backArt) {
-        let backUrl = raw.BackArt || raw.backArt;
+      const backArt = raw.BackArt || raw.backArt || raw.backImageUrl || raw.back_image_url;
+      if (backArt) {
+        let backUrl = backArt;
         if (backUrl.startsWith('/')) backUrl = `https://cdn.swu-db.com${backUrl}`;
         versions.push({
           label: `2nd: ${setCode} #${num} (Back / Deployed)`,
@@ -2684,7 +2693,7 @@
         name,
         category: inferEclecticaCategory(rawType),
         colorText: aspects || 'Neutral',
-        rarity: raw.Rarity || 'Common',
+        rarity: raw.Rarity || raw.rarity || 'Common',
         numericCost: Math.max(0, cost),
         atkNum: pwr,
         defNum: hp,
@@ -3212,6 +3221,16 @@
     }
 
     async function fetchSwuCatalog() {
+      const corsEnabledCatalog = await fetchWithCorsMirrorFallback([
+        'https://api.swuapi.com/export/all'
+      ]);
+      const corsEnabledCards = extractSwuCards(corsEnabledCatalog).filter(card =>
+        (card.Set || card.set || card.setCode || card.set_code) &&
+        (card.Number || card.number || card.cardNumber || card.card_number || card.collectorNumber || card.collector_number || card.id) &&
+        (card.Name || card.name)
+      );
+      if (corsEnabledCards.length > 0) return corsEnabledCards;
+
       const directUrl = 'https://api.swu-db.com/cards/search?q=*';
       const urls = [
         directUrl,
@@ -3264,10 +3283,10 @@
       throw new Error(`SWU API returned no cards from its full-catalog endpoint (${emptyResponses.length} endpoints checked).`);
     }
 
-    // LIVE SWU Pool: Retrieves the current full card catalog from api.swu-db.com
+    // LIVE SWU Pool: Retrieves the full card catalog from a CORS-enabled API with SWU-DB fallbacks.
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const fromIdb = await idbGetDataset('norm_swu_live_v11');
+      const fromIdb = await idbGetDataset('norm_swu_live_v12');
       if (Array.isArray(fromIdb) && fromIdb.length > 0) {
         state.apiCaches.swu = fromIdb;
         return fromIdb;
@@ -3279,7 +3298,7 @@
       fetched.forEach(c => { if (!dedup.has(c.id)) dedup.set(c.id, c); });
       const finalSwu = Array.from(dedup.values());
       state.apiCaches.swu = finalSwu;
-      idbSetDataset('norm_swu_live_v11', finalSwu);
+      idbSetDataset('norm_swu_live_v12', finalSwu);
       return finalSwu;
     }
 
