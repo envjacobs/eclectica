@@ -2642,6 +2642,8 @@
       const cardNumber = raw.Number ?? raw.number ?? raw.cardNumber ?? raw.card_number ??
         raw.collectorNumber ?? raw.collector_number ?? fallbackNumber ?? '001';
       const num = String(cardNumber).split('_').pop().padStart(3, '0');
+      const variantType = raw.VariantType || raw.variantType || raw.variant_type || '';
+      const printingLabel = `${setCode} #${num}${variantType ? ` (${variantType})` : ''}`;
       let imageUrl = raw.FrontArt || raw.frontArt || raw.frontImageUrl || raw.front_image_url || raw.image_url || '';
       if (imageUrl && imageUrl.startsWith('/')) {
         imageUrl = `https://cdn.swu-db.com${imageUrl}`;
@@ -2668,8 +2670,8 @@
 
       const versions = [
         {
-          label: `1st: ${setCode} #${num}`,
-          setInfo: `Star Wars: Unlimited (${setCode} #${num})`,
+          label: `1st: ${printingLabel}`,
+          setInfo: `Star Wars: Unlimited (${printingLabel})`,
           year: 2024,
           imageUrl
         }
@@ -2680,8 +2682,8 @@
         let backUrl = backArt;
         if (backUrl.startsWith('/')) backUrl = `https://cdn.swu-db.com${backUrl}`;
         versions.push({
-          label: `2nd: ${setCode} #${num} (Back / Deployed)`,
-          setInfo: `Star Wars: Unlimited (${setCode} #${num} — Back)`,
+          label: `2nd: ${printingLabel} (Back / Deployed)`,
+          setInfo: `Star Wars: Unlimited (${printingLabel} — Back)`,
           year: 2024,
           imageUrl: backUrl
         });
@@ -2707,6 +2709,81 @@
       };
       card.selectedVersionIdx = getPreferredVersionIdx(card);
       return card;
+    }
+
+    function getSwuCardIdentity(card) {
+      const sortedAspects = String(card.colorText || '')
+        .split(/\s+/)
+        .filter(Boolean)
+        .sort()
+        .join(' ');
+      return JSON.stringify([
+        card.name,
+        card.category,
+        sortedAspects,
+        card.statsText,
+        card.typeLine,
+        card.rulesText
+      ].map(value => String(value || '').replace(/\s+/g, ' ').trim().toLowerCase()));
+    }
+
+    function hashSwuCardIdentity(identity) {
+      let hashOne = 2166136261;
+      let hashTwo = 0x9e3779b9;
+      for (let i = 0; i < identity.length; i++) {
+        const charCode = identity.charCodeAt(i);
+        hashOne = Math.imul(hashOne ^ charCode, 16777619);
+        hashTwo = Math.imul(hashTwo ^ charCode, 2246822519);
+      }
+      return `${(hashOne >>> 0).toString(36)}${(hashTwo >>> 0).toString(36)}`;
+    }
+
+    function mergeSwuCardPrintings(cards) {
+      const grouped = new Map();
+      cards.forEach(card => {
+        const identity = getSwuCardIdentity(card);
+        const existing = grouped.get(identity);
+        if (!existing) {
+          grouped.set(identity, card);
+          return;
+        }
+
+        if (card.id.localeCompare(existing.id) < 0) existing.id = card.id;
+        card.versions.forEach(version => {
+          const alreadyAdded = existing.versions.some(existingVersion =>
+            existingVersion.label === version.label &&
+            existingVersion.setInfo === version.setInfo &&
+            existingVersion.imageUrl === version.imageUrl
+          );
+          if (!alreadyAdded) existing.versions.push(version);
+        });
+      });
+
+      const groupedCards = Array.from(grouped.values());
+      const idCounts = new Map();
+      groupedCards.forEach(card => idCounts.set(card.id, (idCounts.get(card.id) || 0) + 1));
+      groupedCards.forEach(card => {
+        if (idCounts.get(card.id) > 1) {
+          card.id = `${card.id}_${hashSwuCardIdentity(getSwuCardIdentity(card))}`;
+        }
+        card.versions.forEach((version, index) => {
+          const label = version.label.replace(/^\d+(?:st|nd|rd|th):\s*/, '');
+          const position = index + 1;
+          const lastTwoDigits = position % 100;
+          const suffix = lastTwoDigits >= 11 && lastTwoDigits <= 13
+            ? 'th'
+            : position % 10 === 1
+              ? 'st'
+              : position % 10 === 2
+                ? 'nd'
+                : position % 10 === 3
+                  ? 'rd'
+                  : 'th';
+          version.label = `${position}${suffix}: ${label}`;
+        });
+        card.selectedVersionIdx = getPreferredVersionIdx(card);
+      });
+      return groupedCards;
     }
 
     function normalizeBuiltInDatabaseEntry(gameId, entry) {
@@ -3286,19 +3363,16 @@
     // LIVE SWU Pool: Retrieves the full card catalog from a CORS-enabled API with SWU-DB fallbacks.
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const fromIdb = await idbGetDataset('norm_swu_live_v12');
+      const fromIdb = await idbGetDataset('norm_swu_live_v15');
       if (Array.isArray(fromIdb) && fromIdb.length > 0) {
         state.apiCaches.swu = fromIdb;
         return fromIdb;
       }
 
       const fetched = (await fetchSwuCatalog()).map(normalizeSwuRawCard);
-
-      const dedup = new Map();
-      fetched.forEach(c => { if (!dedup.has(c.id)) dedup.set(c.id, c); });
-      const finalSwu = Array.from(dedup.values());
+      const finalSwu = mergeSwuCardPrintings(fetched);
       state.apiCaches.swu = finalSwu;
-      idbSetDataset('norm_swu_live_v12', finalSwu);
+      idbSetDataset('norm_swu_live_v15', finalSwu);
       return finalSwu;
     }
 
