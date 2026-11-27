@@ -3230,6 +3230,37 @@
         emptyResponses.push(url);
       }
 
+      const sets = await fetchWithCorsMirrorFallback(['https://api.swu-db.com/sets']);
+      if (Array.isArray(sets) && sets.length > 0) {
+        const cards = [];
+        const failedSets = [];
+        const batchSize = 6;
+
+        for (let i = 0; i < sets.length; i += batchSize) {
+          const batch = sets.slice(i, i + batchSize);
+          const settled = await Promise.allSettled(batch.map(async set => {
+            const setId = set.setId || set.Set || set.id;
+            if (!setId) throw new Error('SWU set entry has no set ID.');
+            const payload = await fetchWithCorsMirrorFallback([
+              `https://api.swu-db.com/cards/${encodeURIComponent(setId)}`
+            ]);
+            const setCards = extractSwuCards(payload).filter(card =>
+              (card.Set || card.set) && (card.Number || card.number) && (card.Name || card.name)
+            );
+            if (setCards.length === 0) throw new Error(`SWU set ${setId} returned no cards.`);
+            return setCards;
+          }));
+
+          settled.forEach((result, index) => {
+            if (result.status === 'fulfilled') cards.push(...result.value);
+            else failedSets.push(batch[index].setId || batch[index].Set || batch[index].id || 'unknown');
+          });
+        }
+
+        if (failedSets.length === 0 && cards.length > 0) return cards;
+        throw new Error(`SWU full-catalog endpoints returned no cards (${emptyResponses.length} checked), and the set-by-set fallback failed for ${failedSets.length} of ${sets.length} sets.`);
+      }
+
       throw new Error(`SWU API returned no cards from its full-catalog endpoint (${emptyResponses.length} endpoints checked).`);
     }
 
