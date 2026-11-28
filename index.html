@@ -103,15 +103,15 @@
 
     /* Landscape card scans are rotated to fit portrait card slots. */
     .horizontal-card-rotated {
-      position: absolute !important;
-      top: 50% !important;
-      left: 50% !important;
-      width: 140% !important;
-      height: 71.4285% !important;
-      max-width: none !important;
-      max-height: none !important;
-      transform: translate(-50%, -50%) rotate(90deg) !important;
-      object-fit: contain !important;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140%;
+      height: 71.4285%;
+      max-width: none;
+      max-height: none;
+      transform: translate(-50%, -50%) rotate(90deg);
+      object-fit: contain;
     }
   </style>
 </head>
@@ -186,7 +186,7 @@
           </button>
 
           <button data-page="formats" class="nav-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer flex items-center gap-1.5">
-            <span>Formats</span>
+            <span>Formats &amp; Rules</span>
             <span id="navActiveFormatBadge" class="px-1.5 py-0.2 rounded-full bg-purple-500/25 text-purple-200 font-mono text-[10px]">Ouroboros</span>
           </button>
 
@@ -214,7 +214,7 @@
         </button>
 
         <button id="openExportModalBtn" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-100 font-semibold text-xs transition cursor-pointer">
-          <span>Backup</span>
+          <span>Export / Restore</span>
         </button>
 
         <!-- FIREBASE ACCOUNT BAR (SIGNED OUT vs SIGNED IN) -->
@@ -229,12 +229,15 @@
 
         <div id="authSignedInBar" class="hidden flex items-center gap-2 bg-abyss-950 border border-emerald-500/40 rounded-xl px-2.5 py-1">
           <div class="flex flex-col text-left leading-tight">
-            <span id="authUserLabel" class="text-[11px] font-bold text-starlight-100 max-w-[145px] truncate">user@example.com</span>
+            <span id="authUserLabel" class="text-[11px] font-bold text-starlight-100 max-w-[145px] truncate">Player</span>
             <div class="flex items-center gap-1 text-[10px] font-mono">
               <span id="cloudSyncDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               <span id="cloudSyncStatusText" class="text-emerald-300">Synced to Cloud</span>
             </div>
           </div>
+          <button id="editUsernameBtn" type="button" title="Change your username" class="px-2 py-1.5 rounded-lg bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-100 font-semibold text-xs transition cursor-pointer">
+            Username
+          </button>
           <button id="signOutBtn" type="button" class="px-2.5 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 font-semibold text-xs transition cursor-pointer">
             Sign Out
           </button>
@@ -254,7 +257,7 @@
         <div id="homeLogosLeft" class="w-full lg:w-44 xl:w-52 flex flex-wrap lg:grid lg:grid-cols-2 items-center justify-center gap-2"></div>
 
         <!-- CYCLICAL FAN OF X - 1 RANDOM CARDS, WHERE X IS THE SUPPORTED-GAME COUNT -->
-        <div class="w-full max-w-[540px] sm:max-w-[620px] xl:max-w-[660px] aspect-[3/2] bg-abyss-900/95 border-2 border-starlight-300/60 rounded-3xl p-2.5 sm:p-3.5 shadow-2xl collage-frame-glow flex flex-col justify-between relative overflow-hidden">
+        <div class="w-full max-w-[540px] sm:max-w-[620px] xl:max-w-[660px] aspect-[3/2] bg-abyss-800/95 border-2 border-starlight-300/60 rounded-3xl p-2.5 sm:p-3.5 shadow-2xl collage-frame-glow flex flex-col justify-between relative overflow-hidden">
           <div class="flex items-center gap-2 pb-2 px-1 border-b border-abyss-700 shrink-0">
             <div class="flex items-center gap-2">
               <span id="collageLiveSpinner" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
@@ -574,6 +577,9 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
               <span>Share Deck</span>
             </button>
+            <button id="openCompareListsBtn" type="button" class="px-3 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/50 text-sky-200 font-bold text-xs transition cursor-pointer">
+              Compare Lists
+            </button>
 
             <!-- Sample Opening Hand Button directly on Deck Page -->
             <button id="toggleSampleHandBtn" type="button" class="px-3 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/50 text-sky-200 font-bold text-xs transition cursor-pointer flex items-center gap-1.5">
@@ -594,6 +600,10 @@
             <div class="flex items-center gap-2 bg-abyss-950 border border-abyss-700 rounded-xl px-3 py-1.5 font-mono text-xs">
               <span class="text-slate-300">Points:</span>
               <span id="formatPointsUsedLabel" class="font-bold text-emerald-300">0 / 100</span>
+            </div>
+            <div class="flex items-center gap-2 bg-abyss-950 border border-sky-700 rounded-xl px-3 py-1.5 font-mono text-xs">
+              <span class="text-slate-300">Deck:</span>
+              <span id="deckMorphologyLabel" title="Morphology counts Main Deck, Sideboard, Extra Deck, and Command Zone; Maybeboard is excluded." class="font-bold text-sky-200">0%</span>
             </div>
 
             <button id="toggleFormatAuditBtn" type="button" class="px-2.5 py-1.5 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-xs font-semibold text-starlight-100 transition cursor-pointer flex items-center gap-1.5">
@@ -632,7 +642,7 @@
         <!-- Collapsible Format Audit Drawer -->
         <div id="formatAuditDrawer" class="hidden bg-abyss-950/95 border border-abyss-700 rounded-xl p-3 text-xs space-y-2">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-abyss-800 pb-1.5">
-            <span class="font-bold text-starlight-300 uppercase tracking-wider text-[10px]">Format-Principle &amp; Points-Principle Audit</span>
+            <span class="font-bold text-starlight-300 uppercase tracking-wider text-[10px]">Format &amp; Points Budget Audit</span>
             <button id="jumpToFormatsEditorBtn" type="button" class="text-[11px] text-purple-300 hover:underline font-semibold cursor-pointer">
               Configure Format &amp; Points Specs →
             </button>
@@ -652,6 +662,9 @@
               </button>
               <button data-view="list" class="view-mode-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer">
                 Checklist &amp; Tags
+              </button>
+              <button data-view="featured" class="view-mode-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer">
+                Featured Cards
               </button>
             </div>
 
@@ -852,19 +865,19 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- PAGE 4: FORMATS & POINTS-PRINCIPLE STUDIO (OUROBOROS + SPECS)         -->
+  <!-- PAGE 4: FORMATS & RULES STUDIO                                         -->
   <!-- ===================================================================== -->
   <div id="pageFormats" class="hidden max-w-[1600px] mx-auto p-4 sm:p-8 space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-4 bg-abyss-900 border border-purple-500/40 rounded-2xl p-5">
       <div>
         <div class="flex items-center gap-2.5 flex-wrap">
-          <h2 class="font-display text-xl sm:text-2xl font-bold text-starlight-50">ECG Formats &amp; Points-Principle Studio</h2>
+          <h2 class="font-display text-xl sm:text-2xl font-bold text-starlight-50">Formats &amp; Rules</h2>
           <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-200 font-mono text-xs font-bold">
             Ouroboros + Adjustable Points Specs
           </span>
         </div>
         <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-4xl leading-relaxed">
-          Configure granular Points-Principle &amp; Format-Principle rules directly on <strong class="text-starlight-300">Ouroboros</strong> (permanent core format) or create custom formats.
+          Deck morphology must total 100%: Main Deck, Sideboard, Extra Deck, and Command Zone count; Maybeboard does not. Review format rules and point budgets. Administrators can edit <strong class="text-starlight-300">Ouroboros</strong>; users can create and edit custom formats.
         </p>
       </div>
 
@@ -1036,6 +1049,24 @@
     </div>
   </div>
 
+  <div id="compareListsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+    <div class="bg-abyss-900 border border-sky-400/50 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-abyss-700 bg-abyss-950/80">
+        <h3 class="font-display text-lg font-bold text-starlight-50">Compare Deck Lists</h3>
+        <button id="closeCompareListsBtn" type="button" class="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-abyss-800 transition cursor-pointer" aria-label="Close list comparison">✕</button>
+      </div>
+      <div class="p-5 space-y-3 overflow-y-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-2 items-end">
+          <label class="block text-xs text-starlight-200">First list<select id="compareListA" class="mt-1 w-full rounded-lg px-2 py-2 text-xs border border-abyss-600"></select></label>
+          <span class="text-center text-slate-400 text-xs pb-2">vs.</span>
+          <label class="block text-xs text-starlight-200">Second list<select id="compareListB" class="mt-1 w-full rounded-lg px-2 py-2 text-xs border border-abyss-600"></select></label>
+        </div>
+        <button id="runCompareListsBtn" type="button" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-abyss-950 text-xs font-bold cursor-pointer">Compare</button>
+        <div id="compareListsResults" class="overflow-x-auto"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===================================================================== -->
   <!-- MODAL 1: CARD INSPECTOR + PERSISTENT VERSION SELECTOR + DECK TAGS     -->
   <!-- ===================================================================== -->
@@ -1054,6 +1085,15 @@
       <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start max-h-[86vh] overflow-y-auto">
         <div class="md:col-span-5 flex flex-col items-center gap-3">
           <div id="inspectorImageContainer" class="w-full max-w-[290px] rounded-2xl overflow-hidden shadow-2xl border border-abyss-600 bg-abyss-950"></div>
+          <div id="inspectorFaceControls" class="hidden w-full max-w-[290px] grid grid-cols-2 gap-1.5">
+            <button type="button" data-inspector-face="0" class="py-1.5 rounded-lg bg-starlight-300 text-abyss-950 text-xs font-bold cursor-pointer">Front</button>
+            <button type="button" data-inspector-face="1" class="py-1.5 rounded-lg bg-abyss-800 text-starlight-100 text-xs font-bold cursor-pointer">Back</button>
+          </div>
+          <div id="inspectorCustomImageControls" class="hidden w-full max-w-[290px] bg-abyss-950 border border-abyss-600 rounded-xl p-2.5 space-y-2">
+            <label for="inspectorCustomImageInput" class="block text-[10px] uppercase tracking-wider text-starlight-300 font-bold">Add a custom printing image</label>
+            <input id="inspectorCustomImageInput" type="file" accept="image/*" class="block w-full text-[10px] text-slate-300 file:mr-2 file:rounded-md file:border-0 file:bg-abyss-700 file:px-2 file:py-1 file:text-[10px] file:font-semibold file:text-starlight-100" />
+            <button id="inspectorUploadCustomImageBtn" type="button" class="w-full py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold cursor-pointer">Upload as Version</button>
+          </div>
 
           <!-- Bookmark Card Action Button -->
           <button id="inspectorBookmarkBtn" type="button" class="w-full max-w-[290px] py-2 px-3 rounded-xl bg-abyss-950 hover:bg-abyss-800 border border-starlight-300/50 text-starlight-200 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer">
@@ -1065,6 +1105,10 @@
           <div id="inspectorDeckSpecificVersionBox" class="w-full max-w-[290px] bg-indigo-950/50 border border-indigo-400/50 rounded-xl p-2.5 space-y-1">
             <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-indigo-200 font-bold">
               <span>Preferred Version FOR THIS SPECIFIC DECK</span>
+            </div>
+            <div id="inspectorMoveCardBox" class="w-full max-w-[290px] bg-abyss-950 border border-emerald-600/50 rounded-xl p-2.5 space-y-1">
+              <div class="block text-[10px] uppercase tracking-wider text-emerald-200 font-bold">Add / remove this card by board</div>
+              <div id="inspectorBoardZoneControls" class="grid grid-cols-2 gap-1.5"></div>
             </div>
             <select id="inspectorDeckVersionSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-indigo-400/40 cursor-pointer">
             </select>
@@ -1125,13 +1169,17 @@
               <input id="inspectorNewTagInput" type="text" placeholder="Add tag (e.g. Ramp, Removal, Wincon)..." class="flex-1 bg-abyss-950 border border-abyss-600 rounded-lg px-2.5 py-1 text-xs text-starlight-50 focus:outline-none" />
               <button id="inspectorAddTagBtn" type="button" class="px-3 py-1 rounded-lg bg-sky-500 hover:bg-sky-400 text-abyss-950 font-bold text-xs cursor-pointer">+ Tag</button>
             </div>
+            <div id="inspectorRoleSection" class="bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-3 space-y-2">
+              <label for="inspectorDeckRoleSelect" class="block text-[10px] uppercase tracking-wider text-emerald-200 font-bold">Deck role</label>
+              <select id="inspectorDeckRoleSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-abyss-600 cursor-pointer"></select>
+            </div>
           </div>
 
           <!-- Per-Card Format Point Cost Override -->
           <div class="bg-purple-950/30 border border-purple-500/40 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
             <div>
               <div class="text-[10px] uppercase tracking-wider text-purple-200 font-bold">Format Point Cost (<span id="inspectorFormatName">Ouroboros</span>)</div>
-              <div class="text-[11px] text-slate-300">Assign custom Points-Principle cost in the active format</div>
+              <div class="text-[11px] text-slate-300">Assign a custom point cost in the active format</div>
             </div>
             <div class="flex items-center gap-1.5">
               <input id="inspectorPointInput" type="number" min="0" max="500" class="w-16 bg-abyss-950 border border-purple-400/50 rounded-lg px-2 py-1 text-xs font-mono text-center text-starlight-200 focus:outline-none" />
@@ -1143,7 +1191,7 @@
 
           <div class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-abyss-700">
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-300">Copies in Active Deck:</span>
+              <span class="text-xs text-slate-300">Copies in Selected Board:</span>
               <div class="inline-flex items-center bg-abyss-950 border border-abyss-600 rounded-xl p-1">
                 <button id="inspectorMinusBtn" class="w-8 h-8 rounded-lg hover:bg-abyss-800 text-starlight-50 font-bold transition cursor-pointer">-</button>
                 <span id="inspectorQtyVal" class="w-10 text-center font-mono font-bold text-starlight-300">0</span>
@@ -1152,7 +1200,7 @@
             </div>
 
             <button id="inspectorRemoveBtn" class="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-xs font-semibold transition cursor-pointer">
-              Remove All Copies
+              Remove All Copies from Selected Board
             </button>
           </div>
         </div>
@@ -1228,7 +1276,7 @@
   <div id="exportModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-4">
     <div class="bg-abyss-900 border border-abyss-600 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl">
       <div class="flex items-center justify-between px-5 py-3.5 border-b border-abyss-700 bg-abyss-950/70">
-        <h3 class="font-display text-lg font-bold text-starlight-50">Export, Share &amp; Full Studio Backup</h3>
+        <h3 class="font-display text-lg font-bold text-starlight-50">Export &amp; Restore</h3>
         <button id="closeExportModalBtn" class="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-abyss-800 transition cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
@@ -1251,7 +1299,7 @@
           </button>
 
           <button id="downloadAllDecksJsonBtn" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-300 text-xs font-semibold transition cursor-pointer">
-            <span>Backup All Decks &amp; Formats</span>
+            <span>Export All Decks &amp; Formats</span>
           </button>
 
           <label class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-emerald-300 text-xs font-semibold transition cursor-pointer">
@@ -1302,8 +1350,10 @@
       getDoc,
       setDoc,
       deleteDoc,
+      onSnapshot,
       serverTimestamp
     } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+    import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js';
 
     /**
      * =========================================================================
@@ -1322,6 +1372,7 @@
     const firebaseApp = initializeApp(firebaseConfig);
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
+    const storage = getStorage(firebaseApp);
     const googleProvider = new GoogleAuthProvider();
 
     const STORAGE_DECKS_KEY = 'ecg_multiverse_decks_v5';
@@ -1344,12 +1395,40 @@
       return Boolean(state.currentUser?.email && ADMIN_EMAILS.has(state.currentUser.email.toLowerCase()));
     }
 
+    async function saveSharedOuroborosFormat(format) {
+      if (!state.currentUser) throw new Error('Sign in as an administrator to publish Ouroboros rules.');
+      await setDoc(doc(db, 'sharedFormats', 'ouroboros'), {
+        format: JSON.parse(JSON.stringify(format)),
+        updatedBy: state.currentUser.uid,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    function sharedFormatWriteErrorMessage(error) {
+      if (error?.code === 'permission-denied') {
+        return 'Firestore denied this write. Deploy firestore.rules and confirm you are signed in with the administrator account.';
+      }
+      return error?.message || String(error);
+    }
+
+    function isValidUsername(value) {
+      const username = typeof value === 'string' ? value.trim() : '';
+      return username.length > 0
+        && username.length <= 32
+        && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
+    }
+
     function getCardZone(card) {
       return DECK_ZONES.some(zone => zone.id === card.deckZone) ? card.deckZone : 'main';
     }
 
     function getDeckZoneCards(deck, zone = state.activeDeckZone) {
       return (deck?.cards || []).filter(card => getCardZone(card) === zone);
+    }
+
+    function getCardQuantityInZone(deck, cardId, zone) {
+      const card = deck?.cards?.find(entry => entry.id === cardId && getCardZone(entry) === zone);
+      return Math.max(0, Number(card?.quantity) || 0);
     }
 
     function normalizeDeck(deck) {
@@ -1496,6 +1575,20 @@
     ];
     const SUPPORTED_GAME_COUNT = ALL_SUPPORTED_GAMES.filter(game => game.id !== 'CUSTOM').length;
     const HOME_FAN_CARD_COUNT = Math.max(0, SUPPORTED_GAME_COUNT - 1);
+    const MORPHOLOGICAL_SOSD = {
+      MTG: 100, YGO: 60, PKM: 60, HS: 30, SWU: 50, CHAOTIC: 48, GWENT: 40,
+      LOR: 60, ANR: 45, FAB: 60, AHC: 30, LOTR: 50, MC: 50, CUSTOM: 100
+    };
+    const DECK_ROLES = ['Leader', 'Base', 'Commander', 'Hero', 'Hero Power', 'Identity', 'Investigator'];
+    const ROLE_NATIVE_GAMES = {
+      Leader: 'SWU',
+      Base: 'SWU',
+      Commander: 'MTG',
+      Hero: 'HS',
+      'Hero Power': 'HS',
+      Identity: 'ANR',
+      Investigator: 'AHC'
+    };
 
     // =========================================================================
     // 3. TO-BE-SUPPORTED GAMES CATALOG (INCLUDING BACKBURNERED GAMES)
@@ -1650,22 +1743,28 @@
     // =========================================================================
     const state = {
       currentUser: null,
+      username: '',
       cloudSyncTimer: null,
       isApplyingCloudSnapshot: false,
+      userSnapshotUnsubscribe: null,
       sharedViewData: null, // populated when ?uid=...&deck=... is opened
       activePage: 'home',
       sidebarMode: 'search',
       selectedSearchGames: new Set(ALL_SUPPORTED_GAMES.map(g => g.id)),
       searchResults: [],
+      searchResultsOriginal: [],
       searchVisibleCount: 30,
+      searchSortBy: 'relevance',
       bookmarkedCards: [],
       customCardPool: [],
       preferredVersions: {},
+      customCardVersions: {},
       decks: [],
       activeDeckId: null,
       activeDeckZone: 'main',
       formats: [],
       activeFormatId: 'ouroboros',
+      assignedPointsSortBy: 'points_desc',
       selectedFormatEditorId: 'ouroboros',
       viewMode: 'grid',
       deckSortBy: 'alpha_asc',
@@ -1674,6 +1773,7 @@
       cardSize: 2,
       showOverlayBadges: true,
       homeCollageCards: [],
+      inspectorFaceIndex: 0,
       sampleHandCards: [],
       apiCaches: {
         ygo: null,
@@ -1746,14 +1846,15 @@
 
         const payload = {
           email: state.currentUser.email || '',
-          displayName: state.currentUser.displayName || '',
-          username: state.currentUser.displayName || state.currentUser.email?.split('@')[0] || 'Player',
+          displayName: state.username || 'Player',
+          username: state.username || 'Player',
           activeDeckId: state.activeDeckId,
           activeFormatId: state.activeFormatId,
           decks: compactDecks,
           formats: JSON.parse(JSON.stringify(state.formats)),
           customCardPool: JSON.parse(JSON.stringify(state.customCardPool)),
           preferredVersions: JSON.parse(JSON.stringify(state.preferredVersions)),
+          customCardVersions: JSON.parse(JSON.stringify(state.customCardVersions)),
           bookmarkedCards: JSON.parse(JSON.stringify(state.bookmarkedCards)),
           updatedAt: serverTimestamp()
         };
@@ -1796,9 +1897,12 @@
         if (Array.isArray(data.bookmarkedCards)) {
           state.bookmarkedCards = data.bookmarkedCards;
         }
-        if (data.preferredVersions && typeof data.preferredVersions === 'object') {
-          state.preferredVersions = data.preferredVersions;
-        }
+        state.preferredVersions = data.preferredVersions && typeof data.preferredVersions === 'object'
+          ? data.preferredVersions
+          : {};
+        state.customCardVersions = data.customCardVersions && typeof data.customCardVersions === 'object'
+          ? data.customCardVersions
+          : {};
         saveLocalCacheOnly();
         syncAllViews();
       } finally {
@@ -1807,22 +1911,44 @@
     }
 
     async function handleUserSignedIn(user) {
+      if (state.userSnapshotUnsubscribe) {
+        state.userSnapshotUnsubscribe();
+        state.userSnapshotUnsubscribe = null;
+      }
       state.currentUser = user;
       document.getElementById('authSignedOutBar').classList.add('hidden');
       document.getElementById('authSignedInBar').classList.remove('hidden');
-      const username = (user.displayName || user.email?.split('@')[0] || 'Player').trim();
       setCloudSyncIndicator('syncing', 'Loading Cloud...');
 
       try {
-        if (!user.displayName) await updateProfile(user, { displayName: username });
-        state.currentUser = user;
-        document.getElementById('authUserLabel').textContent = `${username}${isAdministrator() ? ' · Admin' : ''}`;
-        syncAllViews();
         const userRef = doc(db, 'users', user.uid);
         const snap = await getDoc(userRef);
+        const cloudData = snap.exists() ? snap.data() : {};
+        let username = typeof cloudData.username === 'string' ? cloudData.username.trim() : '';
+        if (!isValidUsername(username)) {
+          const chosenUsername = await showCustomDialog({
+            title: 'Choose a Username',
+            message: 'Choose the username other players will see. Email addresses are not displayed as usernames.',
+            defaultValue: '',
+            confirmText: 'Save Username'
+          });
+          username = typeof chosenUsername === 'string' ? chosenUsername.trim() : '';
+        }
+        if (!isValidUsername(username)) {
+          username = 'Player';
+          showToast('A username is required; using "Player" until you choose one.', 'info');
+        }
+        if (user.displayName !== username) await updateProfile(user, { displayName: username });
+        state.currentUser = user;
+        state.username = username;
+        document.getElementById('authUserLabel').textContent = `${username}${isAdministrator() ? ' · Admin' : ''}`;
+        syncAllViews();
+        await setDoc(userRef, { username, displayName: username }, { merge: true });
         if (snap.exists()) {
-          const cloudData = snap.data();
           applyCloudPayloadToState(cloudData);
+        } else {
+          state.preferredVersions = {};
+          state.customCardVersions = {};
         }
         const sharedFormatRef = doc(db, 'sharedFormats', 'ouroboros');
         try {
@@ -1842,6 +1968,14 @@
           showToast('Ouroboros shared settings are unavailable; check Firestore read rules.', 'error');
         }
         await pushCurrentStateToFirestore();
+        state.userSnapshotUnsubscribe = onSnapshot(userRef, snapshot => {
+          if (!snapshot.exists() || snapshot.metadata.hasPendingWrites) return;
+          applyCloudPayloadToState(snapshot.data());
+        }, error => {
+          console.error('Live cloud profile updates failed:', error);
+          setCloudSyncIndicator('error', 'Live Sync Error');
+          showToast('Live account sync stopped; refresh or sign in again to reconnect.', 'error');
+        });
       } catch (err) {
         console.error('Error loading user cloud document:', err);
         setCloudSyncIndicator('error', 'Cloud Load Error');
@@ -1851,6 +1985,11 @@
 
     function handleUserSignedOut() {
       state.currentUser = null;
+      state.username = '';
+      if (state.userSnapshotUnsubscribe) {
+        state.userSnapshotUnsubscribe();
+        state.userSnapshotUnsubscribe = null;
+      }
       if (state.cloudSyncTimer) clearTimeout(state.cloudSyncTimer);
       document.getElementById('authSignedInBar').classList.add('hidden');
       document.getElementById('authSignedOutBar').classList.remove('hidden');
@@ -1878,7 +2017,7 @@
       const shareRef = doc(db, 'publicDecks', shareId);
       await setDoc(shareRef, {
         ownerUid: state.currentUser.uid,
-        ownerName: state.currentUser.displayName || state.currentUser.email || 'Eclectica Planeswalker',
+        ownerName: state.username || 'Eclectica Planeswalker',
         deckName: deck.name,
         formatSnapshot: JSON.parse(JSON.stringify(activeFmt)),
         cards: JSON.parse(JSON.stringify(deck.cards)),
@@ -1997,7 +2136,8 @@
       const maxIdx = Math.max(0, (card.versions?.length || 1) - 1);
       const resolveIndex = stored => {
         if (typeof stored === 'string') {
-          const found = (card.versions || []).findIndex(version => getVersionPreferenceKey(version) === stored);
+          const found = (card.versions || []).findIndex(version =>
+            getVersionPreferenceKey(version) === stored || (version.legacyPreferenceKeys || []).includes(stored));
           return found >= 0 ? found : 0;
         }
         return Math.min(maxIdx, Math.max(0, Number(stored) || 0));
@@ -2021,6 +2161,19 @@
         ? `${version.setInfo || ''}::${version.label || ''}`
         : version.imageUrl);
       return String(key || '');
+    }
+
+    function ensureCustomCardVersions(card) {
+      const customVersions = state.customCardVersions[getCardPreferenceKey(card)] || [];
+      if (!Array.isArray(card.versions)) card.versions = [];
+      const knownKeys = new Set(card.versions.map(getVersionPreferenceKey));
+      customVersions.forEach(version => {
+        const key = getVersionPreferenceKey(version);
+        if (key && !knownKeys.has(key)) {
+          card.versions.push(version);
+          knownKeys.add(key);
+        }
+      });
     }
 
     function ensurePreferredVersionAvailable(targetCard, sourceCard, preferenceKey) {
@@ -2093,6 +2246,57 @@
       });
 
       saveAllStateToStorage();
+    }
+
+    async function uploadCustomCardImage(card) {
+      if (!state.currentUser) {
+        showToast('Sign in before uploading a custom card image.', 'error');
+        return;
+      }
+      if (card.sourceGame === 'CUSTOM') return;
+      const input = document.getElementById('inspectorCustomImageInput');
+      const file = input.files?.[0];
+      if (!file) {
+        showToast('Choose an image file to upload.', 'error');
+        return;
+      }
+      const supportedImageTypes = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif']);
+      if (!supportedImageTypes.has(file.type) || file.size > 5 * 1024 * 1024) {
+        showToast('Choose a JPEG, PNG, GIF, WebP, or AVIF image smaller than 5 MB.', 'error');
+        return;
+      }
+
+      const uploadButton = document.getElementById('inspectorUploadCustomImageBtn');
+      uploadButton.disabled = true;
+      uploadButton.textContent = 'Uploading...';
+      try {
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(-80) || 'card-image';
+        const path = `users/${state.currentUser.uid}/custom-card-images/${Date.now()}_${safeName}`;
+        const uploaded = await uploadBytes(ref(storage, path), file, { contentType: file.type });
+        const version = {
+          id: `user-upload:${uploaded.ref.fullPath}`,
+          label: `Custom image: ${file.name}`,
+          setInfo: 'User-uploaded custom card image',
+          year: new Date().getFullYear(),
+          imageUrl: await getDownloadURL(uploaded.ref),
+          isUserUpload: true
+        };
+        const key = getCardPreferenceKey(card);
+        state.customCardVersions[key] = [...(state.customCardVersions[key] || []), version];
+        ensureCustomCardVersions(card);
+        const versionIndex = card.versions.findIndex(item => getVersionPreferenceKey(item) === version.id);
+        setPreferredVersionForCard(card, versionIndex);
+        syncAllViews();
+        showToast(`Added a custom image version for "${card.name}".`, 'success');
+        input.value = '';
+        return version;
+      } catch (error) {
+        console.error('Custom card image upload failed:', error);
+        showToast(`Could not upload the image: ${error.message || 'check Firebase Storage rules and try again.'}`, 'error');
+      } finally {
+        uploadButton.disabled = false;
+        uploadButton.textContent = 'Upload as Version';
+      }
     }
 
     function isCardBookmarked(card) {
@@ -2193,24 +2397,155 @@
       `;
     }
 
-    function renderCardVisualHtml(card, extraClasses = '', explicitVersionIdx = null) {
+    const transparentCardBoundsCache = new Map();
+    let transparentCardInspectionWarningShown = false;
+    const transparentCardResizeObserver = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(entries => {
+        entries.forEach(entry => {
+          const img = entry.target.querySelector('img[data-alpha-bounds]');
+          if (img) applyTransparentCardImageFit(img);
+        });
+      });
+
+    function applyTransparentCardImageFit(img) {
+      const bounds = JSON.parse(img.dataset.alphaBounds || 'null');
+      const frame = img.parentElement;
+      if (!bounds || !frame || !frame.clientWidth || !frame.clientHeight) return;
+
+      const rotated = img.classList.contains('horizontal-card-rotated');
+      const scale = rotated
+        ? Math.min(frame.clientWidth / bounds.height, frame.clientHeight / bounds.width)
+        : Math.min(frame.clientWidth / bounds.width, frame.clientHeight / bounds.height);
+      img.style.position = 'absolute';
+      img.style.maxWidth = 'none';
+      img.style.maxHeight = 'none';
+      img.style.width = `${img.naturalWidth * scale}px`;
+      img.style.height = `${img.naturalHeight * scale}px`;
+      if (rotated) {
+        const boundsCenterX = bounds.left + bounds.width / 2;
+        const boundsCenterY = bounds.top + bounds.height / 2;
+        img.style.left = `${frame.clientWidth / 2 + (boundsCenterY - img.naturalHeight / 2) * scale}px`;
+        img.style.top = `${frame.clientHeight / 2 - (boundsCenterX - img.naturalWidth / 2) * scale}px`;
+        img.style.transform = 'translate(-50%, -50%) rotate(90deg)';
+      } else {
+        img.style.left = `${(frame.clientWidth - bounds.width * scale) / 2 - bounds.left * scale}px`;
+        img.style.top = `${(frame.clientHeight - bounds.height * scale) / 2 - bounds.top * scale}px`;
+        img.style.transform = 'none';
+      }
+      img.style.objectFit = 'fill';
+    }
+
+    function trimTransparentCardImage(img) {
+      if (img.dataset.alphaTrimChecked) return;
+      img.dataset.alphaTrimChecked = 'true';
+      const source = img.currentSrc || img.src;
+      let bounds = transparentCardBoundsCache.get(source);
+      if (bounds === undefined) {
+        if (img.naturalWidth * img.naturalHeight > 8000000) {
+          transparentCardBoundsCache.set(source, null);
+          return;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context) {
+          transparentCardBoundsCache.set(source, null);
+          return;
+        }
+
+        try {
+          context.drawImage(img, 0, 0);
+          const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+          let left = canvas.width;
+          let top = canvas.height;
+          let right = -1;
+          let bottom = -1;
+          for (let y = 0; y < canvas.height; y++) {
+            for (let x = 0; x < canvas.width; x++) {
+              if (pixels[(y * canvas.width + x) * 4 + 3] <= 16) continue;
+              if (x < left) left = x;
+              if (x > right) right = x;
+              if (y < top) top = y;
+              if (y > bottom) bottom = y;
+            }
+          }
+
+          if (right < 0) {
+            bounds = null;
+          } else {
+            const padX = Math.ceil(canvas.width * 0.005);
+            const padY = Math.ceil(canvas.height * 0.005);
+            left = Math.max(0, left - padX);
+            top = Math.max(0, top - padY);
+            right = Math.min(canvas.width - 1, right + padX);
+            bottom = Math.min(canvas.height - 1, bottom + padY);
+            bounds = left === 0 && top === 0 && right === canvas.width - 1 && bottom === canvas.height - 1
+              ? null
+              : { left, top, width: right - left + 1, height: bottom - top + 1 };
+          }
+          transparentCardBoundsCache.set(source, bounds);
+        } catch (error) {
+          if (!transparentCardInspectionWarningShown) {
+            console.warn('Could not inspect transparency on some card images; those images remain uncropped.', error);
+            transparentCardInspectionWarningShown = true;
+          }
+          transparentCardBoundsCache.set(source, null);
+        } finally {
+          canvas.width = 0;
+          canvas.height = 0;
+        }
+      }
+
+      if (!bounds) return;
+      img.dataset.alphaBounds = JSON.stringify(bounds);
+      if (transparentCardResizeObserver && img.parentElement) {
+        transparentCardResizeObserver.observe(img.parentElement);
+      }
+      applyTransparentCardImageFit(img);
+    }
+
+    function handleCardVisualImageError(img, fallbackUrl) {
+      if (img.hasAttribute('crossorigin') && !img.dataset.corsRetry) {
+        img.dataset.corsRetry = 'true';
+        const originalUrl = img.src;
+        img.removeAttribute('crossorigin');
+        img.src = originalUrl;
+        return;
+      }
+      img.onerror = null;
+      img.classList.remove('horizontal-card-rotated');
+      img.src = fallbackUrl;
+    }
+
+    window.trimTransparentCardImage = trimTransparentCardImage;
+    window.handleCardVisualImageError = handleCardVisualImageError;
+
+    function renderCardVisualHtml(card, extraClasses = '', explicitVersionIdx = null, explicitFaceIdx = 0, maximizeTransparentSpace = false) {
+      ensureCustomCardVersions(card);
       const ver = getActiveVersion(card, explicitVersionIdx);
-      const imgUrl = ver.imageUrl || card.imageUrl || '';
+      const face = Array.isArray(ver.faces) ? ver.faces[explicitFaceIdx] : null;
+      const imgUrl = face?.imageUrl || ver.imageUrl || card.imageUrl || '';
       if (!imgUrl) {
         return `<div class="w-full h-full ${extraClasses}">${buildGeneratedCardSvg(card, ver)}</div>`;
       }
       // Escape single quotes (%27) so names like "Urza's Saga" never break the inline onerror string
       const fallbackSvgEncoded = encodeURIComponent(buildGeneratedCardSvg(card, ver)).replace(/'/g, '%27');
       const gwentOverlayHtml = '';
+      const imageStageBackground = maximizeTransparentSpace ? 'bg-transparent' : 'bg-abyss-950';
+      const alphaTrimOnLoad = maximizeTransparentSpace ? ' window.trimTransparentCardImage(this);' : '';
       return `
-        <div class="relative w-full h-full overflow-hidden bg-abyss-950">
+        <div class="relative w-full h-full overflow-hidden ${imageStageBackground}">
           <img
+            crossorigin="anonymous"
             src="${imgUrl}"
             alt="${escapeXml(card.name)}"
             referrerpolicy="no-referrer"
             loading="lazy"
-            onload="this.classList.toggle('horizontal-card-rotated', this.naturalWidth > this.naturalHeight);"
-            onerror="this.onerror=null; this.classList.remove('horizontal-card-rotated'); this.src='data:image/svg+xml;charset=utf-8,${fallbackSvgEncoded}';"
+            onload="this.classList.toggle('horizontal-card-rotated', this.naturalWidth > this.naturalHeight);${alphaTrimOnLoad}"
+            onerror="window.handleCardVisualImageError(this, 'data:image/svg+xml;charset=utf-8,${fallbackSvgEncoded}');"
             class="w-full h-full object-contain ${extraClasses}"
           />
           ${gwentOverlayHtml}
@@ -2417,6 +2752,10 @@
       if (raw.mana_cost) statsParts.push(raw.mana_cost);
       if (raw.power !== undefined && raw.toughness !== undefined) statsParts.push(`${raw.power}/${raw.toughness}`);
 
+      const nativeRoles = [];
+      if ((/legendary creature/i.test(raw.type_line || '') || (/planeswalker/i.test(raw.type_line || '') && /can be your commander/i.test(oracleText)))
+        && raw.legalities?.commander !== 'banned') nativeRoles.push('Commander');
+
       const card = {
         id: `mtg_${raw.oracle_id || raw.id}`,
         sourceGame: 'MTG',
@@ -2429,6 +2768,9 @@
         defNum: raw.toughness !== undefined && !isNaN(Number(raw.toughness)) ? Number(raw.toughness) : null,
         originalYear: releaseYear,
         isDigitalOnly: Boolean(raw.digital),
+        isUniversesBeyond: /universes beyond/i.test(raw.set_name || '')
+          || (Array.isArray(raw.promo_types) && raw.promo_types.some(type => /universes.?beyond/i.test(type))),
+        nativeRoles,
         statsText: statsParts.join(' · ') || `MV ${raw.cmc ?? 0}`,
         typeLine: raw.type_line || 'Magic Card',
         rulesText: oracleText || 'No rules text.',
@@ -2436,10 +2778,18 @@
         selectedVersionIdx: 0,
         versions: [
           {
+            id: raw.id || `${raw.set || ''}_${raw.collector_number || ''}`,
             label: `1st: ${raw.set_name || 'Original'} (${releaseYear}) #${raw.collector_number || ''}`,
             setInfo: `${raw.set_name || 'MTG'} (${(raw.set || '').toUpperCase()})`,
             year: releaseYear,
-            imageUrl
+            imageUrl,
+            legacyPreferenceKeys: [`${raw.set_name || 'MTG'} (${(raw.set || '').toUpperCase()})::1st: ${raw.set_name || 'Original'} (${releaseYear}) #${raw.collector_number || ''}`],
+            faces: (raw.card_faces || []).map(face => ({
+              name: face.name || raw.name,
+              typeLine: face.type_line || raw.type_line || '',
+              rulesText: face.oracle_text || '',
+              imageUrl: face.image_uris?.normal || face.image_uris?.large || ''
+            }))
           }
         ]
       };
@@ -2470,10 +2820,18 @@
           const img = p.image_uris?.normal || p.card_faces?.[0]?.image_uris?.normal || '';
           const prefix = idx === 0 ? '1st: ' : `#${idx + 1}: `;
           return {
+            id: p.id || `${p.set || ''}_${p.collector_number || ''}`,
             label: `${prefix}${p.set_name} (${yr}) [${(p.set || '').toUpperCase()} #${p.collector_number}]`,
             setInfo: `${p.set_name} (${(p.set || '').toUpperCase()} #${p.collector_number}) · ${p.released_at || yr}`,
             year: yr,
-            imageUrl: img
+            imageUrl: img,
+            legacyPreferenceKeys: [`${p.set_name} (${(p.set || '').toUpperCase()})::1st: ${p.set_name} (${yr}) #${p.collector_number || ''}`],
+            faces: (p.card_faces || []).map(face => ({
+              name: face.name || p.name,
+              typeLine: face.type_line || p.type_line || '',
+              rulesText: face.oracle_text || '',
+              imageUrl: face.image_uris?.normal || face.image_uris?.large || ''
+            }))
           };
         });
 
@@ -2624,6 +2982,7 @@
         defNum: primary.health !== undefined ? Number(primary.health) : null,
         originalYear: 2014,
         isDigitalOnly: true,
+        nativeRoles: primary.type === 'HERO' ? ['Hero'] : (primary.type === 'HERO_POWER' ? ['Hero Power'] : []),
         statsText: statsParts.join(' · '),
         typeLine: `${cardClass} ${cardType}${primary.race ? ' — ' + primary.race : ''}`,
         rulesText: stripHtmlTags(primary.text) || 'No card text.',
@@ -2668,26 +3027,23 @@
       if (frontText || raw.text) rulesParts.push(frontText || raw.text);
       if (backText) rulesParts.push(`[Deployed / Back Side]\n${backText}`);
 
-      const versions = [
-        {
-          label: `1st: ${printingLabel}`,
-          setInfo: `Star Wars: Unlimited (${printingLabel})`,
-          year: 2024,
-          imageUrl
-        }
-      ];
-
       const backArt = raw.BackArt || raw.backArt || raw.backImageUrl || raw.back_image_url;
+      let backUrl = '';
       if (backArt) {
-        let backUrl = backArt;
+        backUrl = backArt;
         if (backUrl.startsWith('/')) backUrl = `https://cdn.swu-db.com${backUrl}`;
-        versions.push({
-          label: `2nd: ${printingLabel} (Back / Deployed)`,
-          setInfo: `Star Wars: Unlimited (${printingLabel} — Back)`,
-          year: 2024,
-          imageUrl: backUrl
-        });
       }
+      const versions = [{
+        id: `${setCode}_${num}`,
+        label: `1st: ${printingLabel}`,
+        setInfo: `Star Wars: Unlimited (${printingLabel})`,
+        year: 2024,
+        imageUrl,
+        faces: backUrl ? [
+          { name, typeLine: String(rawType), rulesText: frontText || raw.text || '', imageUrl },
+          { name: `${name} — Back`, typeLine: String(rawType), rulesText: backText || '', imageUrl: backUrl }
+        ] : []
+      }];
 
       const card = {
         id: `swu_${setCode}_${num}`,
@@ -2701,6 +3057,7 @@
         defNum: hp,
         originalYear: 2024,
         isDigitalOnly: false,
+        nativeRoles: /\bleader\b/i.test(rawType) ? ['Leader'] : (/\bbase\b/i.test(rawType) ? ['Base'] : []),
         statsText: `${cost} Cost${pwr !== null && hp !== null ? ` · ${pwr}/${hp}` : ''}`,
         typeLine: `${rawType}${traits ? ' — ' + traits : ''}`,
         rulesText: rulesParts.join('\n\n') || 'Star Wars: Unlimited card.',
@@ -3292,21 +3649,47 @@
         payload?.data?.cards,
         payload?.data?.results,
         payload?.response?.cards,
-        payload?.response?.data
+        payload?.response?.data,
+        payload?.result?.cards
       ];
       return candidates.find(Array.isArray) || [];
     }
 
-    async function fetchSwuCatalog() {
-      const corsEnabledCatalog = await fetchWithCorsMirrorFallback([
-        'https://api.swuapi.com/export/all'
-      ]);
-      const corsEnabledCards = extractSwuCards(corsEnabledCatalog).filter(card =>
+    function isValidSwuRawCard(card) {
+      return Boolean(
+        card && typeof card === 'object' &&
         (card.Set || card.set || card.setCode || card.set_code) &&
-        (card.Number || card.number || card.cardNumber || card.card_number || card.collectorNumber || card.collector_number || card.id) &&
+        (card.Number || card.number || card.cardNumber || card.card_number ||
+          card.collectorNumber || card.collector_number || card.id) &&
         (card.Name || card.name)
       );
+    }
+
+    function swuApiUrls(url) {
+      return [
+        url,
+        `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
+      ];
+    }
+
+    async function fetchSwuCatalog() {
+      const exportUrl = 'https://api.swuapi.com/export/all';
+      const corsEnabledCatalog = await fetchWithCorsMirrorFallback(swuApiUrls(exportUrl));
+      const corsEnabledCards = extractSwuCards(corsEnabledCatalog).filter(isValidSwuRawCard);
       if (corsEnabledCards.length > 0) return corsEnabledCards;
+
+      const cards = [];
+      const pageSize = 500;
+      for (let offset = 0; offset < 50000; offset += pageSize) {
+        const pageUrl = `https://api.swuapi.com/cards?limit=${pageSize}&offset=${offset}`;
+        const payload = await fetchWithCorsMirrorFallback(swuApiUrls(pageUrl));
+        const page = extractSwuCards(payload).filter(isValidSwuRawCard);
+        if (page.length === 0) break;
+        cards.push(...page);
+        if (page.length < pageSize) break;
+      }
+      if (cards.length > 0) return cards;
 
       const directUrl = 'https://api.swu-db.com/cards/search?q=*';
       const urls = [
@@ -3319,10 +3702,8 @@
 
       for (const url of urls) {
         const payload = await fetchWithCorsMirrorFallback([url]);
-        const cards = extractSwuCards(payload).filter(card =>
-          (card.Set || card.set) && (card.Number || card.number) && (card.Name || card.name)
-        );
-        if (cards.length > 0) return cards;
+        const fallbackCards = extractSwuCards(payload).filter(isValidSwuRawCard);
+        if (fallbackCards.length > 0) return fallbackCards;
         emptyResponses.push(url);
       }
 
@@ -3340,9 +3721,7 @@
             const payload = await fetchWithCorsMirrorFallback([
               `https://api.swu-db.com/cards/${encodeURIComponent(setId)}`
             ]);
-            const setCards = extractSwuCards(payload).filter(card =>
-              (card.Set || card.set) && (card.Number || card.number) && (card.Name || card.name)
-            );
+            const setCards = extractSwuCards(payload).filter(isValidSwuRawCard);
             if (setCards.length === 0) throw new Error(`SWU set ${setId} returned no cards.`);
             return setCards;
           }));
@@ -3363,7 +3742,7 @@
     // LIVE SWU Pool: Retrieves the full card catalog from a CORS-enabled API with SWU-DB fallbacks.
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const fromIdb = await idbGetDataset('norm_swu_live_v15');
+      const fromIdb = await idbGetDataset('norm_swu_live_v16');
       if (Array.isArray(fromIdb) && fromIdb.length > 0) {
         state.apiCaches.swu = fromIdb;
         return fromIdb;
@@ -3372,7 +3751,7 @@
       const fetched = (await fetchSwuCatalog()).map(normalizeSwuRawCard);
       const finalSwu = mergeSwuCardPrintings(fetched);
       state.apiCaches.swu = finalSwu;
-      idbSetDataset('norm_swu_live_v15', finalSwu);
+      idbSetDataset('norm_swu_live_v16', finalSwu);
       return finalSwu;
     }
 
@@ -3748,7 +4127,8 @@
         }
       }
 
-      state.searchResults = merged;
+      state.searchResultsOriginal = merged;
+      sortSearchResults();
       state.searchVisibleCount = 30;
 
       if (merged.length === 0) {
@@ -3767,9 +4147,40 @@
         gameCounts.map(gc => {
           const theme = getBadgeStyleForGame(gc.gameId);
           return `<span style="${theme.pillStyle}" class="px-1.5 py-0.2 rounded border font-bold">${escapeXml(gc.gameId)}: ${gc.count}</span>`;
-        }).join('');
+        }).join('') +
+        `<label class="ml-auto inline-flex items-center gap-1.5 text-slate-300">Sort
+          <select id="searchSortSelect" class="rounded px-2 py-1 text-[10px] border border-abyss-600">
+            <option value="relevance">Relevance</option>
+            <option value="name_asc">Name (A–Z)</option>
+            <option value="name_desc">Name (Z–A)</option>
+            <option value="cost_asc">Cost (Low–High)</option>
+            <option value="cost_desc">Cost (High–Low)</option>
+            <option value="game">Source Game</option>
+            <option value="year_desc">Newest Printing</option>
+          </select>
+        </label>`;
+      const searchSortSelect = document.getElementById('searchSortSelect');
+      searchSortSelect.value = state.searchSortBy;
+      searchSortSelect.addEventListener('change', () => {
+        state.searchSortBy = searchSortSelect.value;
+        sortSearchResults();
+        renderSearchResults();
+      });
 
       renderSearchResults();
+    }
+
+    function sortSearchResults() {
+      const originalOrder = new Map(state.searchResultsOriginal.map((card, index) => [card, index]));
+      state.searchResults = [...state.searchResultsOriginal].sort((a, b) => {
+        if (state.searchSortBy === 'name_asc') return a.name.localeCompare(b.name) || originalOrder.get(a) - originalOrder.get(b);
+        if (state.searchSortBy === 'name_desc') return b.name.localeCompare(a.name) || originalOrder.get(a) - originalOrder.get(b);
+        if (state.searchSortBy === 'cost_asc') return (a.numericCost - b.numericCost) || a.name.localeCompare(b.name);
+        if (state.searchSortBy === 'cost_desc') return (b.numericCost - a.numericCost) || a.name.localeCompare(b.name);
+        if (state.searchSortBy === 'game') return a.sourceGame.localeCompare(b.sourceGame) || a.name.localeCompare(b.name);
+        if (state.searchSortBy === 'year_desc') return (getActiveVersion(b)?.year || 0) - (getActiveVersion(a)?.year || 0) || a.name.localeCompare(b.name);
+        return originalOrder.get(a) - originalOrder.get(b);
+      });
     }
 
     function renderSearchResults() {
@@ -3787,6 +4198,7 @@
       }
 
       grid.innerHTML = visibleCards.map((card, index) => {
+        ensureCustomCardVersions(card);
         const theme = getBadgeStyleForGame(card.sourceGame);
         const versions = card.versions || [{ label: '1st: Original Printing' }];
         const activeIdx = getPreferredVersionIdx(card);
@@ -3910,9 +4322,9 @@
             data-collage-idx="${index}"
             title="${escapeXml(card.name)} [${escapeXml(card.sourceGame)}]"
             style="left:${left}%;top:${top}%;width:${widthPercent}%;transform:translate(-50%,-50%) rotate(${angle}deg);z-index:${index + 1}"
-            class="absolute tcg-aspect rounded-lg overflow-hidden bg-abyss-950 border border-abyss-700 hover:border-starlight-300 cursor-pointer shadow-xl hover:scale-105 hover:z-50 transition-all duration-150"
+            class="absolute tcg-aspect rounded-lg overflow-hidden bg-transparent border border-abyss-700 hover:border-starlight-300 cursor-pointer shadow-xl hover:scale-105 hover:z-50 transition-all duration-150"
           >
-            ${renderCardVisualHtml(card)}
+            ${renderCardVisualHtml(card, '', null, 0, true)}
           </div>
         `;
       }).join('');
@@ -3943,7 +4355,7 @@
           source: `MTG ${index + 1}`,
           timeoutMs: null,
           load: async () => {
-            const raw = await fetchScryfallJson('https://api.scryfall.com/cards/random');
+            const raw = await fetchScryfallJson('https://api.scryfall.com/cards/random?q=-is%3Auniversesbeyond');
             return raw?.object === 'card' ? [normalizeScryfallCard(raw)] : [];
           }
         })),
@@ -3976,7 +4388,8 @@
           if (!cardsByGame.has(card.sourceGame)) cardsByGame.set(card.sourceGame, []);
           cardsByGame.get(card.sourceGame).push(card);
         });
-        const onePerGame = Array.from(cardsByGame.values(), gameCards => pickRandomItems(gameCards, 1)[0]);
+        const onePerGame = Array.from(cardsByGame.values(), gameCards => pickRandomItems(gameCards, 1)[0])
+          .filter(card => card.sourceGame !== 'MTG' || !card.isUniversesBeyond);
         const shuffled = shuffleArray(onePerGame).slice(0, HOME_FAN_CARD_COUNT);
         state.homeCollageCards = shuffled;
         grid.innerHTML = renderCyclicalCardFan(shuffled, 19);
@@ -4008,7 +4421,7 @@
           if (!Array.isArray(cards)) throw new Error('source returned an invalid card list');
           if (cards.length === 0) failedSources.push(source);
           if (runId === activeCollageRun && cards.length > 0) {
-            pool.push(...cards);
+            pool.push(...cards.filter(card => card.sourceGame !== 'MTG' || !card.isUniversesBeyond));
             renderCards();
           }
         } catch (error) {
@@ -4056,7 +4469,7 @@
           id: 'ouroboros',
           name: 'Ouroboros',
           isCoreProtected: true,
-          description: 'The foundational Eclectica Card Game format: particularized Points-Principle budget balancing across all card universes with no banned cards except proper gamebreakers.',
+          description: 'The foundational Eclectica Card Game format: point-budget rules across all card universes with no banned cards except proper gamebreakers.',
           pointCap: 100,
           unlimitedPoints: false,
           baseCardPoints: 0,
@@ -4074,6 +4487,9 @@
           maxDeckSize: 100,
           startingLifeFormula: '30 Life',
           cardPointOverrides: {},
+          cardPointCards: {},
+          rolePointCosts: Object.fromEntries(DECK_ROLES.map(role => [role, 1])),
+          roleAllowedGames: {},
           customBannedCards: [...PROPER_GAMEBREAKERS]
         }
       ];
@@ -4085,6 +4501,7 @@
         localStorage.setItem(STORAGE_FORMATS_KEY, JSON.stringify({ activeFormatId: state.activeFormatId, formats: state.formats }));
         localStorage.setItem(STORAGE_CUSTOM_CARDS_KEY, JSON.stringify(state.customCardPool));
         localStorage.setItem(STORAGE_PREFERRED_VERSIONS_KEY, JSON.stringify(state.preferredVersions));
+        localStorage.setItem('eclectica_custom_card_versions_v1', JSON.stringify(state.customCardVersions));
         localStorage.setItem(STORAGE_BOOKMARKS_KEY, JSON.stringify(state.bookmarkedCards));
       } catch (e) { console.warn(e); }
     }
@@ -4098,6 +4515,9 @@
       try {
         const rawPref = localStorage.getItem(STORAGE_PREFERRED_VERSIONS_KEY);
         if (rawPref) state.preferredVersions = JSON.parse(rawPref) || {};
+
+        const rawCustomVersions = localStorage.getItem('eclectica_custom_card_versions_v1');
+        if (rawCustomVersions) state.customCardVersions = JSON.parse(rawCustomVersions) || {};
 
         const rawBookmarks = localStorage.getItem(STORAGE_BOOKMARKS_KEY);
         if (rawBookmarks) state.bookmarkedCards = JSON.parse(rawBookmarks) || [];
@@ -4155,6 +4575,21 @@
       return state.formats.find(f => f.id === state.activeFormatId) || state.formats[0];
     }
 
+    function isNativeRoleCard(card, role) {
+      if (ROLE_NATIVE_GAMES[role] !== card.sourceGame) return false;
+      if ((card.nativeRoles || []).includes(role)) return true;
+      const typeLine = String(card.typeLine || '');
+      const roleMarkers = {
+        Leader: /\bleader\b/i,
+        Base: /\bbase\b/i,
+        Hero: /\bhero\b/i,
+        'Hero Power': /\bhero power\b/i,
+        Identity: /\bidentity\b/i,
+        Investigator: /\binvestigator\b/i
+      };
+      return Boolean(roleMarkers[role]?.test(typeLine));
+    }
+
     function computeSingleCardEntryPoints(card, format) {
       const rar = (card.rarity || 'common').toLowerCase();
       let rarityBonus = 0;
@@ -4172,7 +4607,12 @@
         ? Number(format.cardPointOverrides[card.id])
         : ((Number(format.baseCardPoints) || 0) + rarityBonus);
 
-      let total = unitBase * card.quantity;
+      const deckRole = String(card.deckRole || '').trim();
+      const nativeRole = deckRole && isNativeRoleCard(card, deckRole);
+      const roleSurcharge = deckRole && !nativeRole
+        ? Number(format.rolePointCosts?.[deckRole] ?? format.customRolePointCost ?? 1)
+        : 0;
+      let total = unitBase * card.quantity + roleSurcharge * card.quantity;
       const cs = format.copySurcharges || { copy1: 0, copy2: 5, copy3: 15, copy4Plus: 30 };
       if (card.quantity >= 1) total += Number(cs.copy1) || 0;
       if (card.quantity >= 2) total += Number(cs.copy2) || 0;
@@ -4183,11 +4623,20 @@
     }
 
     function evaluateDeckAgainstFormat(deck, format) {
+      const pointsCards = (deck?.cards || []).filter(card => getCardZone(card) !== 'maybeboard');
       const formatCards = getDeckZoneCards(deck, 'main');
       let totalPoints = 0;
       const violations = [];
       const breakdown = [];
-      const totalCards = formatCards.reduce((s, c) => s + c.quantity, 0);
+      const totalCards = formatCards.reduce((sum, card) => sum + (Number(card.quantity) || 1), 0);
+      const morphologyPercent = pointsCards.reduce((sum, card) => {
+        const sosd = MORPHOLOGICAL_SOSD[String(card.sourceGame || 'CUSTOM').toUpperCase()] || MORPHOLOGICAL_SOSD.CUSTOM;
+        return sum + (100 / sosd) * (Number(card.quantity) || 1);
+      }, 0);
+
+      if (pointsCards.length > 0 && Math.abs(morphologyPercent - 100) > 0.0001) {
+        violations.push(`Deck morphology is ${morphologyPercent.toFixed(2)}%; cards outside the Maybeboard must total 100%.`);
+      }
 
       if (totalCards > 0 && format.minDeckSize && totalCards < format.minDeckSize) {
         violations.push(`Deck size (${totalCards}) is below minimum (${format.minDeckSize}).`);
@@ -4196,7 +4645,7 @@
         violations.push(`Deck size (${totalCards}) exceeds maximum (${format.maxDeckSize}).`);
       }
 
-      const distinctGames = new Set(formatCards.map(c => c.sourceGame));
+      const distinctGames = new Set(pointsCards.map(c => c.sourceGame));
       const thresh = Number(format.crossGameTaxThreshold) || 0;
       const perExtra = Number(format.crossGameTaxPerExtraGame) || 0;
       if (thresh > 0 && perExtra > 0 && distinctGames.size > thresh) {
@@ -4205,14 +4654,22 @@
         breakdown.push(`Cross-Universe Diversity Tax (${distinctGames.size} games > ${thresh}): +${tax} pts`);
       }
 
+      for (const card of pointsCards) {
+        const deckRole = String(card.deckRole || '').trim();
+        const allowedGames = deckRole && (format.roleAllowedGames?.[deckRole] || format.roleAllowedGames?.__custom);
+        if (deckRole && Array.isArray(allowedGames) && allowedGames.length > 0
+          && !allowedGames.includes(String(card.sourceGame || '').toUpperCase())) {
+          violations.push(`Role Restriction: "${card.name}" cannot use the ${deckRole} role from ${card.sourceGame}.`);
+        }
+        const pts = computeSingleCardEntryPoints(card, format);
+        totalPoints += pts;
+        if (pts > 0) breakdown.push(`${card.name} (×${card.quantity}): ${pts} pts`);
+      }
+
       for (const card of formatCards) {
         if (format.hardMaxCopies > 0 && card.quantity > format.hardMaxCopies) {
           violations.push(`Copy Cap Breach: "${card.name}" has ${card.quantity} copies (max ${format.hardMaxCopies}).`);
         }
-
-        const pts = computeSingleCardEntryPoints(card, format);
-        totalPoints += pts;
-        if (pts > 0) breakdown.push(`${card.name} (×${card.quantity}): ${pts} pts`);
 
         const lowerName = card.name.toLowerCase();
         if (format.banPolicy === 'gamebreakers_only') {
@@ -4251,6 +4708,7 @@
       return {
         totalPoints,
         pointCap: Number(format.pointCap) || 0,
+        morphologyPercent,
         unlimitedPoints: Boolean(format.unlimitedPoints),
         violations,
         breakdown,
@@ -4296,7 +4754,43 @@
       if (!fmt) return;
       const rs = fmt.raritySurcharges || { common: 0, uncommon: 0, rare: 1, mythic: 2 };
       const cs = fmt.copySurcharges || { copy1: 0, copy2: 5, copy3: 15, copy4Plus: 30 };
+      const rolePointCosts = fmt.rolePointCosts || {};
+      const roleAllowedGames = fmt.roleAllowedGames || {};
       const canEditFormat = fmt.id !== 'ouroboros' || isAdministrator();
+      const knownCards = [
+        ...state.searchResultsOriginal,
+        ...state.bookmarkedCards,
+        ...state.customCardPool,
+        ...state.decks.flatMap(deck => deck.cards || [])
+      ];
+      const buildAssignedPointRows = sortBy => Object.entries(fmt.cardPointOverrides || {})
+        .filter(([, points]) => Number(points) >= 1)
+        .map(([cardId, points]) => ({
+          cardId,
+          points: Number(points),
+          card: fmt.cardPointCards?.[cardId] || knownCards.find(entry => entry.id === cardId)
+        }))
+        .sort((a, b) => {
+          const nameCompare = String(a.card?.name || a.cardId).localeCompare(String(b.card?.name || b.cardId));
+          const gameCompare = String(a.card?.sourceGame || '').localeCompare(String(b.card?.sourceGame || ''));
+          if (sortBy === 'name_asc') return nameCompare || gameCompare;
+          if (sortBy === 'game_asc') return gameCompare || nameCompare;
+          const pointCompare = sortBy === 'points_asc' ? a.points - b.points : b.points - a.points;
+          return pointCompare || nameCompare || gameCompare;
+        })
+        .map(({ cardId, points, card }) => {
+          const imageUrl = card ? (getActiveVersion(card)?.imageUrl || card.imageUrl || '') : '';
+          return `
+            <tr class="border-t border-abyss-800">
+              <td class="py-2 px-2">${imageUrl
+                ? `<img src="${escapeXml(imageUrl)}" alt="${escapeXml(card?.name || cardId)}" class="w-10 h-14 object-contain rounded bg-abyss-950" loading="lazy" />`
+                : '<span class="text-[10px] text-slate-500">No image</span>'}</td>
+              <td class="py-2 px-2 font-semibold text-starlight-50">${escapeXml(card?.name || cardId)}</td>
+              <td class="py-2 px-2 text-slate-300">${escapeXml(card?.sourceGame || '')}</td>
+              <td class="py-2 px-2 text-right font-mono font-bold text-purple-200">${Number(points)}</td>
+            </tr>`;
+        }).join('');
+      const assignedPointRows = buildAssignedPointRows(state.assignedPointsSortBy);
 
       editorContainer.innerHTML = `
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-abyss-700 pb-4">
@@ -4328,13 +4822,13 @@
             <input id="fmtLifeInput" type="text" value="${escapeXml(fmt.startingLifeFormula || '30 Life')}" class="w-full bg-abyss-950 border border-abyss-600 rounded-xl px-3 py-2 text-xs text-starlight-50" />
           </div>
           <div class="md:col-span-2">
-            <label class="block text-[11px] font-semibold text-starlight-200 mb-1">Format-Principle Summary</label>
+            <label class="block text-[11px] font-semibold text-starlight-200 mb-1">Format Summary</label>
             <input id="fmtDescInput" type="text" value="${escapeXml(fmt.description || '')}" class="w-full bg-abyss-950 border border-abyss-600 rounded-xl px-3 py-2 text-xs text-starlight-50" />
           </div>
         </div>
 
         <div class="bg-abyss-950 border border-abyss-700 rounded-xl p-4 space-y-3">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-starlight-300">1. Points-Principle Budget &amp; Rarity Point Tiers</h4>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-starlight-300">1. Points Budget &amp; Rarity Point Tiers</h4>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div>
               <label class="block text-[10px] text-starlight-200 mb-1">Total Point Cap</label>
@@ -4454,6 +4948,52 @@
           </div>
         </div>
 
+        <div class="bg-abyss-950 border border-abyss-700 rounded-xl p-4 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-300">4. Deck Roles and Cross-Game Rules</h4>
+          <p class="text-[11px] text-slate-300">Blank allowed-game lists leave a role unrestricted. Cards using a role outside its native game pay that role's point surcharge.</p>
+          <div class="space-y-2">
+            ${DECK_ROLES.map(role => `
+              <div class="grid grid-cols-1 sm:grid-cols-[115px_1fr_100px] gap-2 items-center">
+                <span class="text-xs font-semibold text-starlight-100">${escapeXml(role)}</span>
+                <input data-role-allowed-games="${escapeXml(role)}" type="text" value="${escapeXml((roleAllowedGames[role] || []).join(', '))}" placeholder="All games (or codes: MTG, SWU...)" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1.5 text-[10px] font-mono text-starlight-50" />
+                <label class="flex items-center gap-1 text-[10px] text-slate-300">Off-game pts
+                  <input data-role-point-cost="${escapeXml(role)}" type="number" min="0" value="${Number(rolePointCosts[role] ?? 1)}" class="w-12 bg-abyss-900 border border-abyss-600 rounded px-1 py-1 text-center font-mono text-starlight-50" />
+                </label>
+              </div>
+            `).join('')}
+            <label class="grid grid-cols-1 sm:grid-cols-[115px_1fr_100px] gap-2 items-center">
+              <span class="text-xs font-semibold text-starlight-100">Custom role</span>
+              <input data-role-allowed-games="__custom" type="text" value="${escapeXml((roleAllowedGames.__custom || []).join(', '))}" placeholder="All games (or comma-separated game codes)" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1.5 text-[10px] font-mono text-starlight-50" />
+              <span class="flex items-center gap-1 text-[10px] text-slate-300">Off-game pts
+                <input id="fmtCustomRolePointCost" type="number" min="0" value="${Number(fmt.customRolePointCost ?? 1)}" class="w-12 bg-abyss-900 border border-abyss-600 rounded px-1 py-1 text-center font-mono text-starlight-50" />
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-abyss-950 border border-abyss-700 rounded-xl p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-purple-300">Cards Assigned a Point Value</h4>
+              <p class="text-[11px] text-slate-300">Only cards with a specifically assigned value of at least 1 point appear here.</p>
+            </div>
+            <label class="flex items-center gap-1.5 text-[11px] text-slate-300">Sort by
+              <select id="assignedPointsSortSelect" class="rounded-lg px-2 py-1 text-[10px] border border-abyss-600">
+                <option value="points_desc">Points (high to low)</option>
+                <option value="points_asc">Points (low to high)</option>
+                <option value="name_asc">Name (A–Z)</option>
+                <option value="game_asc">Source game (A–Z)</option>
+              </select>
+            </label>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="text-[10px] uppercase tracking-wider text-slate-400"><tr><th class="py-2 px-2">Image</th><th class="py-2 px-2">Card</th><th class="py-2 px-2">Game</th><th class="py-2 px-2 text-right">Points</th></tr></thead>
+              <tbody id="assignedPointRows">${assignedPointRows || '<tr><td colspan="4" class="py-4 text-center text-slate-400">No cards have a non-zero point override in this format.</td></tr>'}</tbody>
+            </table>
+          </div>
+        </div>
+
         <div class="flex justify-end">
           <button id="saveFormatRulesBtn" type="button" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-starlight-300 to-amber-500 hover:from-starlight-200 hover:to-amber-400 text-abyss-950 font-bold text-xs shadow transition cursor-pointer">
             Save ${escapeXml(fmt.name)} Specs
@@ -4461,8 +5001,19 @@
         </div>
       `;
 
+      const pointSortSelect = document.getElementById('assignedPointsSortSelect');
+      pointSortSelect.value = state.assignedPointsSortBy;
+      pointSortSelect.addEventListener('change', () => {
+        state.assignedPointsSortBy = pointSortSelect.value;
+        document.getElementById('assignedPointRows').innerHTML =
+          buildAssignedPointRows(state.assignedPointsSortBy) ||
+          '<tr><td colspan="4" class="py-4 text-center text-slate-400">No cards have a non-zero point override in this format.</td></tr>';
+      });
+
       if (!canEditFormat) {
-        editorContainer.querySelectorAll('input, select').forEach(control => { control.disabled = true; });
+        editorContainer.querySelectorAll('input, select').forEach(control => {
+          if (control !== pointSortSelect) control.disabled = true;
+        });
         const saveButton = document.getElementById('saveFormatRulesBtn');
         saveButton.disabled = true;
         saveButton.textContent = 'Administrator access required';
@@ -4534,20 +5085,33 @@
         fmt.eraEndYear = Number(document.getElementById('fmtEraEndInput').value) || 2030;
         fmt.firstPrintingsOnly = document.getElementById('fmtFirstPrintCheck').checked;
         fmt.customBannedCards = document.getElementById('fmtGamebreakersInput').value.split(',').map(s => s.trim()).filter(Boolean);
+        fmt.rolePointCosts = Object.fromEntries(Array.from(document.querySelectorAll('[data-role-point-cost]'))
+          .map(input => [input.dataset.rolePointCost, Math.max(0, Number(input.value) || 0)]));
+        fmt.customRolePointCost = Math.max(0, Number(document.getElementById('fmtCustomRolePointCost').value) || 0);
+        fmt.roleAllowedGames = {};
+        let invalidRoleGameCode = '';
+        document.querySelectorAll('[data-role-allowed-games]').forEach(input => {
+          const role = input.dataset.roleAllowedGames;
+          const games = input.value.split(',').map(code => code.trim().toUpperCase()).filter(Boolean);
+          const invalidCode = games.find(code => !ALL_SUPPORTED_GAMES.some(game => game.id === code));
+          if (invalidCode) invalidRoleGameCode = invalidCode;
+          fmt.roleAllowedGames[role] = games;
+        });
+        if (invalidRoleGameCode) {
+          Object.assign(fmt, previousFormat);
+          syncAllViews();
+          showToast(`Unknown game code "${invalidRoleGameCode}" in role rules. Use a supported game code.`, 'error');
+          return;
+        }
 
         if (fmt.id === 'ouroboros') {
           try {
-            if (!state.currentUser) throw new Error('Sign in as an administrator to publish Ouroboros rules.');
-            await setDoc(doc(db, 'sharedFormats', 'ouroboros'), {
-              format: JSON.parse(JSON.stringify(fmt)),
-              updatedBy: state.currentUser.uid,
-              updatedAt: serverTimestamp()
-            }, { merge: true });
+            await saveSharedOuroborosFormat(fmt);
           } catch (error) {
             Object.assign(fmt, previousFormat);
             syncAllViews();
             console.error('Ouroboros shared update failed:', error);
-            showToast(`Could not update shared Ouroboros rules: ${error.message}`, 'error');
+            showToast(`Could not update shared Ouroboros rules: ${sharedFormatWriteErrorMessage(error)}`, 'error');
             return;
           }
         }
@@ -4560,6 +5124,33 @@
     // =========================================================================
     // 14. DECK MUTATIONS, CUSTOM TAGS, ALPHABETICAL SORTING, & SAMPLE HAND
     // =========================================================================
+    function moveCardToZone(cardId, fromZone, targetZone) {
+      if (state.sharedViewData || fromZone === targetZone || !DECK_ZONES.some(zone => zone.id === targetZone)) return false;
+      const deck = getActiveDeck();
+      const sourceIndex = deck.cards.findIndex(card => card.id === cardId && getCardZone(card) === fromZone);
+      if (sourceIndex < 0) return false;
+
+      const sourceCard = deck.cards[sourceIndex];
+      const oldFeatureKey = getFeaturedCardKey(sourceCard);
+      const destinationCard = deck.cards.find(card => card.id === cardId && getCardZone(card) === targetZone);
+      const newFeatureKey = `${targetZone}::${cardId}`;
+      if (destinationCard) {
+        destinationCard.quantity = (Number(destinationCard.quantity) || 1) + (Number(sourceCard.quantity) || 1);
+        destinationCard.tags = Array.from(new Set([...(destinationCard.tags || []), ...(sourceCard.tags || [])]));
+        if (!destinationCard.deckRole) destinationCard.deckRole = sourceCard.deckRole || '';
+        deck.cards.splice(sourceIndex, 1);
+      } else {
+        sourceCard.deckZone = targetZone;
+      }
+
+      if (deck.exemplarFeatureId === oldFeatureKey) deck.exemplarFeatureId = newFeatureKey;
+      deck.sampleFeatureCardIds = (deck.sampleFeatureCardIds || []).map(key => key === oldFeatureKey ? newFeatureKey : key);
+      deck.sampleFeatureCardIds = [...new Set(deck.sampleFeatureCardIds)];
+      saveAllStateToStorage();
+      syncAllViews();
+      return true;
+    }
+
     function addCardToDeck(cardObj, qty = 1, deckZone = state.activeDeckZone) {
       if (state.sharedViewData) {
         showToast('Exit Shared View or Clone this deck first to edit.', 'info');
@@ -4587,11 +5178,11 @@
       syncAllViews();
     }
 
-    function updateCardQuantity(cardId, delta) {
+    function updateCardQuantity(cardId, delta, deckZone = state.activeDeckZone) {
       if (state.sharedViewData) return;
       const deck = getActiveDeck();
       if (!deck) return;
-      const idx = deck.cards.findIndex(c => c.id === cardId && getCardZone(c) === state.activeDeckZone);
+      const idx = deck.cards.findIndex(c => c.id === cardId && getCardZone(c) === deckZone);
       if (idx === -1) return;
       deck.cards[idx].quantity = Math.max(1, Number(deck.cards[idx].quantity) || 1) + delta;
       if (deck.cards[idx].quantity <= 0) {
@@ -4602,12 +5193,12 @@
       syncAllViews();
     }
 
-    function removeCardCompletely(cardId) {
+    function removeCardCompletely(cardId, deckZone = state.activeDeckZone) {
       if (state.sharedViewData) return;
       const deck = getActiveDeck();
       if (!deck) return;
-      deck.cards = deck.cards.filter(c => c.id !== cardId || getCardZone(c) !== state.activeDeckZone);
-      removeDeckFeatureCard(deck, `${state.activeDeckZone}::${cardId}`);
+      deck.cards = deck.cards.filter(c => c.id !== cardId || getCardZone(c) !== deckZone);
+      removeDeckFeatureCard(deck, `${deckZone}::${cardId}`);
       saveAllStateToStorage();
       syncAllViews();
     }
@@ -4616,7 +5207,7 @@
       if (state.sharedViewData) return;
       const tag = rawTag.trim();
       if (!tag) return;
-      const card = getDeckZoneCards(getActiveDeck()).find(c => c.id === cardId);
+      const card = getActiveDeck()?.cards.find(c => c.id === cardId);
       if (!card) return;
       if (!Array.isArray(card.tags)) card.tags = [];
       if (!card.tags.some(t => t.toLowerCase() === tag.toLowerCase())) {
@@ -4628,7 +5219,7 @@
 
     function removeTagFromDeckCard(cardId, tagToRemove) {
       if (state.sharedViewData) return;
-      const card = getDeckZoneCards(getActiveDeck()).find(c => c.id === cardId);
+      const card = getActiveDeck()?.cards.find(c => c.id === cardId);
       if (!card || !Array.isArray(card.tags)) return;
       card.tags = card.tags.filter(t => t !== tagToRemove);
       if (state.activeTagFilter === tagToRemove) state.activeTagFilter = '';
@@ -4692,6 +5283,61 @@
       document.getElementById('vaultCapacityBadge').textContent = `${state.decks.length} Deckslots`;
     }
 
+    function renderCompareListSelectors() {
+      const selectA = document.getElementById('compareListA');
+      const selectB = document.getElementById('compareListB');
+      const previousA = selectA.value;
+      const previousB = selectB.value;
+      const options = state.decks.map(deck => `<option value="${escapeXml(deck.id)}">${escapeXml(deck.name)}</option>`).join('');
+      selectA.innerHTML = options;
+      selectB.innerHTML = options;
+      selectA.value = state.decks.some(deck => deck.id === previousA) ? previousA : state.activeDeckId;
+      const alternateDeck = state.decks.find(deck => deck.id !== selectA.value);
+      selectB.value = state.decks.some(deck => deck.id === previousB)
+        ? previousB
+        : (alternateDeck?.id || selectA.value);
+    }
+
+    function compareDeckLists() {
+      const deckA = state.decks.find(deck => deck.id === document.getElementById('compareListA').value);
+      const deckB = state.decks.find(deck => deck.id === document.getElementById('compareListB').value);
+      const results = document.getElementById('compareListsResults');
+      if (!deckA || !deckB) {
+        results.innerHTML = '<p class="text-sm text-slate-300">Choose two deck lists to compare.</p>';
+        return;
+      }
+
+      const listCards = deck => deck.cards || [];
+      const keyFor = card => `${getCardZone(card)}::${card.sourceGame}::${card.id}`;
+      const cardsA = new Map(listCards(deckA).map(card => [keyFor(card), card]));
+      const cardsB = new Map(listCards(deckB).map(card => [keyFor(card), card]));
+      const keys = [...new Set([...cardsA.keys(), ...cardsB.keys()])];
+      const rows = keys.map(key => {
+        const cardA = cardsA.get(key);
+        const cardB = cardsB.get(key);
+        const quantityA = Number(cardA?.quantity) || 0;
+        const quantityB = Number(cardB?.quantity) || 0;
+        return { key, card: cardA || cardB, quantityA, quantityB };
+      }).sort((a, b) => a.card.name.localeCompare(b.card.name));
+      const differences = rows.filter(row => row.quantityA !== row.quantityB);
+      results.innerHTML = `
+        <div class="text-xs text-slate-300 mb-2">${differences.length} card/board difference(s) · Maybeboard excluded</div>
+        <table class="w-full text-left text-xs">
+          <thead class="text-[10px] uppercase tracking-wider text-slate-400"><tr>
+            <th class="py-2 px-2">Board</th><th class="py-2 px-2">Game</th><th class="py-2 px-2">Card</th>
+            <th class="py-2 px-2 text-right">${escapeXml(deckA.name)}</th><th class="py-2 px-2 text-right">${escapeXml(deckB.name)}</th>
+          </tr></thead>
+          <tbody>${(differences.length ? differences : rows).map(row => `
+            <tr class="border-t border-abyss-800 ${row.quantityA !== row.quantityB ? 'bg-amber-950/20' : ''}">
+              <td class="py-2 px-2 text-slate-300">${escapeXml(DECK_ZONES.find(zone => zone.id === getCardZone(row.card))?.label || 'Main Deck')}</td>
+              <td class="py-2 px-2 text-slate-300">${escapeXml(row.card.sourceGame)}</td>
+              <td class="py-2 px-2 text-starlight-50">${escapeXml(row.card.name)}</td>
+              <td class="py-2 px-2 text-right font-mono">${row.quantityA || '—'}</td>
+              <td class="py-2 px-2 text-right font-mono">${row.quantityB || '—'}</td>
+            </tr>`).join('') || '<tr><td colspan="5" class="py-4 text-center text-slate-400">Both lists are empty.</td></tr>'}</tbody>
+        </table>`;
+    }
+
     function renderFormatSelectorAndAudit() {
       const activeFmt = getActiveFormat();
       const selector = document.getElementById('activeFormatSelector');
@@ -4709,6 +5355,11 @@
       ptsLabel.textContent = audit.unlimitedPoints ? `${audit.totalPoints} / ∞` : `${audit.totalPoints} / ${audit.pointCap}`;
       const overBudget = !audit.unlimitedPoints && audit.totalPoints > audit.pointCap;
       ptsLabel.className = overBudget ? 'font-bold text-rose-400' : 'font-bold text-emerald-300';
+      const morphologyLabel = document.getElementById('deckMorphologyLabel');
+      morphologyLabel.textContent = `${audit.morphologyPercent.toFixed(2)}%`;
+      morphologyLabel.className = Math.abs(audit.morphologyPercent - 100) <= 0.0001
+        ? 'font-bold text-emerald-300'
+        : 'font-bold text-amber-300';
 
       const statusDot = document.getElementById('formatStatusDot');
       const statusText = document.getElementById('formatStatusSummaryText');
@@ -4780,6 +5431,7 @@
             <span style="${theme.badgeStyle}" class="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-md text-[10px] font-mono font-extrabold uppercase tracking-wider border shadow-md transition-opacity ${badgeVisibility}">
               ${escapeXml(card.sourceGame)}
             </span>
+            ${card.deckRole ? `<span class="absolute top-9 left-2 z-10 max-w-[70%] truncate px-2 py-0.5 rounded-md bg-emerald-950/95 border border-emerald-400/60 text-emerald-200 text-[9px] font-bold shadow">${escapeXml(card.deckRole)}</span>` : ''}
 
             <div class="absolute top-2 right-2 flex items-center gap-1 transition-opacity ${badgeVisibility}">
               ${cardPts > 0 ? `<span class="px-1.5 py-0.5 rounded-full bg-purple-950/95 border border-purple-400/60 text-purple-200 font-mono text-[10px] font-bold shadow">${cardPts}p</span>` : ''}
@@ -4860,12 +5512,20 @@
         tagStrip.classList.add('hidden');
       }
 
-      if (activeZoneCards.length === 0) {
+      const featuredKeys = new Set([
+        deck.exemplarFeatureId,
+        ...(deck.sampleFeatureCardIds || [])
+      ].filter(Boolean));
+      const workspaceCards = state.viewMode === 'featured'
+        ? activeZoneCards.filter(card => featuredKeys.has(getFeaturedCardKey(card)))
+        : activeZoneCards;
+
+      if (workspaceCards.length === 0) {
         canvas.innerHTML = `
           <div class="h-full min-h-[380px] flex flex-col items-center justify-center text-center max-w-md mx-auto px-4">
-            <h3 class="font-display text-lg font-bold text-starlight-50 mb-1.5">${escapeXml(activeZone.label)} is Empty</h3>
+            <h3 class="font-display text-lg font-bold text-starlight-50 mb-1.5">${state.viewMode === 'featured' ? 'No Featured Cards in This Board' : `${escapeXml(activeZone.label)} is Empty`}</h3>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Add cards from search or import a decklist. New cards go into the selected slot.
+              ${state.viewMode === 'featured' ? 'Mark cards with E or S in the full deck view to feature them.' : 'Add cards from search or import a decklist. New cards go into the selected slot.'}
             </p>
           </div>
         `;
@@ -4873,8 +5533,8 @@
       }
 
       const filteredCards = state.activeTagFilter
-        ? activeZoneCards.filter(c => Array.isArray(c.tags) && c.tags.includes(state.activeTagFilter))
-        : activeZoneCards;
+        ? workspaceCards.filter(c => Array.isArray(c.tags) && c.tags.includes(state.activeTagFilter))
+        : workspaceCards;
 
       const sortedCards = getSortedDeckCards(filteredCards);
 
@@ -5442,6 +6102,8 @@
     // 17. CARD INSPECTOR MODAL, VAULT, ROADMAP, AUTH MODAL, & EVENT WIRING
     // =========================================================================
     async function openCardInspector(card) {
+      ensureCustomCardVersions(card);
+      state.inspectorFaceIndex = 0;
       const modal = document.getElementById('cardInspectorModal');
       const theme = getBadgeStyleForGame(card.sourceGame);
 
@@ -5452,6 +6114,26 @@
         const ver = getActiveVersion(card);
         const versions = card.versions || [ver];
         const activeIdx = getPreferredVersionIdx(card);
+        const faces = Array.isArray(ver.faces) ? ver.faces : [];
+        const face = faces[state.inspectorFaceIndex] || null;
+        const faceControls = document.getElementById('inspectorFaceControls');
+        faceControls.classList.toggle('hidden', faces.length < 2);
+        faceControls.querySelectorAll('[data-inspector-face]').forEach(button => {
+          const isActive = Number(button.dataset.inspectorFace) === state.inspectorFaceIndex;
+          button.className = isActive
+            ? 'py-1.5 rounded-lg bg-starlight-300 text-abyss-950 text-xs font-bold cursor-pointer'
+            : 'py-1.5 rounded-lg bg-abyss-800 text-starlight-100 text-xs font-bold cursor-pointer';
+          button.onclick = () => {
+            state.inspectorFaceIndex = Number(button.dataset.inspectorFace);
+            renderModalContents();
+          };
+        });
+        const customImageControls = document.getElementById('inspectorCustomImageControls');
+        customImageControls.classList.toggle('hidden', card.sourceGame === 'CUSTOM' || Boolean(state.sharedViewData));
+        document.getElementById('inspectorUploadCustomImageBtn').onclick = async () => {
+          const uploadedVersion = await uploadCustomCardImage(card);
+          if (uploadedVersion) renderModalContents();
+        };
 
         // Reset gallery status so MTG status messages never bleed onto SWU/YGO/PKM/etc.
         const statusEl = document.getElementById('inspectorGalleryStatus');
@@ -5466,16 +6148,16 @@
         badge.setAttribute('style', theme.badgeStyle);
         badge.className = 'px-2.5 py-0.5 rounded-md text-xs font-mono font-extrabold uppercase tracking-wider border shadow';
 
-        document.getElementById('inspectorCardName').textContent = card.name;
+        document.getElementById('inspectorCardName').textContent = face?.name || card.name;
         document.getElementById('inspectorCategory').textContent = card.category || 'Universal Card';
         document.getElementById('inspectorOriginalYear').textContent = String(card.originalYear || ver.year || '—');
         document.getElementById('inspectorStats').textContent = card.statsText || '—';
-        document.getElementById('inspectorTypeLine').textContent = card.typeLine || '—';
+        document.getElementById('inspectorTypeLine').textContent = face?.typeLine || card.typeLine || '—';
         document.getElementById('inspectorSetInfo').textContent = ver.setInfo || '';
-        document.getElementById('inspectorOracleText').textContent = card.rulesText || 'No rules text.';
+        document.getElementById('inspectorOracleText').textContent = face?.rulesText || card.rulesText || 'No rules text.';
 
         document.getElementById('inspectorImageContainer').innerHTML = `
-          <div class="tcg-aspect w-full">${renderCardVisualHtml(card)}</div>
+          <div class="tcg-aspect w-full">${renderCardVisualHtml(card, '', activeIdx, state.inspectorFaceIndex)}</div>
         `;
 
         // Bookmark button state inside Card Inspector
@@ -5523,6 +6205,7 @@
               setDeckSpecificPreferredVersion(card, chosen);
               showToast(`Set preferred printing specifically for "${activeDeckObj.name}"`, 'gold');
             }
+            state.inspectorFaceIndex = 0;
             syncAllViews();
             renderModalContents();
           };
@@ -5539,6 +6222,7 @@
 
         verSelect.onchange = (e) => {
           setPreferredVersionForCard(card, Number(e.target.value));
+          state.inspectorFaceIndex = 0;
           syncAllViews();
           renderModalContents();
           showToast('Saved global default printing for this card', 'gold');
@@ -5562,15 +6246,80 @@
         galleryEl.querySelectorAll('[data-gallery-ver-idx]').forEach(btn => {
           btn.addEventListener('click', () => {
             setPreferredVersionForCard(card, Number(btn.dataset.galleryVerIdx));
+            state.inspectorFaceIndex = 0;
             syncAllViews();
             renderModalContents();
             showToast('Saved preferred printing as default for this card', 'gold');
           });
         });
 
-        const deckEntry = getDeckZoneCards(getActiveDeck()).find(c => c.id === card.id);
+        const activeDeck = getActiveDeck();
+        const deckEntry = activeDeck?.cards.find(c => c.id === card.id);
         const tagsSection = document.getElementById('inspectorDeckTagsSection');
+        const moveBox = document.getElementById('inspectorMoveCardBox');
+        const boardZoneControls = document.getElementById('inspectorBoardZoneControls');
+        if (activeDeck && !state.sharedViewData) {
+          moveBox.classList.remove('hidden');
+          boardZoneControls.innerHTML = DECK_ZONES.map(zone => {
+            const quantity = getCardQuantityInZone(activeDeck, card.id, zone.id);
+            return `
+              <div class="rounded-lg border border-abyss-700 bg-abyss-900 p-1.5">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="truncate text-[10px] font-semibold text-starlight-100">${escapeXml(zone.label)}</span>
+                  <span class="font-mono text-[10px] text-starlight-300">${quantity}</span>
+                </div>
+                <div class="mt-1 grid grid-cols-2 gap-1">
+                  <button type="button" data-board-zone-remove="${zone.id}" ${quantity === 0 ? 'disabled' : ''} class="rounded bg-rose-500/20 px-1 py-1 text-[9px] font-semibold text-rose-200 enabled:hover:bg-rose-500/35 disabled:cursor-not-allowed disabled:opacity-40">− Remove</button>
+                  <button type="button" data-board-zone-add="${zone.id}" class="rounded bg-emerald-500/20 px-1 py-1 text-[9px] font-semibold text-emerald-200 hover:bg-emerald-500/35">+ Add</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+          boardZoneControls.querySelectorAll('[data-board-zone-add]').forEach(button => {
+            button.addEventListener('click', () => {
+              addCardToDeck(card, 1, button.dataset.boardZoneAdd);
+              renderModalContents();
+            });
+          });
+          boardZoneControls.querySelectorAll('[data-board-zone-remove]').forEach(button => {
+            button.addEventListener('click', () => {
+              updateCardQuantity(card.id, -1, button.dataset.boardZoneRemove);
+              renderModalContents();
+            });
+          });
+        } else {
+          moveBox.classList.add('hidden');
+        }
+
         if (deckEntry && !state.sharedViewData) {
+          const roleSection = document.getElementById('inspectorRoleSection');
+          const roleSelect = document.getElementById('inspectorDeckRoleSelect');
+          roleSection.classList.remove('hidden');
+          const roles = [...DECK_ROLES];
+          if (deckEntry.deckRole && !roles.includes(deckEntry.deckRole)) roles.push(deckEntry.deckRole);
+          roleSelect.innerHTML = `<option value="">No special role</option>${roles.map(role =>
+            `<option value="${escapeXml(role)}">${escapeXml(role)}</option>`
+          ).join('')}<option value="__custom">Add custom role…</option>`;
+          roleSelect.value = deckEntry.deckRole || '';
+          roleSelect.onchange = async () => {
+            let role = roleSelect.value;
+            if (role === '__custom') {
+              role = (await showCustomDialog({
+                title: 'Assign a Custom Deck Role',
+                defaultValue: deckEntry.deckRole && !DECK_ROLES.includes(deckEntry.deckRole) ? deckEntry.deckRole : '',
+                confirmText: 'Assign'
+              }) || '').trim();
+              if (!role) {
+                roleSelect.value = deckEntry.deckRole || '';
+                return;
+              }
+            }
+            deckEntry.deckRole = role;
+            saveAllStateToStorage();
+            syncAllViews();
+            renderModalContents();
+          };
+
           tagsSection.classList.remove('hidden');
           const tags = deckEntry.tags || [];
           document.getElementById('inspectorTagsChips').innerHTML = tags.length > 0
@@ -5598,6 +6347,7 @@
             }
           };
         } else {
+          document.getElementById('inspectorRoleSection').classList.add('hidden');
           tagsSection.classList.add('hidden');
         }
 
@@ -5611,20 +6361,57 @@
         document.getElementById('inspectorPointInput').disabled = !canEditPoints;
         document.getElementById('inspectorSavePointBtn').disabled = !canEditPoints;
 
-        document.getElementById('inspectorSavePointBtn').onclick = () => {
+        document.getElementById('inspectorSavePointBtn').onclick = async () => {
           if (activeFmt.id === 'ouroboros' && !isAdministrator()) {
             showToast('Only administrators can edit Ouroboros.', 'error');
             return;
           }
+          const previousFormat = activeFmt.id === 'ouroboros'
+            ? JSON.parse(JSON.stringify(activeFmt))
+            : null;
           const val = Math.max(0, Number(document.getElementById('inspectorPointInput').value) || 0);
           if (!activeFmt.cardPointOverrides) activeFmt.cardPointOverrides = {};
           activeFmt.cardPointOverrides[card.id] = val;
+          if (!activeFmt.cardPointCards) activeFmt.cardPointCards = {};
+          const pointCardVersion = getActiveVersion(card);
+          activeFmt.cardPointCards[card.id] = {
+            id: card.id,
+            sourceGame: card.sourceGame,
+            name: card.name,
+            category: card.category || '',
+            rarity: card.rarity || '',
+            typeLine: card.typeLine || '',
+            statsText: card.statsText || '',
+            rulesText: card.rulesText || '',
+            nativeRoles: Array.isArray(card.nativeRoles) ? [...card.nativeRoles] : [],
+            selectedVersionIdx: 0,
+            versions: [{
+              id: pointCardVersion.id || getVersionPreferenceKey(pointCardVersion),
+              label: pointCardVersion.label || 'Assigned printing',
+              setInfo: pointCardVersion.setInfo || '',
+              year: pointCardVersion.year || card.originalYear || 0,
+              imageUrl: pointCardVersion.imageUrl || ''
+            }]
+          };
+          if (activeFmt.id === 'ouroboros') {
+            try {
+              await saveSharedOuroborosFormat(activeFmt);
+            } catch (error) {
+              Object.assign(activeFmt, previousFormat);
+              syncAllViews();
+              console.error('Ouroboros point override update failed:', error);
+              showToast(`Could not update shared Ouroboros rules: ${sharedFormatWriteErrorMessage(error)}`, 'error');
+              return;
+            }
+          }
           saveAllStateToStorage();
           syncAllViews();
           showToast(`Assigned ${val} pts to ${card.name} in ${activeFmt.name}`, 'gold');
         };
 
-        document.getElementById('inspectorQtyVal').textContent = String(deckEntry ? deckEntry.quantity : 0);
+        document.getElementById('inspectorQtyVal').textContent = String(
+          getCardQuantityInZone(activeDeck, card.id, state.activeDeckZone)
+        );
 
         document.getElementById('inspectorPlusBtn').onclick = () => {
           addCardToDeck(card, 1);
@@ -5662,10 +6449,6 @@
         const isCurrent = deck.id === state.activeDeckId;
         const totalCards = deck.cards.reduce((s, c) => s + (Number(c.quantity) || 1), 0);
         const exemplarCard = getDeckFeatureCard(deck, deck.exemplarFeatureId);
-        const exemplarVersion = exemplarCard?.versions?.[getPreferredVersionIdx(exemplarCard, deck)];
-        const exemplarArt = exemplarCard
-          ? (exemplarVersion?.imageUrl || exemplarCard.imageUrl || '')
-          : '';
         const sampleFeatureCards = shuffleArray(getDeckSampleFeatureCards(deck));
         const gameSet = Array.from(new Set(deck.cards.map(c => c.sourceGame)));
 
@@ -5686,18 +6469,19 @@
                 ${gameSet.map(g => `<span class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-abyss-800 text-starlight-100">${escapeXml(g)}</span>`).join('')}
               </div>
 
-              <div class="mt-3 h-24 bg-abyss-950 rounded-xl border border-abyss-800 relative overflow-hidden">
-                ${exemplarArt
-                  ? `<div class="absolute inset-0 bg-cover bg-center" style="background-image:url(&quot;${escapeXml(exemplarArt)}&quot;)"></div>`
-                  : exemplarCard
-                    ? `<div class="absolute inset-0 opacity-40">${renderCardVisualHtml(exemplarCard)}</div>`
-                    : ''
-                }
-                <div class="absolute inset-0 bg-gradient-to-t from-abyss-950/85 via-abyss-950/25 to-abyss-950/10"></div>
-                ${sampleFeatureCards.length > 0
-                  ? `<div class="absolute inset-0">${renderCyclicalCardFan(sampleFeatureCards, 30)}</div>`
-                  : `<span class="absolute inset-0 flex items-center justify-center text-[11px] text-slate-300">${deck.cards.length > 0 ? 'Choose S cards for the sample fan' : 'Empty Deckslot'}</span>`
-                }
+              <div class="mt-3 h-24 bg-abyss-950 rounded-xl border border-abyss-800 overflow-hidden grid grid-cols-[1.08fr_0.92fr] gap-1 p-1">
+                <div class="min-w-0 min-h-0 rounded-lg overflow-hidden border border-starlight-300/40 bg-abyss-900">
+                  ${exemplarCard
+                    ? renderCardVisualHtml(exemplarCard)
+                    : `<span class="h-full flex items-center justify-center text-[10px] text-slate-300 text-center px-1">${deck.cards.length > 0 ? 'Choose E for exemplar' : 'Empty Deckslot'}</span>`
+                  }
+                </div>
+                <div class="min-w-0 min-h-0 grid grid-cols-4 grid-rows-4 gap-0.5">
+                  ${sampleFeatureCards.length > 0
+                    ? sampleFeatureCards.map(card => `<div class="min-w-0 min-h-0 rounded-sm overflow-hidden border border-sky-300/50 bg-abyss-900" title="${escapeXml(card.name)}">${renderCardVisualHtml(card)}</div>`).join('')
+                    : `<span class="col-span-4 row-span-4 flex items-center justify-center text-[9px] text-slate-400 text-center">Sample cards</span>`
+                  }
+                </div>
               </div>
             </div>
 
@@ -6051,7 +6835,7 @@
             closeAuthModal();
             showToast('Signed in to Eclectica Cloud!', 'success');
           } else {
-            if (!displayName) throw new Error('Choose a username to create your account.');
+            if (!isValidUsername(displayName)) throw new Error('Choose a username between 1 and 32 characters. Do not use an email address as your username.');
             const cred = await createUserWithEmailAndPassword(auth, email, password);
             if (cred.user) {
               await updateProfile(cred.user, { displayName });
@@ -6064,6 +6848,37 @@
           authErrorBox.classList.remove('hidden');
         } finally {
           authSubmitBtn.disabled = false;
+        }
+      });
+
+      document.getElementById('editUsernameBtn').addEventListener('click', async () => {
+        if (!state.currentUser) return;
+        const updatedUsername = await showCustomDialog({
+          title: 'Change Username',
+          message: 'This is the name shown to other players.',
+          defaultValue: state.username,
+          confirmText: 'Save Username'
+        });
+        if (typeof updatedUsername !== 'string') return;
+        const username = updatedUsername.trim();
+        if (!isValidUsername(username)) {
+          showToast('Username must be 1–32 characters and cannot be an email address.', 'error');
+          return;
+        }
+
+        try {
+          await setDoc(doc(db, 'users', state.currentUser.uid), {
+            username,
+            displayName: username,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+          await updateProfile(state.currentUser, { displayName: username });
+          state.username = username;
+          document.getElementById('authUserLabel').textContent = `${username}${isAdministrator() ? ' · Admin' : ''}`;
+          showToast('Username updated.', 'success');
+        } catch (error) {
+          console.error('Username update failed:', error);
+          showToast(`Could not update username: ${error.message}`, 'error');
         }
       });
 
@@ -6134,6 +6949,23 @@
         authModal.classList.remove('hidden');
         authModal.classList.add('flex');
       });
+
+      const compareModal = document.getElementById('compareListsModal');
+      const closeCompareModal = () => {
+        compareModal.classList.add('hidden');
+        compareModal.classList.remove('flex');
+      };
+      document.getElementById('closeCompareListsBtn').addEventListener('click', closeCompareModal);
+      compareModal.addEventListener('click', event => { if (event.target === compareModal) closeCompareModal(); });
+      document.getElementById('openCompareListsBtn').addEventListener('click', () => {
+        renderCompareListSelectors();
+        compareDeckLists();
+        compareModal.classList.remove('hidden');
+        compareModal.classList.add('flex');
+      });
+      document.getElementById('runCompareListsBtn').addEventListener('click', compareDeckLists);
+      document.getElementById('compareListA').addEventListener('change', compareDeckLists);
+      document.getElementById('compareListB').addEventListener('change', compareDeckLists);
 
       document.getElementById('toggleDeckPublicBtn').addEventListener('click', async () => {
         const url = await publishActiveDeckToCloud();
@@ -6591,7 +7423,14 @@
       });
 
       document.getElementById('downloadAllDecksJsonBtn').addEventListener('click', () => {
-        const blob = new Blob([JSON.stringify({ decks: state.decks, formats: state.formats, customCardPool: state.customCardPool, preferredVersions: state.preferredVersions }, null, 2)], { type: 'application/json' });
+        const blob = new Blob([JSON.stringify({
+          decks: state.decks,
+          formats: state.formats,
+          customCardPool: state.customCardPool,
+          preferredVersions: state.preferredVersions,
+          customCardVersions: state.customCardVersions,
+          bookmarkedCards: state.bookmarkedCards
+        }, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -6622,6 +7461,8 @@
               }
               if (Array.isArray(imported.customCardPool)) state.customCardPool = imported.customCardPool;
               if (imported.preferredVersions) state.preferredVersions = imported.preferredVersions;
+              if (imported.customCardVersions) state.customCardVersions = imported.customCardVersions;
+              if (Array.isArray(imported.bookmarkedCards)) state.bookmarkedCards = imported.bookmarkedCards;
               saveAllStateToStorage();
               syncAllViews();
               closeExport();
