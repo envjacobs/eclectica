@@ -112,15 +112,15 @@
 
     /* Landscape card scans are rotated to fit portrait card slots. */
     .horizontal-card-rotated {
-      position: absolute !important;
-      top: 50% !important;
-      left: 50% !important;
-      width: 140% !important;
-      height: 71.4285% !important;
-      max-width: none !important;
-      max-height: none !important;
-      transform: translate(-50%, -50%) rotate(90deg) !important;
-      object-fit: contain !important;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140%;
+      height: 71.4285%;
+      max-width: none;
+      max-height: none;
+      transform: translate(-50%, -50%) rotate(90deg);
+      object-fit: contain;
     }
   </style>
 </head>
@@ -1084,9 +1084,9 @@
             <span id="inspectorBookmarkLabel">Bookmark Card (Save Without Adding)</span>
           </button>
 
-          <div id="inspectorDeckZoneBox" class="hidden w-full max-w-[290px] bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-2.5 space-y-1">
-            <label for="inspectorDeckZoneSelect" class="block text-[10px] uppercase tracking-wider text-emerald-200 font-bold">Board / Deck Zone</label>
-            <select id="inspectorDeckZoneSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-emerald-400/40 cursor-pointer"></select>
+          <div id="inspectorDeckZoneBox" class="hidden w-full max-w-[290px] bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-2.5 space-y-2">
+            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-bold">Add / Remove by Deck Zone</div>
+            <div id="inspectorDeckZoneActions" class="space-y-1.5"></div>
           </div>
 
           <!-- Deck-Specific Preferred Version Selector -->
@@ -1176,20 +1176,6 @@
             <button id="inspectorBanToggleBtn" type="button" class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer">Ban Card</button>
           </div>
 
-          <div class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-abyss-700">
-            <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-300">Copies on Selected Board:</span>
-              <div class="inline-flex items-center bg-abyss-950 border border-abyss-600 rounded-xl p-1">
-                <button id="inspectorMinusBtn" class="w-8 h-8 rounded-lg hover:bg-abyss-800 text-starlight-50 font-bold transition cursor-pointer">-</button>
-                <span id="inspectorQtyVal" class="w-10 text-center font-mono font-bold text-starlight-300">0</span>
-                <button id="inspectorPlusBtn" class="w-8 h-8 rounded-lg hover:bg-abyss-800 text-starlight-50 font-bold transition cursor-pointer">+</button>
-              </div>
-            </div>
-
-            <button id="inspectorRemoveBtn" class="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-xs font-semibold transition cursor-pointer">
-              Remove All Copies
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -1727,6 +1713,7 @@
       formats: [],
       activeFormatId: 'ouroboros',
       selectedFormatEditorId: 'ouroboros',
+      formatPointsSortBy: 'alpha_asc',
       formatPageOpen: false,
       viewMode: 'grid',
       deckSortBy: 'alpha_asc',
@@ -2282,7 +2269,7 @@
       : null;
 
     function applyAlphaFitBounds(img) {
-      if (!img.naturalWidth || !img.naturalHeight || img.classList.contains('horizontal-card-rotated')) return;
+      if (!img.naturalWidth || !img.naturalHeight) return;
       const bounds = img._alphaFitBounds;
       const host = img.parentElement;
       if (!bounds || !host) return;
@@ -2290,7 +2277,10 @@
       const hostHeight = host.clientHeight;
       if (!hostWidth || !hostHeight) return;
 
-      const scale = Math.min(hostWidth / bounds.width, hostHeight / bounds.height);
+      const rotated = img.classList.contains('horizontal-card-rotated');
+      const scale = rotated
+        ? Math.min(hostWidth / bounds.height, hostHeight / bounds.width)
+        : Math.min(hostWidth / bounds.width, hostHeight / bounds.height);
       const fittedWidth = img.naturalWidth * scale;
       const fittedHeight = img.naturalHeight * scale;
       img.style.position = 'absolute';
@@ -2298,13 +2288,26 @@
       img.style.maxHeight = 'none';
       img.style.width = `${fittedWidth}px`;
       img.style.height = `${fittedHeight}px`;
-      img.style.left = `${(hostWidth - bounds.width * scale) / 2 - bounds.x * scale}px`;
-      img.style.top = `${(hostHeight - bounds.height * scale) / 2 - bounds.y * scale}px`;
+      if (rotated) {
+        const contentCenterX = bounds.x + bounds.width / 2;
+        const contentCenterY = bounds.y + bounds.height / 2;
+        const rotatedOffsetX = (contentCenterY - img.naturalHeight / 2) * scale;
+        const rotatedOffsetY = -(contentCenterX - img.naturalWidth / 2) * scale;
+        img.style.left = `${hostWidth / 2 - rotatedOffsetX - fittedWidth / 2}px`;
+        img.style.top = `${hostHeight / 2 - rotatedOffsetY - fittedHeight / 2}px`;
+        img.style.transform = 'rotate(90deg)';
+        img.style.transformOrigin = 'center center';
+      } else {
+        img.style.left = `${(hostWidth - bounds.width * scale) / 2 - bounds.x * scale}px`;
+        img.style.top = `${(hostHeight - bounds.height * scale) / 2 - bounds.y * scale}px`;
+        img.style.transform = '';
+        img.style.transformOrigin = '';
+      }
       img.classList.remove('object-contain');
     }
 
     function fitCardImageToAlpha(img) {
-      if (!img?.naturalWidth || !img.naturalHeight || img.naturalWidth > img.naturalHeight) return;
+      if (!img?.naturalWidth || !img.naturalHeight) return;
       const src = img.currentSrc || img.src;
       const cachedBounds = alphaFitBoundsCache.get(src);
       if (cachedBounds) {
@@ -2377,8 +2380,8 @@
 
     function renderCardVisualHtml(card, extraClasses = '', explicitVersionIdx = null, faceIdx = 0) {
       const ver = getActiveVersion(card, explicitVersionIdx);
-      const face = card.faces?.[faceIdx];
-      const imgUrl = face?.imageUrl || ver.imageUrl || card.imageUrl || '';
+      const face = ver.faces?.[faceIdx] || card.faces?.[faceIdx];
+      const imgUrl = ver.faces?.[faceIdx]?.imageUrl || face?.imageUrl || ver.imageUrl || card.imageUrl || '';
       const faceCard = face
         ? { ...card, name: face.name || card.name, rulesText: face.rulesText || card.rulesText, typeLine: face.typeLine || card.typeLine, statsText: face.statsText || card.statsText }
         : card;
@@ -2587,10 +2590,29 @@
       return request;
     }
 
+    function normalizeScryfallFaces(rawFaces) {
+      if (!Array.isArray(rawFaces) || rawFaces.length < 2) return null;
+      return rawFaces.map((face, index) => {
+        const stats = [face.mana_cost, face.power && face.toughness ? `${face.power}/${face.toughness}` : '', face.loyalty ? `Loyalty ${face.loyalty}` : '']
+          .filter(Boolean)
+          .join(' · ');
+        return {
+          id: face.id || `face_${index}`,
+          label: index === 0 ? 'Front' : index === 1 ? 'Back' : `Face ${index + 1}`,
+          name: face.name || '',
+          imageUrl: face.image_uris?.normal || face.image_uris?.large || face.image_uris?.png || '',
+          typeLine: face.type_line || '',
+          statsText: stats,
+          rulesText: face.oracle_text || 'No rules text.'
+        };
+      });
+    }
+
     function normalizeScryfallCard(raw) {
       let imageUrl = '';
       if (raw.image_uris?.normal) imageUrl = raw.image_uris.normal;
       else if (raw.card_faces?.[0]?.image_uris?.normal) imageUrl = raw.card_faces[0].image_uris.normal;
+      const faces = normalizeScryfallFaces(raw.card_faces);
 
       const oracleText = raw.oracle_text
         || (Array.isArray(raw.card_faces) ? raw.card_faces.map(f => `${f.name}: ${f.oracle_text || ''}`).join('\n—\n') : '');
@@ -2627,9 +2649,11 @@
             label: `1st: ${raw.set_name || 'Original'} (${releaseYear}) #${raw.collector_number || ''}`,
             setInfo: `${raw.set_name || 'MTG'} (${(raw.set || '').toUpperCase()})`,
             year: releaseYear,
-            imageUrl
+            imageUrl,
+            faces
           }
-        ]
+        ],
+        faces
       };
       card.selectedVersionIdx = getPreferredVersionIdx(card);
       return card;
@@ -2652,8 +2676,10 @@
             label: `Original: ${original.set_name || 'Original'} (${year}) #${original.collector_number || ''}`,
             setInfo: `${original.set_name || 'MTG'} (${(original.set || '').toUpperCase()} #${original.collector_number || ''})`,
             year,
-            imageUrl
+            imageUrl,
+            faces: normalizeScryfallFaces(original.card_faces)
           }];
+          card.faces = normalizeScryfallFaces(original.card_faces) || card.faces;
           card.originalYear = year;
           card.selectedVersionIdx = 0;
           card.searchVersionIdx = 0;
@@ -2689,12 +2715,14 @@
         card.versions = allRawPrints.map((p, idx) => {
           const yr = p.released_at ? Number(p.released_at.slice(0, 4)) : 1993;
           const img = p.image_uris?.normal || p.card_faces?.[0]?.image_uris?.normal || '';
+          const faces = normalizeScryfallFaces(p.card_faces);
           const prefix = idx === 0 ? '1st: ' : `#${idx + 1}: `;
           return {
             label: `${prefix}${p.set_name} (${yr}) [${(p.set || '').toUpperCase()} #${p.collector_number}]`,
             setInfo: `${p.set_name} (${(p.set || '').toUpperCase()} #${p.collector_number}) · ${p.released_at || yr}`,
             year: yr,
-            imageUrl: img
+            imageUrl: img,
+            faces
           };
         });
 
@@ -2873,18 +2901,11 @@
       const rawType = raw.Type || 'Unit';
       const frontText = raw.FrontText || raw.frontText || '';
       const backText = raw.BackText || raw.backText || '';
-      const isDoubleSided = Boolean(raw.DoubleSided || raw.doubleSided || raw.BackArt || raw.backArt);
+      const doubleSidedFlag = raw.DoubleSided ?? raw.doubleSided;
+      const isDoubleSided = Boolean(raw.BackArt || raw.backArt) || doubleSidedFlag === true || doubleSidedFlag === 1 ||
+        ['true', '1'].includes(String(doubleSidedFlag).toLowerCase());
       const backUrl = resolveArtUrl(raw.BackArt || raw.backArt || '') ||
         (isDoubleSided ? `https://cdn.swu-db.com/images/cards/${setCode}/${num}-b.png` : '');
-
-      const versions = [
-        {
-          label: `Original: ${setCode} #${num}`,
-          setInfo: `Star Wars: Unlimited (${setCode} #${num})`,
-          year: 2024,
-          imageUrl
-        }
-      ];
 
       const faces = [{
         id: 'front',
@@ -2907,8 +2928,28 @@
         });
       }
 
+      const printingId = `${setCode}:${num}`;
+      const version = {
+        id: `Star Wars: Unlimited (${setCode} #${num})::Original: ${setCode} #${num}`,
+        printingId,
+        label: `${setCode} #${num}`,
+        setInfo: `Star Wars: Unlimited (${setCode} #${num})`,
+        year: Number(raw.ReleaseYear || raw.releaseYear || 2024),
+        imageUrl,
+        faces
+      };
+      const identityKey = [
+        name.trim().toLocaleLowerCase(),
+        rawType.toLocaleLowerCase(),
+        String(aspects).toLocaleLowerCase(),
+        String(traits).toLocaleLowerCase(),
+        cost,
+        pwr ?? '',
+        hp ?? ''
+      ].join('|');
       const card = {
         id: `swu_${setCode}_${num}`,
+        identityKey,
         sourceGame: 'SWU',
         name,
         category: inferEclecticaCategory(rawType),
@@ -2924,7 +2965,7 @@
         rulesText: frontText || 'Star Wars: Unlimited card.',
         faces,
         selectedVersionIdx: 0,
-        versions
+        versions: [version]
       };
       card.selectedVersionIdx = getPreferredVersionIdx(card);
       return card;
@@ -3494,39 +3535,180 @@
       throw new Error(`SWU API returned no cards from its full-catalog endpoint (${emptyResponses.length} endpoints checked).`);
     }
 
+    async function fetchSwuSetReleaseDates() {
+      const baseUrl = 'https://api.swu-db.com/sets';
+      const sets = await fetchWithCorsMirrorFallback([
+        baseUrl,
+        `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(baseUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`
+      ]);
+      if (!Array.isArray(sets)) {
+        console.warn('SWU set release dates could not be loaded; printings will be ordered by set code.');
+        return new Map();
+      }
+
+      const dates = new Map();
+      sets.forEach(set => {
+        if (!set.setId || !set.releaseDate) return;
+        const date = new Date(set.releaseDate);
+        if (!Number.isNaN(date.getTime())) dates.set(set.setId, date.toISOString().slice(0, 10));
+      });
+      sets.forEach(set => {
+        if (set.setId && !dates.has(set.setId) && set.parentSetId && dates.has(set.parentSetId)) {
+          dates.set(set.setId, dates.get(set.parentSetId));
+        }
+      });
+      return dates;
+    }
+
+    function migrateSwuCardIds(aliasToCanonical, cardsById) {
+      let changed = false;
+      const remapFeatureKey = key => {
+        if (typeof key !== 'string') return key;
+        const separator = key.indexOf('::');
+        if (separator < 0) return key;
+        const zoneId = key.slice(0, separator);
+        const cardId = key.slice(separator + 2);
+        const canonicalId = aliasToCanonical.get(cardId);
+        return canonicalId ? `${zoneId}::${canonicalId}` : key;
+      };
+
+      state.decks.forEach(deck => {
+        const mergedCards = [];
+        (deck.cards || []).forEach(entry => {
+          const canonicalId = aliasToCanonical.get(entry.id);
+          if (!canonicalId) {
+            mergedCards.push(entry);
+            return;
+          }
+          const card = cardsById.get(canonicalId);
+          const preferredVersion = getVersionPreferenceKey(entry.versions?.[entry.selectedVersionIdx] || {});
+          entry.id = canonicalId;
+          entry.versions = card.versions;
+          entry.faces = card.faces;
+          const selectedIdx = card.versions.findIndex(version => getVersionPreferenceKey(version) === preferredVersion);
+          entry.selectedVersionIdx = selectedIdx >= 0 ? selectedIdx : getPreferredVersionIdx(card);
+          const duplicate = mergedCards.find(item => item.id === canonicalId && getCardZone(item) === getCardZone(entry));
+          if (duplicate) {
+            duplicate.quantity = (Number(duplicate.quantity) || 1) + (Number(entry.quantity) || 1);
+            duplicate.tags = Array.from(new Set([...(duplicate.tags || []), ...(entry.tags || [])]));
+          } else {
+            mergedCards.push(entry);
+          }
+          changed = true;
+        });
+        if (changed) {
+          deck.cards = mergedCards;
+          if (deck.exemplarFeatureId) deck.exemplarFeatureId = remapFeatureKey(deck.exemplarFeatureId);
+          if (Array.isArray(deck.sampleFeatureCardIds)) {
+            deck.sampleFeatureCardIds = [...new Set(deck.sampleFeatureCardIds.map(remapFeatureKey))];
+          }
+        }
+      });
+
+      state.formats.forEach(format => {
+        const overrides = format.cardPointOverrides || {};
+        const entries = format.cardPointEntries || {};
+        aliasToCanonical.forEach((canonicalId, oldId) => {
+          if (oldId === canonicalId) return;
+          if (Object.prototype.hasOwnProperty.call(overrides, oldId)) {
+            if (!Object.prototype.hasOwnProperty.call(overrides, canonicalId)) overrides[canonicalId] = overrides[oldId];
+            delete overrides[oldId];
+            changed = true;
+          }
+          if (entries[oldId]) {
+            if (!entries[canonicalId]) entries[canonicalId] = entries[oldId];
+            delete entries[oldId];
+            changed = true;
+          }
+        });
+        format.cardPointOverrides = overrides;
+        format.cardPointEntries = entries;
+      });
+
+      const bookmarkIds = new Set();
+      state.bookmarkedCards = state.bookmarkedCards.filter(bookmark => {
+        const canonicalId = aliasToCanonical.get(bookmark.id);
+        if (canonicalId) {
+          bookmark.id = canonicalId;
+          const card = cardsById.get(canonicalId);
+          bookmark.versions = card.versions;
+          bookmark.faces = card.faces;
+          changed = true;
+        }
+        if (bookmarkIds.has(bookmark.id)) {
+          changed = true;
+          return false;
+        }
+        bookmarkIds.add(bookmark.id);
+        return true;
+      });
+      if (changed) saveAllStateToStorage();
+    }
+
     // LIVE SWU Pool: Retrieves the current full card catalog from api.swu-db.com
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const fromIdb = await idbGetDataset('norm_swu_live_v12');
+      const fromIdb = await idbGetDataset('norm_swu_live_v14');
       if (Array.isArray(fromIdb) && fromIdb.length > 0) {
         state.apiCaches.swu = fromIdb;
         return fromIdb;
       }
 
-      const fetched = (await fetchSwuCatalog()).map(normalizeSwuRawCard);
-
-      const dedup = new Map();
+      const [rawCards, swuReleaseDates] = await Promise.all([
+        fetchSwuCatalog(),
+        fetchSwuSetReleaseDates()
+      ]);
+      const fetched = rawCards.map(normalizeSwuRawCard);
+      const grouped = new Map();
       fetched.forEach(card => {
-        const existing = dedup.get(card.id);
+        const existing = grouped.get(card.identityKey);
         if (!existing) {
-          dedup.set(card.id, card);
+          grouped.set(card.identityKey, { ...card, legacyIds: [card.id] });
           return;
         }
-        const mergedFaces = [...(existing.faces || [])];
-        (card.faces || []).forEach(face => {
-          if (!mergedFaces.some(existingFace => existingFace.imageUrl === face.imageUrl)) {
-            mergedFaces.push({ ...face, id: mergedFaces.length === 0 ? 'front' : 'back' });
+        if (!existing.legacyIds.includes(card.id)) existing.legacyIds.push(card.id);
+        card.versions.forEach(version => {
+          if (!existing.versions.some(existingVersion => existingVersion.id === version.id)) {
+            existing.versions.push(version);
           }
         });
-        if (mergedFaces.length > 1) {
-          mergedFaces[0].label = 'Front';
-          mergedFaces[1].label = 'Back / Deployed';
-          existing.faces = mergedFaces.slice(0, 2);
-        }
       });
-      const finalSwu = Array.from(dedup.values());
+
+      const finalSwu = Array.from(grouped.values());
+      finalSwu.forEach(card => {
+        card.versions.forEach(version => {
+          version.releaseDate = swuReleaseDates.get(version.printingId.split(':')[0]) || '';
+          if (version.releaseDate) version.year = Number(version.releaseDate.slice(0, 4));
+        });
+        card.versions.sort((a, b) =>
+          (a.releaseDate || '9999-99-99').localeCompare(b.releaseDate || '9999-99-99') ||
+          a.printingId.localeCompare(b.printingId)
+        );
+        card.originalYear = card.versions[0]?.year || card.originalYear;
+        card.faces = card.versions[0]?.faces || card.faces;
+        card.imageUrl = card.versions[0]?.imageUrl || card.imageUrl;
+        card.legacyIds.sort((a, b) => a.localeCompare(b));
+      });
+
+      const referencedIds = new Set([
+        ...state.decks.flatMap(deck => (deck.cards || []).map(card => card.id)),
+        ...state.bookmarkedCards.map(card => card.id),
+        ...state.formats.flatMap(format => Object.keys(format.cardPointOverrides || {}))
+      ]);
+      const aliasToCanonical = new Map();
+      finalSwu.forEach(card => {
+        const canonicalId = card.legacyIds.find(id => referencedIds.has(id)) || card.legacyIds[0];
+        card.id = canonicalId;
+        card.selectedVersionIdx = getPreferredVersionIdx(card);
+        card.legacyIds.forEach(id => aliasToCanonical.set(id, canonicalId));
+        delete card.legacyIds;
+      });
+      const cardsById = new Map(finalSwu.map(card => [card.id, card]));
+      migrateSwuCardIds(aliasToCanonical, cardsById);
       state.apiCaches.swu = finalSwu;
-      idbSetDataset('norm_swu_live_v12', finalSwu);
+      idbSetDataset('norm_swu_live_v14', finalSwu);
       return finalSwu;
     }
 
@@ -4424,6 +4606,75 @@
       };
     }
 
+    function renderFormatPointsList(fmt) {
+      const container = document.getElementById('formatPointsListContainer');
+      if (!container) return;
+
+      const knownCards = [
+        ...state.searchResults,
+        ...state.bookmarkedCards,
+        ...state.customCardPool,
+        ...state.decks.flatMap(deck => deck.cards || []),
+        ...Object.values(state.apiCaches).filter(Array.isArray).flat()
+      ];
+      const cardById = new Map(knownCards.filter(card => card?.id).map(card => [card.id, card]));
+      const entries = Object.entries(fmt.cardPointOverrides || {}).map(([id, value]) => {
+        const metadata = fmt.cardPointEntries?.[id] || {};
+        const card = cardById.get(id);
+        return {
+          id,
+          name: card?.name || metadata.name || id,
+          sourceGame: card?.sourceGame || metadata.sourceGame || '—',
+          points: Number(value) || 0,
+          card
+        };
+      });
+      const sortBy = state.formatPointsSortBy || 'alpha_asc';
+      entries.sort((a, b) => {
+        if (sortBy === 'game') return a.sourceGame.localeCompare(b.sourceGame) || a.name.localeCompare(b.name);
+        if (sortBy === 'points_asc') return a.points - b.points || a.name.localeCompare(b.name);
+        if (sortBy === 'points_desc') return b.points - a.points || a.name.localeCompare(b.name);
+        return a.name.localeCompare(b.name);
+      });
+
+      container.innerHTML = `
+        <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+          <div>
+            <h3 class="font-display text-lg font-bold text-starlight-100">${escapeXml(fmt.name)} Complete Points List</h3>
+            <p class="text-xs text-slate-300">Only cards with explicit manual point assignments are listed. Rarity is not used to calculate points.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="formatPointsSortSelect" class="text-xs text-slate-300">Sort by</label>
+            <select id="formatPointsSortSelect" class="rounded-lg px-2 py-1 text-xs border border-abyss-600 cursor-pointer">
+              <option value="alpha_asc" ${sortBy === 'alpha_asc' ? 'selected' : ''}>Alphabetical</option>
+              <option value="game" ${sortBy === 'game' ? 'selected' : ''}>Source Game</option>
+              <option value="points_desc" ${sortBy === 'points_desc' ? 'selected' : ''}>Points (High to Low)</option>
+              <option value="points_asc" ${sortBy === 'points_asc' ? 'selected' : ''}>Points (Low to High)</option>
+            </select>
+            <span class="text-xs font-mono text-purple-200">${entries.length} manually pointed card${entries.length === 1 ? '' : 's'}</span>
+          </div>
+        </div>
+        ${entries.length
+          ? `<div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="text-[10px] uppercase tracking-wider text-slate-400 border-b border-abyss-700"><tr><th class="py-2 pr-3">Card Name</th><th class="py-2 pr-3">Source Game</th><th class="py-2 text-right">Points</th></tr></thead><tbody>${entries.map(entry =>
+            `<tr class="border-b border-abyss-800/80"><td class="py-2 pr-3 text-starlight-100">${entry.card
+              ? `<button type="button" data-point-card="${escapeXml(entry.id)}" class="text-left hover:text-starlight-300 underline decoration-dotted underline-offset-2">${escapeXml(entry.name)}</button>`
+              : `<span title="${escapeXml(entry.id)}">${escapeXml(entry.name)}</span>`}</td><td class="py-2 pr-3 text-slate-300">${escapeXml(entry.sourceGame)}</td><td class="py-2 text-right font-mono font-bold text-purple-200">${entry.points}</td></tr>`
+          ).join('')}</tbody></table></div>`
+          : '<p class="text-sm text-slate-400 py-3">No cards have manual point assignments yet.</p>'}
+      `;
+
+      container.querySelector('#formatPointsSortSelect').onchange = event => {
+        state.formatPointsSortBy = event.target.value;
+        renderFormatPointsList(fmt);
+      };
+      container.querySelectorAll('[data-point-card]').forEach(button => {
+        button.onclick = () => {
+          const card = cardById.get(button.dataset.pointCard);
+          if (card) openCardInspector(card);
+        };
+      });
+    }
+
     function renderFormatsStudio() {
       const listContainer = document.getElementById('formatsListContainer');
       const editorContainer = document.getElementById('formatEditorContainer');
@@ -4655,24 +4906,7 @@
         editorContainer.insertAdjacentHTML('afterbegin', '<div class="rounded-xl border border-amber-400/40 bg-amber-950/30 px-3 py-2 text-xs text-amber-200">Ouroboros rules can only be edited by an administrator.</div>');
       }
 
-      const pointsListContainer = document.getElementById('formatPointsListContainer');
-      const pointEntries = Object.entries(fmt.cardPointOverrides || {});
-      const pointMetadata = fmt.cardPointEntries || {};
-      pointsListContainer.innerHTML = `
-        <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
-          <div>
-            <h3 class="font-display text-lg font-bold text-starlight-100">${escapeXml(fmt.name)} Complete Points List</h3>
-            <p class="text-xs text-slate-300">Only cards with explicit manual point assignments are listed. Rarity is not used to calculate points.</p>
-          </div>
-          <span class="text-xs font-mono text-purple-200">${pointEntries.length} manually pointed card${pointEntries.length === 1 ? '' : 's'}</span>
-        </div>
-        ${pointEntries.length
-          ? `<div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="text-[10px] uppercase tracking-wider text-slate-400 border-b border-abyss-700"><tr><th class="py-2 pr-3">Card</th><th class="py-2 pr-3">Source Game</th><th class="py-2 text-right">Points</th></tr></thead><tbody>${pointEntries.map(([id, value]) => {
-            const metadata = pointMetadata[id] || {};
-            return `<tr class="border-b border-abyss-800/80"><td class="py-2 pr-3 text-starlight-100">${escapeXml(metadata.name || id)}</td><td class="py-2 pr-3 text-slate-300">${escapeXml(metadata.sourceGame || '—')}</td><td class="py-2 text-right font-mono font-bold text-purple-200">${Number(value) || 0}</td></tr>`;
-          }).join('')}</tbody></table></div>`
-          : '<p class="text-sm text-slate-400 py-3">No cards have manual point assignments yet.</p>'}
-      `;
+      renderFormatPointsList(fmt);
 
       const manualBans = Array.isArray(fmt.manualBannedCards) ? fmt.manualBannedCards : [];
       const manualBansList = document.getElementById('fmtManualBansList');
@@ -4826,6 +5060,22 @@
       if (!deck) return;
       deck.cards = deck.cards.filter(c => c.id !== cardId || getCardZone(c) !== state.activeDeckZone);
       removeDeckFeatureCard(deck, `${state.activeDeckZone}::${cardId}`);
+      saveAllStateToStorage();
+      syncAllViews();
+    }
+
+    function removeOneCardFromZone(cardId, zoneId) {
+      if (state.sharedViewData) return;
+      const deck = getActiveDeck();
+      if (!deck) return;
+      const index = deck.cards.findIndex(entry => entry.id === cardId && getCardZone(entry) === zoneId);
+      if (index === -1) return;
+      if (deck.cards[index].quantity > 1) {
+        deck.cards[index].quantity--;
+      } else {
+        deck.cards.splice(index, 1);
+        removeDeckFeatureCard(deck, `${zoneId}::${cardId}`);
+      }
       saveAllStateToStorage();
       syncAllViews();
     }
@@ -5728,7 +5978,8 @@
         const ver = getActiveVersion(card);
         const versions = card.versions || [ver];
         const activeIdx = getPreferredVersionIdx(card);
-        const faces = Array.isArray(card.faces) && card.faces.length ? card.faces : null;
+        const activeFaces = ver.faces?.length ? ver.faces : card.faces;
+        const faces = Array.isArray(activeFaces) && activeFaces.length ? activeFaces : null;
         const selectedFace = faces?.[Math.min(selectedFaceIdx, faces.length - 1)];
 
         // Reset gallery status so MTG status messages never bleed onto SWU/YGO/PKM/etc.
@@ -5857,52 +6108,68 @@
           });
         });
 
-        const deckEntry = getDeckZoneCards(getActiveDeck()).find(entry => entry.id === card.id);
         const deckZoneBox = document.getElementById('inspectorDeckZoneBox');
-        const deckZoneSelect = document.getElementById('inspectorDeckZoneSelect');
         const tagsSection = document.getElementById('inspectorDeckTagsSection');
-        if (deckEntry && !state.sharedViewData) {
+        const zoneActions = document.getElementById('inspectorDeckZoneActions');
+        if (getActiveDeck() && !state.sharedViewData) {
           deckZoneBox.classList.remove('hidden');
-          deckZoneSelect.innerHTML = DECK_ZONES.map(zone =>
-            `<option value="${zone.id}" ${getCardZone(deckEntry) === zone.id ? 'selected' : ''}>${escapeXml(zone.label)}</option>`
-          ).join('');
-          deckZoneSelect.onchange = (event) => {
-            const targetZone = event.target.value;
-            const sourceZone = getCardZone(deckEntry);
-            if (!moveDeckCardToZone(deckEntry.id, sourceZone, targetZone)) {
-              deckZoneSelect.value = sourceZone;
-              return;
-            }
-            renderModalContents();
-            showToast(`Moved "${card.name}" to ${DECK_ZONES.find(zone => zone.id === targetZone).label}`, 'success');
-          };
-
-          tagsSection.classList.remove('hidden');
-          const tags = deckEntry.tags || [];
-          document.getElementById('inspectorTagsChips').innerHTML = tags.length > 0
-            ? tags.map(t => `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-sky-500/20 border border-sky-400/50 text-sky-200 font-mono text-xs">
-                  #${escapeXml(t)}
-                  <button type="button" data-insp-del-tag="${escapeXml(t)}" class="hover:text-rose-300 cursor-pointer">×</button>
-                </span>
-              `).join('')
-            : '<span class="text-[11px] text-slate-400">No tags assigned to this card yet.</span>';
-
-          document.querySelectorAll('[data-insp-del-tag]').forEach(btn => {
-            btn.addEventListener('click', () => {
-              removeTagFromDeckCard(deckEntry.id, btn.dataset.inspDelTag);
+          zoneActions.innerHTML = DECK_ZONES.map(zone => {
+            const entry = getDeckZoneCards(getActiveDeck(), zone.id).find(item => item.id === card.id);
+            const quantity = Number(entry?.quantity) || 0;
+            return `
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[11px] text-starlight-100">${escapeXml(zone.label)} <span class="font-mono text-emerald-200">(${quantity})</span></span>
+                <div class="flex gap-1">
+                  <button type="button" data-zone-add="${zone.id}" class="px-2 py-1 rounded bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] font-bold cursor-pointer">Add</button>
+                  <button type="button" data-zone-remove="${zone.id}" ${quantity === 0 ? 'disabled' : ''} class="px-2 py-1 rounded bg-rose-900/70 hover:bg-rose-800 text-rose-100 text-[10px] font-bold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">Remove</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+          zoneActions.querySelectorAll('[data-zone-add]').forEach(button => {
+            button.onclick = () => {
+              addCardToDeck(card, 1, button.dataset.zoneAdd);
               renderModalContents();
-            });
+            };
+          });
+          zoneActions.querySelectorAll('[data-zone-remove]').forEach(button => {
+            button.onclick = () => {
+              removeOneCardFromZone(card.id, button.dataset.zoneRemove);
+              renderModalContents();
+            };
           });
 
-          document.getElementById('inspectorAddTagBtn').onclick = () => {
-            const inp = document.getElementById('inspectorNewTagInput');
-            if (inp.value.trim()) {
-              addTagToDeckCard(deckEntry.id, inp.value.trim());
-              inp.value = '';
-              renderModalContents();
-            }
-          };
+          const deckEntry = getDeckZoneCards(getActiveDeck()).find(entry => entry.id === card.id);
+          if (deckEntry) {
+            tagsSection.classList.remove('hidden');
+            const tags = deckEntry.tags || [];
+            document.getElementById('inspectorTagsChips').innerHTML = tags.length > 0
+              ? tags.map(t => `
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-sky-500/20 border border-sky-400/50 text-sky-200 font-mono text-xs">
+                    #${escapeXml(t)}
+                    <button type="button" data-insp-del-tag="${escapeXml(t)}" class="hover:text-rose-300 cursor-pointer">×</button>
+                  </span>
+                `).join('')
+              : '<span class="text-[11px] text-slate-400">No tags assigned to this card yet.</span>';
+
+            document.querySelectorAll('[data-insp-del-tag]').forEach(btn => {
+              btn.addEventListener('click', () => {
+                removeTagFromDeckCard(deckEntry.id, btn.dataset.inspDelTag);
+                renderModalContents();
+              });
+            });
+
+            document.getElementById('inspectorAddTagBtn').onclick = () => {
+              const inp = document.getElementById('inspectorNewTagInput');
+              if (inp.value.trim()) {
+                addTagToDeckCard(deckEntry.id, inp.value.trim());
+                inp.value = '';
+                renderModalContents();
+              }
+            };
+          } else {
+            tagsSection.classList.add('hidden');
+          }
         } else {
           deckZoneBox.classList.add('hidden');
           tagsSection.classList.add('hidden');
@@ -5972,23 +6239,6 @@
           showToast(isManuallyBanned ? `Unbanned ${card.name}` : `Banned ${card.name}`, 'success');
         };
 
-        document.getElementById('inspectorQtyVal').textContent = String(deckEntry ? deckEntry.quantity : 0);
-
-        document.getElementById('inspectorPlusBtn').onclick = () => {
-          addCardToDeck(card, 1);
-          renderModalContents();
-        };
-
-        document.getElementById('inspectorMinusBtn').onclick = () => {
-          updateCardQuantity(card.id, -1);
-          renderModalContents();
-        };
-
-        document.getElementById('inspectorRemoveBtn').onclick = () => {
-          removeCardCompletely(card.id);
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-        };
       };
 
       renderModalContents();
