@@ -88,15 +88,6 @@
 
     .tcg-aspect { aspect-ratio: 5 / 7; }
 
-    .card-illegal-stripes {
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      pointer-events: none;
-      background-image: repeating-linear-gradient(45deg, #fff 0 2px, transparent 2px 8px);
-      mix-blend-mode: difference;
-    }
-
     @keyframes pulseGlow {
       0%, 100% { box-shadow: 0 0 32px rgba(253, 224, 71, 0.14); }
       50% { box-shadow: 0 0 52px rgba(253, 224, 71, 0.28); }
@@ -112,15 +103,15 @@
 
     /* Landscape card scans are rotated to fit portrait card slots. */
     .horizontal-card-rotated {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 140%;
-      height: 71.4285%;
-      max-width: none;
-      max-height: none;
-      transform: translate(-50%, -50%) rotate(90deg);
-      object-fit: contain;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 140% !important;
+      height: 71.4285% !important;
+      max-width: none !important;
+      max-height: none !important;
+      transform: translate(-50%, -50%) rotate(90deg) !important;
+      object-fit: contain !important;
     }
   </style>
 </head>
@@ -195,7 +186,7 @@
           </button>
 
           <button data-page="formats" class="nav-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer flex items-center gap-1.5">
-            <span>Formats</span>
+            <span>Formats &amp; Rules</span>
             <span id="navActiveFormatBadge" class="px-1.5 py-0.2 rounded-full bg-purple-500/25 text-purple-200 font-mono text-[10px]">Ouroboros</span>
           </button>
 
@@ -222,6 +213,10 @@
           <span>Bulk Import</span>
         </button>
 
+        <button id="openExportModalBtn" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-100 font-semibold text-xs transition cursor-pointer">
+          <span>Export / Restore</span>
+        </button>
+
         <!-- FIREBASE ACCOUNT BAR (SIGNED OUT vs SIGNED IN) -->
         <div id="authSignedOutBar" class="flex items-center gap-2 bg-abyss-950 border border-abyss-700 rounded-xl px-2.5 py-1">
           <span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 font-mono text-[10px] font-semibold">
@@ -234,12 +229,15 @@
 
         <div id="authSignedInBar" class="hidden flex items-center gap-2 bg-abyss-950 border border-emerald-500/40 rounded-xl px-2.5 py-1">
           <div class="flex flex-col text-left leading-tight">
-            <span id="authUserLabel" class="text-[11px] font-bold text-starlight-100 max-w-[145px] truncate">user@example.com</span>
+            <span id="authUserLabel" class="text-[11px] font-bold text-starlight-100 max-w-[145px] truncate">Player</span>
             <div class="flex items-center gap-1 text-[10px] font-mono">
               <span id="cloudSyncDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               <span id="cloudSyncStatusText" class="text-emerald-300">Synced to Cloud</span>
             </div>
           </div>
+          <button id="editUsernameBtn" type="button" title="Change your username" class="px-2 py-1.5 rounded-lg bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-100 font-semibold text-xs transition cursor-pointer">
+            Username
+          </button>
           <button id="signOutBtn" type="button" class="px-2.5 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 font-semibold text-xs transition cursor-pointer">
             Sign Out
           </button>
@@ -270,9 +268,6 @@
             <div class="flex items-center gap-1.5">
               <button id="reshuffleCollageBtn" type="button" class="px-2.5 py-1 rounded-lg bg-abyss-800 hover:bg-starlight-300 hover:text-abyss-950 border border-abyss-600 text-starlight-200 font-mono text-[11px] font-bold transition cursor-pointer">
                 Shuffle
-              </button>
-              <button id="openExportModalBtn" type="button" class="px-2.5 py-1 rounded-lg bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-100 font-mono text-[11px] font-bold transition cursor-pointer">
-                Export / Restore
               </button>
               <button id="homeEnterDeckbuilderBtn" type="button" class="px-2.5 py-1 rounded-lg bg-starlight-300 hover:bg-starlight-200 text-abyss-950 font-bold text-[11px] transition cursor-pointer">
                 Deckbuilder →
@@ -582,6 +577,9 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
               <span>Share Deck</span>
             </button>
+            <button id="openCompareListsBtn" type="button" class="px-3 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/50 text-sky-200 font-bold text-xs transition cursor-pointer">
+              Compare Lists
+            </button>
 
             <!-- Sample Opening Hand Button directly on Deck Page -->
             <button id="toggleSampleHandBtn" type="button" class="px-3 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/50 text-sky-200 font-bold text-xs transition cursor-pointer flex items-center gap-1.5">
@@ -602,6 +600,10 @@
             <div class="flex items-center gap-2 bg-abyss-950 border border-abyss-700 rounded-xl px-3 py-1.5 font-mono text-xs">
               <span class="text-slate-300">Points:</span>
               <span id="formatPointsUsedLabel" class="font-bold text-emerald-300">0 / 100</span>
+            </div>
+            <div class="flex items-center gap-2 bg-abyss-950 border border-sky-700 rounded-xl px-3 py-1.5 font-mono text-xs">
+              <span class="text-slate-300">Deck:</span>
+              <span id="deckMorphologyLabel" title="Morphology counts Main Deck, Sideboard, Extra Deck, and Command Zone; Maybeboard is excluded." class="font-bold text-sky-200">0%</span>
             </div>
 
             <button id="toggleFormatAuditBtn" type="button" class="px-2.5 py-1.5 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-xs font-semibold text-starlight-100 transition cursor-pointer flex items-center gap-1.5">
@@ -640,7 +642,7 @@
         <!-- Collapsible Format Audit Drawer -->
         <div id="formatAuditDrawer" class="hidden bg-abyss-950/95 border border-abyss-700 rounded-xl p-3 text-xs space-y-2">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-abyss-800 pb-1.5">
-            <span class="font-bold text-starlight-300 uppercase tracking-wider text-[10px]">Format-Principle &amp; Points-Principle Audit</span>
+            <span class="font-bold text-starlight-300 uppercase tracking-wider text-[10px]">Format &amp; Points Budget Audit</span>
             <button id="jumpToFormatsEditorBtn" type="button" class="text-[11px] text-purple-300 hover:underline font-semibold cursor-pointer">
               Configure Format &amp; Points Specs →
             </button>
@@ -660,6 +662,9 @@
               </button>
               <button data-view="list" class="view-mode-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer">
                 Checklist &amp; Tags
+              </button>
+              <button data-view="featured" class="view-mode-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-starlight-100 hover:bg-abyss-800 transition cursor-pointer">
+                Featured Cards
               </button>
             </div>
 
@@ -860,19 +865,19 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- PAGE 4: FORMATS & POINTS-PRINCIPLE STUDIO (OUROBOROS + SPECS)         -->
+  <!-- PAGE 4: FORMATS & RULES STUDIO                                         -->
   <!-- ===================================================================== -->
   <div id="pageFormats" class="hidden max-w-[1600px] mx-auto p-4 sm:p-8 space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-4 bg-abyss-900 border border-purple-500/40 rounded-2xl p-5">
       <div>
         <div class="flex items-center gap-2.5 flex-wrap">
-          <h2 class="font-display text-xl sm:text-2xl font-bold text-starlight-50">ECG Formats &amp; Points-Principle Studio</h2>
+          <h2 class="font-display text-xl sm:text-2xl font-bold text-starlight-50">Formats &amp; Rules</h2>
           <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-200 font-mono text-xs font-bold">
             Ouroboros + Adjustable Points Specs
           </span>
         </div>
         <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-4xl leading-relaxed">
-          Configure granular Points-Principle &amp; Format-Principle rules directly on <strong class="text-starlight-300">Ouroboros</strong> (permanent core format) or create custom formats.
+          Deck morphology must total 100%: Main Deck, Sideboard, Extra Deck, and Command Zone count; Maybeboard does not. Review format rules and point budgets. Administrators can edit <strong class="text-starlight-300">Ouroboros</strong>; users can create and edit custom formats.
         </p>
       </div>
 
@@ -881,24 +886,10 @@
       </button>
     </div>
 
-    <div id="formatsDirectoryView" class="space-y-4">
-      <div id="formatsListContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-4 space-y-2.5" id="formatsListContainer"></div>
+      <div class="lg:col-span-8 bg-abyss-900 border border-abyss-700 rounded-2xl p-5 sm:p-6 space-y-5" id="formatEditorContainer"></div>
     </div>
-    <div id="formatDetailView" class="hidden space-y-4">
-      <button id="formatsBackBtn" type="button" class="px-3 py-2 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-100 text-xs font-semibold cursor-pointer">← All Formats</button>
-      <div class="bg-abyss-900 border border-abyss-700 rounded-2xl p-5 sm:p-6 space-y-5" id="formatEditorContainer"></div>
-      <div id="formatPointsListContainer" class="bg-abyss-900 border border-abyss-700 rounded-2xl p-5 sm:p-6"></div>
-    </div>
-    <section id="adminOrientationMetronSettings" class="hidden bg-abyss-900 border border-emerald-500/40 rounded-2xl p-5 sm:p-6 space-y-3">
-      <div>
-        <h3 class="font-display text-lg font-bold text-emerald-200">Orientation &amp; Metron Configuration</h3>
-        <p class="text-xs text-slate-300 mt-1">Administrator-managed JSON. Define source-game orientations, gestalt permissions, encapsulation, metron particularization, and native taxes without inferred cross-game mappings.</p>
-      </div>
-      <textarea id="adminOrientationMetronJson" rows="10" spellcheck="false" class="w-full bg-abyss-950 border border-abyss-600 rounded-xl p-3 font-mono text-xs text-starlight-100 focus:outline-none"></textarea>
-      <div class="flex justify-end">
-        <button id="saveOrientationMetronBtn" type="button" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-abyss-950 font-bold text-xs cursor-pointer">Save Configuration</button>
-      </div>
-    </section>
   </div>
 
   <!-- ===================================================================== -->
@@ -1058,6 +1049,24 @@
     </div>
   </div>
 
+  <div id="compareListsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+    <div class="bg-abyss-900 border border-sky-400/50 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-abyss-700 bg-abyss-950/80">
+        <h3 class="font-display text-lg font-bold text-starlight-50">Compare Deck Lists</h3>
+        <button id="closeCompareListsBtn" type="button" class="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-abyss-800 transition cursor-pointer" aria-label="Close list comparison">✕</button>
+      </div>
+      <div class="p-5 space-y-3 overflow-y-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-2 items-end">
+          <label class="block text-xs text-starlight-200">First list<select id="compareListA" class="mt-1 w-full rounded-lg px-2 py-2 text-xs border border-abyss-600"></select></label>
+          <span class="text-center text-slate-400 text-xs pb-2">vs.</span>
+          <label class="block text-xs text-starlight-200">Second list<select id="compareListB" class="mt-1 w-full rounded-lg px-2 py-2 text-xs border border-abyss-600"></select></label>
+        </div>
+        <button id="runCompareListsBtn" type="button" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-abyss-950 text-xs font-bold cursor-pointer">Compare</button>
+        <div id="compareListsResults" class="overflow-x-auto"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===================================================================== -->
   <!-- MODAL 1: CARD INSPECTOR + PERSISTENT VERSION SELECTOR + DECK TAGS     -->
   <!-- ===================================================================== -->
@@ -1076,7 +1085,15 @@
       <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start max-h-[86vh] overflow-y-auto">
         <div class="md:col-span-5 flex flex-col items-center gap-3">
           <div id="inspectorImageContainer" class="w-full max-w-[290px] rounded-2xl overflow-hidden shadow-2xl border border-abyss-600 bg-abyss-950"></div>
-          <div id="inspectorCardFaceControls" class="hidden w-full max-w-[290px] flex items-center justify-center gap-2"></div>
+          <div id="inspectorFaceControls" class="hidden w-full max-w-[290px] grid grid-cols-2 gap-1.5">
+            <button type="button" data-inspector-face="0" class="py-1.5 rounded-lg bg-starlight-300 text-abyss-950 text-xs font-bold cursor-pointer">Front</button>
+            <button type="button" data-inspector-face="1" class="py-1.5 rounded-lg bg-abyss-800 text-starlight-100 text-xs font-bold cursor-pointer">Back</button>
+          </div>
+          <div id="inspectorCustomImageControls" class="hidden w-full max-w-[290px] bg-abyss-950 border border-abyss-600 rounded-xl p-2.5 space-y-2">
+            <label for="inspectorCustomImageInput" class="block text-[10px] uppercase tracking-wider text-starlight-300 font-bold">Add a custom printing image</label>
+            <input id="inspectorCustomImageInput" type="file" accept="image/*" class="block w-full text-[10px] text-slate-300 file:mr-2 file:rounded-md file:border-0 file:bg-abyss-700 file:px-2 file:py-1 file:text-[10px] file:font-semibold file:text-starlight-100" />
+            <button id="inspectorUploadCustomImageBtn" type="button" class="w-full py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold cursor-pointer">Upload as Version</button>
+          </div>
 
           <!-- Bookmark Card Action Button -->
           <button id="inspectorBookmarkBtn" type="button" class="w-full max-w-[290px] py-2 px-3 rounded-xl bg-abyss-950 hover:bg-abyss-800 border border-starlight-300/50 text-starlight-200 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer">
@@ -1084,15 +1101,14 @@
             <span id="inspectorBookmarkLabel">Bookmark Card (Save Without Adding)</span>
           </button>
 
-          <div id="inspectorDeckZoneBox" class="hidden w-full max-w-[290px] bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-2.5 space-y-2">
-            <div class="text-[10px] uppercase tracking-wider text-emerald-200 font-bold">Add / Remove by Deck Zone</div>
-            <div id="inspectorDeckZoneActions" class="space-y-1.5"></div>
-          </div>
-
           <!-- Deck-Specific Preferred Version Selector -->
           <div id="inspectorDeckSpecificVersionBox" class="w-full max-w-[290px] bg-indigo-950/50 border border-indigo-400/50 rounded-xl p-2.5 space-y-1">
             <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-indigo-200 font-bold">
               <span>Preferred Version FOR THIS SPECIFIC DECK</span>
+            </div>
+            <div id="inspectorMoveCardBox" class="w-full max-w-[290px] bg-abyss-950 border border-emerald-600/50 rounded-xl p-2.5 space-y-1">
+              <label for="inspectorMoveZoneSelect" class="block text-[10px] uppercase tracking-wider text-emerald-200 font-bold">Move this card to a board</label>
+              <select id="inspectorMoveZoneSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-abyss-600 cursor-pointer"></select>
             </div>
             <select id="inspectorDeckVersionSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-indigo-400/40 cursor-pointer">
             </select>
@@ -1153,13 +1169,17 @@
               <input id="inspectorNewTagInput" type="text" placeholder="Add tag (e.g. Ramp, Removal, Wincon)..." class="flex-1 bg-abyss-950 border border-abyss-600 rounded-lg px-2.5 py-1 text-xs text-starlight-50 focus:outline-none" />
               <button id="inspectorAddTagBtn" type="button" class="px-3 py-1 rounded-lg bg-sky-500 hover:bg-sky-400 text-abyss-950 font-bold text-xs cursor-pointer">+ Tag</button>
             </div>
+            <div id="inspectorRoleSection" class="bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-3 space-y-2">
+              <label for="inspectorDeckRoleSelect" class="block text-[10px] uppercase tracking-wider text-emerald-200 font-bold">Deck role</label>
+              <select id="inspectorDeckRoleSelect" class="w-full rounded-lg px-2 py-1.5 text-xs border border-abyss-600 cursor-pointer"></select>
+            </div>
           </div>
 
           <!-- Per-Card Format Point Cost Override -->
           <div class="bg-purple-950/30 border border-purple-500/40 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
             <div>
               <div class="text-[10px] uppercase tracking-wider text-purple-200 font-bold">Format Point Cost (<span id="inspectorFormatName">Ouroboros</span>)</div>
-              <div class="text-[11px] text-slate-300">Assign custom Points-Principle cost in the active format</div>
+              <div class="text-[11px] text-slate-300">Assign a custom point cost in the active format</div>
             </div>
             <div class="flex items-center gap-1.5">
               <input id="inspectorPointInput" type="number" min="0" max="500" class="w-16 bg-abyss-950 border border-purple-400/50 rounded-lg px-2 py-1 text-xs font-mono text-center text-starlight-200 focus:outline-none" />
@@ -1168,14 +1188,21 @@
               </button>
             </div>
           </div>
-          <div class="bg-rose-950/25 border border-rose-500/30 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <div class="text-[10px] uppercase tracking-wider text-rose-200 font-bold">Manual Card Ban (<span id="inspectorBanFormatName">Ouroboros</span>)</div>
-              <div id="inspectorBanStatus" class="text-[11px] text-slate-300">Administrator-controlled</div>
-            </div>
-            <button id="inspectorBanToggleBtn" type="button" class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer">Ban Card</button>
-          </div>
 
+          <div class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-abyss-700">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-300">Copies in Active Deck:</span>
+              <div class="inline-flex items-center bg-abyss-950 border border-abyss-600 rounded-xl p-1">
+                <button id="inspectorMinusBtn" class="w-8 h-8 rounded-lg hover:bg-abyss-800 text-starlight-50 font-bold transition cursor-pointer">-</button>
+                <span id="inspectorQtyVal" class="w-10 text-center font-mono font-bold text-starlight-300">0</span>
+                <button id="inspectorPlusBtn" class="w-8 h-8 rounded-lg hover:bg-abyss-800 text-starlight-50 font-bold transition cursor-pointer">+</button>
+              </div>
+            </div>
+
+            <button id="inspectorRemoveBtn" class="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-xs font-semibold transition cursor-pointer">
+              Remove All Copies
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1249,7 +1276,7 @@
   <div id="exportModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-4">
     <div class="bg-abyss-900 border border-abyss-600 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl">
       <div class="flex items-center justify-between px-5 py-3.5 border-b border-abyss-700 bg-abyss-950/70">
-        <h3 class="font-display text-lg font-bold text-starlight-50">Export, Share &amp; Full Studio Backup</h3>
+        <h3 class="font-display text-lg font-bold text-starlight-50">Export &amp; Restore</h3>
         <button id="closeExportModalBtn" class="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-abyss-800 transition cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
@@ -1272,7 +1299,7 @@
           </button>
 
           <button id="downloadAllDecksJsonBtn" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-starlight-300 text-xs font-semibold transition cursor-pointer">
-            <span>Backup All Decks &amp; Formats</span>
+            <span>Export All Decks &amp; Formats</span>
           </button>
 
           <label class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-emerald-300 text-xs font-semibold transition cursor-pointer">
@@ -1323,8 +1350,10 @@
       getDoc,
       setDoc,
       deleteDoc,
+      onSnapshot,
       serverTimestamp
     } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+    import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js';
 
     /**
      * =========================================================================
@@ -1343,11 +1372,11 @@
     const firebaseApp = initializeApp(firebaseConfig);
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
+    const storage = getStorage(firebaseApp);
     const googleProvider = new GoogleAuthProvider();
 
     const STORAGE_DECKS_KEY = 'ecg_multiverse_decks_v5';
     const STORAGE_FORMATS_KEY = 'ecg_multiverse_formats_v5';
-    const STORAGE_ORIENTATION_METRON_KEY = 'ecg_orientation_metron_settings_v1';
     const STORAGE_CUSTOM_CARDS_KEY = 'ecg_custom_cards_v5';
     const STORAGE_PREFERRED_VERSIONS_KEY = 'eclectica_preferred_versions_v5';
     const STORAGE_BOOKMARKS_KEY = 'eclectica_bookmarked_cards_v1';
@@ -1364,29 +1393,6 @@
 
     function isAdministrator() {
       return Boolean(state.currentUser?.email && ADMIN_EMAILS.has(state.currentUser.email.toLowerCase()));
-    }
-
-    async function publishSharedFormat(format) {
-      if (format.id !== 'ouroboros') return;
-      if (!isAdministrator() || !state.currentUser) {
-        throw new Error('Sign in as an administrator to publish Ouroboros rules.');
-      }
-      await setDoc(doc(db, 'sharedFormats', 'ouroboros'), {
-        format: JSON.parse(JSON.stringify(format)),
-        updatedBy: state.currentUser.uid,
-        updatedAt: serverTimestamp()
-      }, { merge: true });
-    }
-
-    async function publishOrientationMetronSettings(settings) {
-      if (!isAdministrator() || !state.currentUser) {
-        throw new Error('Sign in as an administrator to publish this configuration.');
-      }
-      await setDoc(doc(db, 'sharedFormats', 'ouroboros'), {
-        orientationMetronSettings: JSON.parse(JSON.stringify(settings)),
-        updatedBy: state.currentUser.uid,
-        updatedAt: serverTimestamp()
-      }, { merge: true });
     }
 
     function getCardZone(card) {
@@ -1541,6 +1547,20 @@
     ];
     const SUPPORTED_GAME_COUNT = ALL_SUPPORTED_GAMES.filter(game => game.id !== 'CUSTOM').length;
     const HOME_FAN_CARD_COUNT = Math.max(0, SUPPORTED_GAME_COUNT - 1);
+    const MORPHOLOGICAL_SOSD = {
+      MTG: 100, YGO: 60, PKM: 60, HS: 30, SWU: 50, CHAOTIC: 48, GWENT: 40,
+      LOR: 60, ANR: 45, FAB: 60, AHC: 30, LOTR: 50, MC: 50, CUSTOM: 100
+    };
+    const DECK_ROLES = ['Leader', 'Base', 'Commander', 'Hero', 'Hero Power', 'Identity', 'Investigator'];
+    const ROLE_NATIVE_GAMES = {
+      Leader: 'SWU',
+      Base: 'SWU',
+      Commander: 'MTG',
+      Hero: 'HS',
+      'Hero Power': 'HS',
+      Identity: 'ANR',
+      Investigator: 'AHC'
+    };
 
     // =========================================================================
     // 3. TO-BE-SUPPORTED GAMES CATALOG (INCLUDING BACKBURNERED GAMES)
@@ -1695,26 +1715,28 @@
     // =========================================================================
     const state = {
       currentUser: null,
+      username: '',
       cloudSyncTimer: null,
       isApplyingCloudSnapshot: false,
+      userSnapshotUnsubscribe: null,
       sharedViewData: null, // populated when ?uid=...&deck=... is opened
       activePage: 'home',
       sidebarMode: 'search',
       selectedSearchGames: new Set(ALL_SUPPORTED_GAMES.map(g => g.id)),
       searchResults: [],
+      searchResultsOriginal: [],
       searchVisibleCount: 30,
+      searchSortBy: 'relevance',
       bookmarkedCards: [],
       customCardPool: [],
       preferredVersions: {},
-      orientationMetronSettings: {},
+      customCardVersions: {},
       decks: [],
       activeDeckId: null,
       activeDeckZone: 'main',
       formats: [],
       activeFormatId: 'ouroboros',
       selectedFormatEditorId: 'ouroboros',
-      formatPointsSortBy: 'alpha_asc',
-      formatPageOpen: false,
       viewMode: 'grid',
       deckSortBy: 'alpha_asc',
       groupBy: 'game',
@@ -1722,6 +1744,7 @@
       cardSize: 2,
       showOverlayBadges: true,
       homeCollageCards: [],
+      inspectorFaceIndex: 0,
       sampleHandCards: [],
       apiCaches: {
         ygo: null,
@@ -1794,15 +1817,15 @@
 
         const payload = {
           email: state.currentUser.email || '',
-          displayName: state.currentUser.displayName || '',
-          username: state.currentUser.displayName || state.currentUser.email?.split('@')[0] || 'Player',
+          displayName: state.username || state.currentUser.displayName || '',
+          username: state.username || state.currentUser.displayName || 'Player',
           activeDeckId: state.activeDeckId,
           activeFormatId: state.activeFormatId,
           decks: compactDecks,
           formats: JSON.parse(JSON.stringify(state.formats)),
           customCardPool: JSON.parse(JSON.stringify(state.customCardPool)),
           preferredVersions: JSON.parse(JSON.stringify(state.preferredVersions)),
-          orientationMetronSettings: JSON.parse(JSON.stringify(state.orientationMetronSettings)),
+          customCardVersions: JSON.parse(JSON.stringify(state.customCardVersions)),
           bookmarkedCards: JSON.parse(JSON.stringify(state.bookmarkedCards)),
           updatedAt: serverTimestamp()
         };
@@ -1845,12 +1868,12 @@
         if (Array.isArray(data.bookmarkedCards)) {
           state.bookmarkedCards = data.bookmarkedCards;
         }
-        if (data.preferredVersions && typeof data.preferredVersions === 'object') {
-          state.preferredVersions = data.preferredVersions;
-        }
-        if (data.orientationMetronSettings && typeof data.orientationMetronSettings === 'object' && !Array.isArray(data.orientationMetronSettings)) {
-          state.orientationMetronSettings = data.orientationMetronSettings;
-        }
+        state.preferredVersions = data.preferredVersions && typeof data.preferredVersions === 'object'
+          ? data.preferredVersions
+          : {};
+        state.customCardVersions = data.customCardVersions && typeof data.customCardVersions === 'object'
+          ? data.customCardVersions
+          : {};
         saveLocalCacheOnly();
         syncAllViews();
       } finally {
@@ -1859,39 +1882,58 @@
     }
 
     async function handleUserSignedIn(user) {
+      if (state.userSnapshotUnsubscribe) {
+        state.userSnapshotUnsubscribe();
+        state.userSnapshotUnsubscribe = null;
+      }
       state.currentUser = user;
       document.getElementById('authSignedOutBar').classList.add('hidden');
       document.getElementById('authSignedInBar').classList.remove('hidden');
-      const username = (user.displayName || user.email?.split('@')[0] || 'Player').trim();
       setCloudSyncIndicator('syncing', 'Loading Cloud...');
 
       try {
-        if (!user.displayName) await updateProfile(user, { displayName: username });
-        state.currentUser = user;
-        document.getElementById('authUserLabel').textContent = `${username}${isAdministrator() ? ' · Admin' : ''}`;
-        syncAllViews();
         const userRef = doc(db, 'users', user.uid);
         const snap = await getDoc(userRef);
+        const cloudData = snap.exists() ? snap.data() : {};
+        let username = typeof cloudData.username === 'string' ? cloudData.username.trim() : '';
+        const isGoogleUser = user.providerData.some(provider => provider.providerId === 'google.com');
+        if (!username && (isGoogleUser || !user.displayName)) {
+          const chosenUsername = await showCustomDialog({
+            title: 'Choose a Username',
+            message: isGoogleUser
+              ? 'Choose the username other players will see. Your Google account name will not be displayed.'
+              : 'Choose the username other players will see.',
+            defaultValue: '',
+            confirmText: 'Save Username'
+          });
+          username = typeof chosenUsername === 'string' ? chosenUsername.trim() : '';
+        }
+        if (!username) {
+          username = isGoogleUser
+            ? 'Player'
+            : (user.displayName || 'Player').trim();
+        }
+        if (user.displayName !== username) await updateProfile(user, { displayName: username });
+        state.currentUser = user;
+        state.username = username;
+        document.getElementById('authUserLabel').textContent = `${username}${isAdministrator() ? ' · Admin' : ''}`;
+        syncAllViews();
+        await setDoc(userRef, { username, displayName: username }, { merge: true });
         if (snap.exists()) {
-          const cloudData = snap.data();
           applyCloudPayloadToState(cloudData);
+        } else {
+          state.preferredVersions = {};
+          state.customCardVersions = {};
         }
         const sharedFormatRef = doc(db, 'sharedFormats', 'ouroboros');
         try {
           const sharedFormatSnap = await getDoc(sharedFormatRef);
           if (sharedFormatSnap.exists()) {
-            const sharedData = sharedFormatSnap.data();
-            const sharedFormat = sharedData.format;
+            const sharedFormat = sharedFormatSnap.data().format;
             if (sharedFormat && sharedFormat.id === 'ouroboros') {
               const formatIdx = state.formats.findIndex(format => format.id === 'ouroboros');
               if (formatIdx === -1) state.formats.unshift(sharedFormat);
               else state.formats[formatIdx] = sharedFormat;
-              saveLocalCacheOnly();
-              syncAllViews();
-            }
-            const sharedSettings = sharedData.orientationMetronSettings;
-            if (sharedSettings && typeof sharedSettings === 'object' && !Array.isArray(sharedSettings)) {
-              state.orientationMetronSettings = sharedSettings;
               saveLocalCacheOnly();
               syncAllViews();
             }
@@ -1901,6 +1943,14 @@
           showToast('Ouroboros shared settings are unavailable; check Firestore read rules.', 'error');
         }
         await pushCurrentStateToFirestore();
+        state.userSnapshotUnsubscribe = onSnapshot(userRef, snapshot => {
+          if (!snapshot.exists() || snapshot.metadata.hasPendingWrites) return;
+          applyCloudPayloadToState(snapshot.data());
+        }, error => {
+          console.error('Live cloud profile updates failed:', error);
+          setCloudSyncIndicator('error', 'Live Sync Error');
+          showToast('Live account sync stopped; refresh or sign in again to reconnect.', 'error');
+        });
       } catch (err) {
         console.error('Error loading user cloud document:', err);
         setCloudSyncIndicator('error', 'Cloud Load Error');
@@ -1910,6 +1960,11 @@
 
     function handleUserSignedOut() {
       state.currentUser = null;
+      state.username = '';
+      if (state.userSnapshotUnsubscribe) {
+        state.userSnapshotUnsubscribe();
+        state.userSnapshotUnsubscribe = null;
+      }
       if (state.cloudSyncTimer) clearTimeout(state.cloudSyncTimer);
       document.getElementById('authSignedInBar').classList.add('hidden');
       document.getElementById('authSignedOutBar').classList.remove('hidden');
@@ -1937,7 +1992,7 @@
       const shareRef = doc(db, 'publicDecks', shareId);
       await setDoc(shareRef, {
         ownerUid: state.currentUser.uid,
-        ownerName: state.currentUser.displayName || state.currentUser.email || 'Eclectica Planeswalker',
+        ownerName: state.username || 'Eclectica Planeswalker',
         deckName: deck.name,
         formatSnapshot: JSON.parse(JSON.stringify(activeFmt)),
         cards: JSON.parse(JSON.stringify(deck.cards)),
@@ -2056,7 +2111,8 @@
       const maxIdx = Math.max(0, (card.versions?.length || 1) - 1);
       const resolveIndex = stored => {
         if (typeof stored === 'string') {
-          const found = (card.versions || []).findIndex(version => getVersionPreferenceKey(version) === stored);
+          const found = (card.versions || []).findIndex(version =>
+            getVersionPreferenceKey(version) === stored || (version.legacyPreferenceKeys || []).includes(stored));
           return found >= 0 ? found : 0;
         }
         return Math.min(maxIdx, Math.max(0, Number(stored) || 0));
@@ -2080,6 +2136,19 @@
         ? `${version.setInfo || ''}::${version.label || ''}`
         : version.imageUrl);
       return String(key || '');
+    }
+
+    function ensureCustomCardVersions(card) {
+      const customVersions = state.customCardVersions[getCardPreferenceKey(card)] || [];
+      if (!Array.isArray(card.versions)) card.versions = [];
+      const knownKeys = new Set(card.versions.map(getVersionPreferenceKey));
+      customVersions.forEach(version => {
+        const key = getVersionPreferenceKey(version);
+        if (key && !knownKeys.has(key)) {
+          card.versions.push(version);
+          knownKeys.add(key);
+        }
+      });
     }
 
     function ensurePreferredVersionAvailable(targetCard, sourceCard, preferenceKey) {
@@ -2152,6 +2221,57 @@
       });
 
       saveAllStateToStorage();
+    }
+
+    async function uploadCustomCardImage(card) {
+      if (!state.currentUser) {
+        showToast('Sign in before uploading a custom card image.', 'error');
+        return;
+      }
+      if (card.sourceGame === 'CUSTOM') return;
+      const input = document.getElementById('inspectorCustomImageInput');
+      const file = input.files?.[0];
+      if (!file) {
+        showToast('Choose an image file to upload.', 'error');
+        return;
+      }
+      const supportedImageTypes = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif']);
+      if (!supportedImageTypes.has(file.type) || file.size > 5 * 1024 * 1024) {
+        showToast('Choose a JPEG, PNG, GIF, WebP, or AVIF image smaller than 5 MB.', 'error');
+        return;
+      }
+
+      const uploadButton = document.getElementById('inspectorUploadCustomImageBtn');
+      uploadButton.disabled = true;
+      uploadButton.textContent = 'Uploading...';
+      try {
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(-80) || 'card-image';
+        const path = `users/${state.currentUser.uid}/custom-card-images/${Date.now()}_${safeName}`;
+        const uploaded = await uploadBytes(ref(storage, path), file, { contentType: file.type });
+        const version = {
+          id: `user-upload:${uploaded.ref.fullPath}`,
+          label: `Custom image: ${file.name}`,
+          setInfo: 'User-uploaded custom card image',
+          year: new Date().getFullYear(),
+          imageUrl: await getDownloadURL(uploaded.ref),
+          isUserUpload: true
+        };
+        const key = getCardPreferenceKey(card);
+        state.customCardVersions[key] = [...(state.customCardVersions[key] || []), version];
+        ensureCustomCardVersions(card);
+        const versionIndex = card.versions.findIndex(item => getVersionPreferenceKey(item) === version.id);
+        setPreferredVersionForCard(card, versionIndex);
+        syncAllViews();
+        showToast(`Added a custom image version for "${card.name}".`, 'success');
+        input.value = '';
+        return version;
+      } catch (error) {
+        console.error('Custom card image upload failed:', error);
+        showToast(`Could not upload the image: ${error.message || 'check Firebase Storage rules and try again.'}`, 'error');
+      } finally {
+        uploadButton.disabled = false;
+        uploadButton.textContent = 'Upload as Version';
+      }
     }
 
     function isCardBookmarked(card) {
@@ -2252,155 +2372,146 @@
       `;
     }
 
-    const alphaFitBoundsCache = new Map();
-    const observedAlphaFitHosts = new WeakSet();
-    let alphaFitFallbackLogged = false;
+    const transparentCardBoundsCache = new Map();
+    let transparentCardInspectionWarningShown = false;
+    const transparentCardResizeObserver = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(entries => {
+        entries.forEach(entry => {
+          const img = entry.target.querySelector('img[data-alpha-bounds]');
+          if (img) applyTransparentCardImageFit(img);
+        });
+      });
 
-    function reportAlphaFitFallback(src, error) {
-      if (alphaFitFallbackLogged) return;
-      alphaFitFallbackLogged = true;
-      console.warn('Card alpha-bound fitting is unavailable for this image; retaining contain sizing.', src, error || '');
-    }
-    const alphaFitResizeObserver = typeof ResizeObserver !== 'undefined'
-      ? new ResizeObserver(entries => entries.forEach(entry => {
-          const img = entry.target.querySelector('img[data-alpha-fit]');
-          if (img) applyAlphaFitBounds(img);
-        }))
-      : null;
+    function applyTransparentCardImageFit(img) {
+      const bounds = JSON.parse(img.dataset.alphaBounds || 'null');
+      const frame = img.parentElement;
+      if (!bounds || !frame || !frame.clientWidth || !frame.clientHeight) return;
 
-    function applyAlphaFitBounds(img) {
-      if (!img.naturalWidth || !img.naturalHeight) return;
-      const bounds = img._alphaFitBounds;
-      const host = img.parentElement;
-      if (!bounds || !host) return;
-      const hostWidth = host.clientWidth;
-      const hostHeight = host.clientHeight;
-      if (!hostWidth || !hostHeight) return;
-
-      const rotated = img.classList.contains('horizontal-card-rotated');
-      const scale = rotated
-        ? Math.min(hostWidth / bounds.height, hostHeight / bounds.width)
-        : Math.min(hostWidth / bounds.width, hostHeight / bounds.height);
-      const fittedWidth = img.naturalWidth * scale;
-      const fittedHeight = img.naturalHeight * scale;
+      const scale = Math.min(
+        frame.clientWidth / bounds.width,
+        frame.clientHeight / bounds.height
+      );
+      const visibleWidth = bounds.width * scale;
+      const visibleHeight = bounds.height * scale;
       img.style.position = 'absolute';
       img.style.maxWidth = 'none';
       img.style.maxHeight = 'none';
-      img.style.width = `${fittedWidth}px`;
-      img.style.height = `${fittedHeight}px`;
-      if (rotated) {
-        const contentCenterX = bounds.x + bounds.width / 2;
-        const contentCenterY = bounds.y + bounds.height / 2;
-        const rotatedOffsetX = (contentCenterY - img.naturalHeight / 2) * scale;
-        const rotatedOffsetY = -(contentCenterX - img.naturalWidth / 2) * scale;
-        img.style.left = `${hostWidth / 2 - rotatedOffsetX - fittedWidth / 2}px`;
-        img.style.top = `${hostHeight / 2 - rotatedOffsetY - fittedHeight / 2}px`;
-        img.style.transform = 'rotate(90deg)';
-        img.style.transformOrigin = 'center center';
-      } else {
-        img.style.left = `${(hostWidth - bounds.width * scale) / 2 - bounds.x * scale}px`;
-        img.style.top = `${(hostHeight - bounds.height * scale) / 2 - bounds.y * scale}px`;
-        img.style.transform = '';
-        img.style.transformOrigin = '';
-      }
-      img.classList.remove('object-contain');
+      img.style.width = `${img.naturalWidth * scale}px`;
+      img.style.height = `${img.naturalHeight * scale}px`;
+      img.style.left = `${(frame.clientWidth - visibleWidth) / 2 - bounds.left * scale}px`;
+      img.style.top = `${(frame.clientHeight - visibleHeight) / 2 - bounds.top * scale}px`;
+      img.style.objectFit = 'fill';
     }
 
-    function fitCardImageToAlpha(img) {
-      if (!img?.naturalWidth || !img.naturalHeight) return;
-      const src = img.currentSrc || img.src;
-      const cachedBounds = alphaFitBoundsCache.get(src);
-      if (cachedBounds) {
-        img._alphaFitBounds = cachedBounds;
-        applyAlphaFitBounds(img);
-        return;
-      }
-      if (alphaFitBoundsCache.has(src) || img.dataset.alphaFitPending === 'true') return;
+    function trimTransparentCardImage(img) {
+      if (img.classList.contains('horizontal-card-rotated') || img.dataset.alphaTrimChecked) return;
+      img.dataset.alphaTrimChecked = 'true';
+      const source = img.currentSrc || img.src;
+      let bounds = transparentCardBoundsCache.get(source);
+      if (bounds === undefined) {
+        if (img.naturalWidth * img.naturalHeight > 8000000) {
+          transparentCardBoundsCache.set(source, null);
+          return;
+        }
 
-      img.dataset.alphaFit = 'true';
-      img.dataset.alphaFitPending = 'true';
-      const probe = new Image();
-      probe.crossOrigin = 'anonymous';
-      probe.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context) {
+          transparentCardBoundsCache.set(source, null);
+          return;
+        }
+
         try {
-          const ratio = Math.min(1, 320 / Math.max(probe.naturalWidth, probe.naturalHeight));
-          const width = Math.max(1, Math.round(probe.naturalWidth * ratio));
-          const height = Math.max(1, Math.round(probe.naturalHeight * ratio));
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          const context = canvas.getContext('2d', { willReadFrequently: true });
-          context.drawImage(probe, 0, 0, width, height);
-          const pixels = context.getImageData(0, 0, width, height).data;
-          let minX = width, minY = height, maxX = -1, maxY = -1;
-          for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-              if (pixels[(y * width + x) * 4 + 3] > 8) {
-                minX = Math.min(minX, x);
-                minY = Math.min(minY, y);
-                maxX = Math.max(maxX, x);
-                maxY = Math.max(maxY, y);
-              }
+          context.drawImage(img, 0, 0);
+          const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+          let left = canvas.width;
+          let top = canvas.height;
+          let right = -1;
+          let bottom = -1;
+          for (let y = 0; y < canvas.height; y++) {
+            for (let x = 0; x < canvas.width; x++) {
+              if (pixels[(y * canvas.width + x) * 4 + 3] <= 16) continue;
+              if (x < left) left = x;
+              if (x > right) right = x;
+              if (y < top) top = y;
+              if (y > bottom) bottom = y;
             }
           }
-          const bounds = maxX >= minX && maxY >= minY
-            ? {
-                x: minX / ratio,
-                y: minY / ratio,
-                width: (maxX - minX + 1) / ratio,
-                height: (maxY - minY + 1) / ratio
-              }
-            : { x: 0, y: 0, width: probe.naturalWidth, height: probe.naturalHeight };
-          alphaFitBoundsCache.set(src, bounds);
-          img._alphaFitBounds = bounds;
-          img.dataset.alphaFitPending = 'false';
-          applyAlphaFitBounds(img);
+
+          if (right < 0) {
+            bounds = null;
+          } else {
+            const padX = Math.ceil(canvas.width * 0.005);
+            const padY = Math.ceil(canvas.height * 0.005);
+            left = Math.max(0, left - padX);
+            top = Math.max(0, top - padY);
+            right = Math.min(canvas.width - 1, right + padX);
+            bottom = Math.min(canvas.height - 1, bottom + padY);
+            bounds = left === 0 && top === 0 && right === canvas.width - 1 && bottom === canvas.height - 1
+              ? null
+              : { left, top, width: right - left + 1, height: bottom - top + 1 };
+          }
+          transparentCardBoundsCache.set(source, bounds);
         } catch (error) {
-          alphaFitBoundsCache.set(src, null);
-          img.dataset.alphaFitPending = 'false';
-          img.classList.add('object-contain');
-          reportAlphaFitFallback(src, error);
+          if (!transparentCardInspectionWarningShown) {
+            console.warn('Could not inspect transparency on some card images; those images remain uncropped.', error);
+            transparentCardInspectionWarningShown = true;
+          }
+          transparentCardBoundsCache.set(source, null);
+        } finally {
+          canvas.width = 0;
+          canvas.height = 0;
         }
-      };
-      probe.onerror = () => {
-        alphaFitBoundsCache.set(src, null);
-        img.dataset.alphaFitPending = 'false';
-        img.classList.add('object-contain');
-        reportAlphaFitFallback(src, new Error('The image could not be loaded for alpha-bound detection.'));
-      };
-      probe.src = src;
-
-      const host = img.parentElement;
-      if (host && alphaFitResizeObserver && !observedAlphaFitHosts.has(host)) {
-        alphaFitResizeObserver.observe(host);
-        observedAlphaFitHosts.add(host);
       }
-    }
-    window.fitCardImageToAlpha = fitCardImageToAlpha;
 
-    function renderCardVisualHtml(card, extraClasses = '', explicitVersionIdx = null, faceIdx = 0) {
+      if (!bounds) return;
+      img.dataset.alphaBounds = JSON.stringify(bounds);
+      if (transparentCardResizeObserver && img.parentElement) {
+        transparentCardResizeObserver.observe(img.parentElement);
+      }
+      applyTransparentCardImageFit(img);
+    }
+
+    function handleCardVisualImageError(img, fallbackUrl) {
+      if (img.hasAttribute('crossorigin') && !img.dataset.corsRetry) {
+        img.dataset.corsRetry = 'true';
+        const originalUrl = img.src;
+        img.removeAttribute('crossorigin');
+        img.src = originalUrl;
+        return;
+      }
+      img.onerror = null;
+      img.classList.remove('horizontal-card-rotated');
+      img.src = fallbackUrl;
+    }
+
+    window.trimTransparentCardImage = trimTransparentCardImage;
+    window.handleCardVisualImageError = handleCardVisualImageError;
+
+    function renderCardVisualHtml(card, extraClasses = '', explicitVersionIdx = null, explicitFaceIdx = 0) {
+      ensureCustomCardVersions(card);
       const ver = getActiveVersion(card, explicitVersionIdx);
-      const face = ver.faces?.[faceIdx] || card.faces?.[faceIdx];
-      const imgUrl = ver.faces?.[faceIdx]?.imageUrl || face?.imageUrl || ver.imageUrl || card.imageUrl || '';
-      const faceCard = face
-        ? { ...card, name: face.name || card.name, rulesText: face.rulesText || card.rulesText, typeLine: face.typeLine || card.typeLine, statsText: face.statsText || card.statsText }
-        : card;
+      const face = Array.isArray(ver.faces) ? ver.faces[explicitFaceIdx] : null;
+      const imgUrl = face?.imageUrl || ver.imageUrl || card.imageUrl || '';
       if (!imgUrl) {
-        return `<div class="w-full h-full ${extraClasses}">${buildGeneratedCardSvg(faceCard, ver)}</div>`;
+        return `<div class="w-full h-full ${extraClasses}">${buildGeneratedCardSvg(card, ver)}</div>`;
       }
       // Escape single quotes (%27) so names like "Urza's Saga" never break the inline onerror string
-      const fallbackSvgEncoded = encodeURIComponent(buildGeneratedCardSvg(faceCard, ver)).replace(/'/g, '%27');
+      const fallbackSvgEncoded = encodeURIComponent(buildGeneratedCardSvg(card, ver)).replace(/'/g, '%27');
       const gwentOverlayHtml = '';
       return `
-        <div class="relative w-full h-full overflow-hidden bg-transparent">
+        <div class="relative w-full h-full overflow-hidden bg-abyss-950">
           <img
-            src="${escapeXml(imgUrl)}"
-            alt="${escapeXml(faceCard.name)}"
-            draggable="false"
+            crossorigin="anonymous"
+            src="${imgUrl}"
+            alt="${escapeXml(card.name)}"
             referrerpolicy="no-referrer"
             loading="lazy"
-            onload="this.classList.toggle('horizontal-card-rotated', this.naturalWidth > this.naturalHeight); window.fitCardImageToAlpha(this);"
-            onerror="this.onerror=null; this.classList.remove('horizontal-card-rotated'); this.style.cssText=''; this._alphaFitBounds=null; this.dataset.alphaFit=''; this.dataset.alphaFitPending=''; this.src='data:image/svg+xml;charset=utf-8,${fallbackSvgEncoded}';"
+            onload="this.classList.toggle('horizontal-card-rotated', this.naturalWidth > this.naturalHeight); window.trimTransparentCardImage(this);"
+            onerror="window.handleCardVisualImageError(this, 'data:image/svg+xml;charset=utf-8,${fallbackSvgEncoded}');"
             class="w-full h-full object-contain ${extraClasses}"
           />
           ${gwentOverlayHtml}
@@ -2590,29 +2701,10 @@
       return request;
     }
 
-    function normalizeScryfallFaces(rawFaces) {
-      if (!Array.isArray(rawFaces) || rawFaces.length < 2) return null;
-      return rawFaces.map((face, index) => {
-        const stats = [face.mana_cost, face.power && face.toughness ? `${face.power}/${face.toughness}` : '', face.loyalty ? `Loyalty ${face.loyalty}` : '']
-          .filter(Boolean)
-          .join(' · ');
-        return {
-          id: face.id || `face_${index}`,
-          label: index === 0 ? 'Front' : index === 1 ? 'Back' : `Face ${index + 1}`,
-          name: face.name || '',
-          imageUrl: face.image_uris?.normal || face.image_uris?.large || face.image_uris?.png || '',
-          typeLine: face.type_line || '',
-          statsText: stats,
-          rulesText: face.oracle_text || 'No rules text.'
-        };
-      });
-    }
-
     function normalizeScryfallCard(raw) {
       let imageUrl = '';
       if (raw.image_uris?.normal) imageUrl = raw.image_uris.normal;
       else if (raw.card_faces?.[0]?.image_uris?.normal) imageUrl = raw.card_faces[0].image_uris.normal;
-      const faces = normalizeScryfallFaces(raw.card_faces);
 
       const oracleText = raw.oracle_text
         || (Array.isArray(raw.card_faces) ? raw.card_faces.map(f => `${f.name}: ${f.oracle_text || ''}`).join('\n—\n') : '');
@@ -2626,10 +2718,13 @@
       if (raw.mana_cost) statsParts.push(raw.mana_cost);
       if (raw.power !== undefined && raw.toughness !== undefined) statsParts.push(`${raw.power}/${raw.toughness}`);
 
+      const nativeRoles = [];
+      if ((/legendary creature/i.test(raw.type_line || '') || (/planeswalker/i.test(raw.type_line || '') && /can be your commander/i.test(oracleText)))
+        && raw.legalities?.commander !== 'banned') nativeRoles.push('Commander');
+
       const card = {
         id: `mtg_${raw.oracle_id || raw.id}`,
         sourceGame: 'MTG',
-        oracleId: raw.oracle_id || '',
         name: raw.name,
         category: inferEclecticaCategory(raw.type_line),
         colorText: colorStr,
@@ -2639,59 +2734,33 @@
         defNum: raw.toughness !== undefined && !isNaN(Number(raw.toughness)) ? Number(raw.toughness) : null,
         originalYear: releaseYear,
         isDigitalOnly: Boolean(raw.digital),
+        isUniversesBeyond: /universes beyond/i.test(raw.set_name || '')
+          || (Array.isArray(raw.promo_types) && raw.promo_types.some(type => /universes.?beyond/i.test(type))),
+        nativeRoles,
         statsText: statsParts.join(' · ') || `MV ${raw.cmc ?? 0}`,
         typeLine: raw.type_line || 'Magic Card',
         rulesText: oracleText || 'No rules text.',
-        printsSearchUri: `https://api.scryfall.com/cards/search?order=released&dir=asc&unique=prints&q=${encodeURIComponent(raw.oracle_id ? `oracleid:${raw.oracle_id}` : `!"${raw.name}"`)}`,
+        printsSearchUri: raw.prints_search_uri || `https://api.scryfall.com/cards/search?order=released&dir=asc&q=!"${encodeURIComponent(raw.name)}"&unique=prints`,
         selectedVersionIdx: 0,
         versions: [
           {
+            id: raw.id || `${raw.set || ''}_${raw.collector_number || ''}`,
             label: `1st: ${raw.set_name || 'Original'} (${releaseYear}) #${raw.collector_number || ''}`,
             setInfo: `${raw.set_name || 'MTG'} (${(raw.set || '').toUpperCase()})`,
             year: releaseYear,
             imageUrl,
-            faces
+            legacyPreferenceKeys: [`${raw.set_name || 'MTG'} (${(raw.set || '').toUpperCase()})::1st: ${raw.set_name || 'Original'} (${releaseYear}) #${raw.collector_number || ''}`],
+            faces: (raw.card_faces || []).map(face => ({
+              name: face.name || raw.name,
+              typeLine: face.type_line || raw.type_line || '',
+              rulesText: face.oracle_text || '',
+              imageUrl: face.image_uris?.normal || face.image_uris?.large || ''
+            }))
           }
-        ],
-        faces
+        ]
       };
       card.selectedVersionIdx = getPreferredVersionIdx(card);
       return card;
-    }
-
-    async function ensureOriginalSearchPrinting(card) {
-      if (card.sourceGame !== 'MTG' || card._searchOriginalResolved) return;
-      if (card._searchOriginalPromise) return card._searchOriginalPromise;
-      const query = card.oracleId ? `oracleid:${card.oracleId}` : `!"${card.name}"`;
-      const url = `https://api.scryfall.com/cards/search?order=released&dir=asc&unique=prints&q=${encodeURIComponent(query)}`;
-      card._searchOriginalPromise = (async () => {
-        try {
-          const data = await fetchScryfallJson(url);
-          const original = Array.isArray(data.data) ? data.data[0] : null;
-          if (!original) throw new Error('Scryfall returned no printing for this card.');
-          const imageUrl = original.image_uris?.normal || original.card_faces?.[0]?.image_uris?.normal || '';
-          if (!imageUrl) throw new Error('The original printing has no displayable card image.');
-          const year = original.released_at ? Number(original.released_at.slice(0, 4)) : 1993;
-          card.versions = [{
-            label: `Original: ${original.set_name || 'Original'} (${year}) #${original.collector_number || ''}`,
-            setInfo: `${original.set_name || 'MTG'} (${(original.set || '').toUpperCase()} #${original.collector_number || ''})`,
-            year,
-            imageUrl,
-            faces: normalizeScryfallFaces(original.card_faces)
-          }];
-          card.faces = normalizeScryfallFaces(original.card_faces) || card.faces;
-          card.originalYear = year;
-          card.selectedVersionIdx = 0;
-          card.searchVersionIdx = 0;
-        } catch (error) {
-          card.searchOriginalError = true;
-          console.error(`Original Scryfall printing lookup failed for "${card.name}":`, error);
-        } finally {
-          card._searchOriginalResolved = true;
-          card._searchOriginalPromise = null;
-        }
-      })();
-      return card._searchOriginalPromise;
     }
 
     async function hydrateScryfallAllPrintings(card, onProgress) {
@@ -2715,14 +2784,20 @@
         card.versions = allRawPrints.map((p, idx) => {
           const yr = p.released_at ? Number(p.released_at.slice(0, 4)) : 1993;
           const img = p.image_uris?.normal || p.card_faces?.[0]?.image_uris?.normal || '';
-          const faces = normalizeScryfallFaces(p.card_faces);
           const prefix = idx === 0 ? '1st: ' : `#${idx + 1}: `;
           return {
+            id: p.id || `${p.set || ''}_${p.collector_number || ''}`,
             label: `${prefix}${p.set_name} (${yr}) [${(p.set || '').toUpperCase()} #${p.collector_number}]`,
             setInfo: `${p.set_name} (${(p.set || '').toUpperCase()} #${p.collector_number}) · ${p.released_at || yr}`,
             year: yr,
             imageUrl: img,
-            faces
+            legacyPreferenceKeys: [`${p.set_name} (${(p.set || '').toUpperCase()})::1st: ${p.set_name} (${yr}) #${p.collector_number || ''}`],
+            faces: (p.card_faces || []).map(face => ({
+              name: face.name || p.name,
+              typeLine: face.type_line || p.type_line || '',
+              rulesText: face.oracle_text || '',
+              imageUrl: face.image_uris?.normal || face.image_uris?.large || ''
+            }))
           };
         });
 
@@ -2873,6 +2948,7 @@
         defNum: primary.health !== undefined ? Number(primary.health) : null,
         originalYear: 2014,
         isDigitalOnly: true,
+        nativeRoles: primary.type === 'HERO' ? ['Hero'] : (primary.type === 'HERO_POWER' ? ['Hero Power'] : []),
         statsText: statsParts.join(' · '),
         typeLine: `${cardClass} ${cardType}${primary.race ? ' — ' + primary.race : ''}`,
         rulesText: stripHtmlTags(primary.text) || 'No card text.',
@@ -2884,91 +2960,153 @@
     }
 
     function normalizeSwuRawCard(raw) {
-      const name = raw.Subtitle ? `${raw.Name}, ${raw.Subtitle}` : (raw.Name || raw.name || 'SWU Card');
-      const setCode = (raw.Set || raw.set || 'SOR').toUpperCase();
-      const num = String(raw.Number || raw.number || '001').padStart(3, '0');
-      const resolveArtUrl = art => art && art.startsWith('/') ? `https://cdn.swu-db.com${art}` : art;
-      let imageUrl = resolveArtUrl(raw.FrontArt || raw.frontArt || raw.image_url || '');
+      const subtitle = raw.Subtitle || raw.subtitle;
+      const name = subtitle ? `${raw.Name || raw.name}, ${subtitle}` : (raw.Name || raw.name || 'SWU Card');
+      const setCode = (raw.Set || raw.set || raw.setCode || raw.set_code || 'SOR').toUpperCase();
+      const fallbackNumber = typeof raw.id === 'string' ? raw.id.split('_').pop() : undefined;
+      const cardNumber = raw.Number ?? raw.number ?? raw.cardNumber ?? raw.card_number ??
+        raw.collectorNumber ?? raw.collector_number ?? fallbackNumber ?? '001';
+      const num = String(cardNumber).split('_').pop().padStart(3, '0');
+      const variantType = raw.VariantType || raw.variantType || raw.variant_type || '';
+      const printingLabel = `${setCode} #${num}${variantType ? ` (${variantType})` : ''}`;
+      let imageUrl = raw.FrontArt || raw.frontArt || raw.frontImageUrl || raw.front_image_url || raw.image_url || '';
+      if (imageUrl && imageUrl.startsWith('/')) {
+        imageUrl = `https://cdn.swu-db.com${imageUrl}`;
+      }
       if (!imageUrl) {
         imageUrl = `https://cdn.swu-db.com/images/cards/${setCode}/${num}.png`;
       }
 
       const cost = Number(raw.Cost ?? raw.cost ?? 0);
-      const pwr = raw.Power !== undefined ? Number(raw.Power) : null;
-      const hp = raw.HP !== undefined ? Number(raw.HP) : null;
-      const aspects = Array.isArray(raw.Aspects) ? raw.Aspects.join(' ') : (raw.Aspects || '');
-      const traits = Array.isArray(raw.Traits) ? raw.Traits.join(' · ') : '';
-      const rawType = raw.Type || 'Unit';
-      const frontText = raw.FrontText || raw.frontText || '';
-      const backText = raw.BackText || raw.backText || '';
-      const doubleSidedFlag = raw.DoubleSided ?? raw.doubleSided;
-      const isDoubleSided = Boolean(raw.BackArt || raw.backArt) || doubleSidedFlag === true || doubleSidedFlag === 1 ||
-        ['true', '1'].includes(String(doubleSidedFlag).toLowerCase());
-      const backUrl = resolveArtUrl(raw.BackArt || raw.backArt || '') ||
-        (isDoubleSided ? `https://cdn.swu-db.com/images/cards/${setCode}/${num}-b.png` : '');
+      const pwr = raw.Power !== undefined ? Number(raw.Power) : (raw.power !== undefined ? Number(raw.power) : null);
+      const hp = raw.HP !== undefined ? Number(raw.HP) : (raw.hp !== undefined ? Number(raw.hp) : null);
+      const rawAspects = raw.Aspects || raw.aspects || '';
+      const rawTraits = raw.Traits || raw.traits || '';
+      const aspects = Array.isArray(rawAspects) ? rawAspects.join(' ') : rawAspects;
+      const traits = Array.isArray(rawTraits) ? rawTraits.join(' · ') : rawTraits;
+      const rawType = raw.Type || raw.type || 'Unit';
 
-      const faces = [{
-        id: 'front',
-        label: 'Front',
-        name,
-        imageUrl,
-        typeLine: `${rawType}${traits ? ' — ' + traits : ''}`,
-        statsText: `${cost} Cost${pwr !== null && hp !== null ? ` · ${pwr}/${hp}` : ''}`,
-        rulesText: frontText || 'Star Wars: Unlimited card.'
-      }];
-      if (isDoubleSided && backUrl) {
-        faces.push({
-          id: 'back',
-          label: 'Back / Deployed',
-          name: raw.BackName || raw.backName || name,
-          imageUrl: backUrl,
-          typeLine: raw.BackType || raw.backType || `${rawType}${traits ? ' — ' + traits : ''}`,
-          statsText: raw.BackStats || raw.backStats || '',
-          rulesText: backText || 'No back-face rules text.'
-        });
+
+      const rulesParts = [];
+      const frontText = raw.FrontText || raw.frontText || raw.front_text;
+      const backText = raw.BackText || raw.backText || raw.back_text;
+      if (frontText || raw.text) rulesParts.push(frontText || raw.text);
+      if (backText) rulesParts.push(`[Deployed / Back Side]\n${backText}`);
+
+      const backArt = raw.BackArt || raw.backArt || raw.backImageUrl || raw.back_image_url;
+      let backUrl = '';
+      if (backArt) {
+        backUrl = backArt;
+        if (backUrl.startsWith('/')) backUrl = `https://cdn.swu-db.com${backUrl}`;
       }
-
-      const printingId = `${setCode}:${num}`;
-      const version = {
-        id: `Star Wars: Unlimited (${setCode} #${num})::Original: ${setCode} #${num}`,
-        printingId,
-        label: `${setCode} #${num}`,
-        setInfo: `Star Wars: Unlimited (${setCode} #${num})`,
-        year: Number(raw.ReleaseYear || raw.releaseYear || 2024),
+      const versions = [{
+        id: `${setCode}_${num}`,
+        label: `1st: ${printingLabel}`,
+        setInfo: `Star Wars: Unlimited (${printingLabel})`,
+        year: 2024,
         imageUrl,
-        faces
-      };
-      const identityKey = [
-        name.trim().toLocaleLowerCase(),
-        rawType.toLocaleLowerCase(),
-        String(aspects).toLocaleLowerCase(),
-        String(traits).toLocaleLowerCase(),
-        cost,
-        pwr ?? '',
-        hp ?? ''
-      ].join('|');
+        faces: backUrl ? [
+          { name, typeLine: String(rawType), rulesText: frontText || raw.text || '', imageUrl },
+          { name: `${name} — Back`, typeLine: String(rawType), rulesText: backText || '', imageUrl: backUrl }
+        ] : []
+      }];
+
       const card = {
         id: `swu_${setCode}_${num}`,
-        identityKey,
         sourceGame: 'SWU',
         name,
         category: inferEclecticaCategory(rawType),
         colorText: aspects || 'Neutral',
-        rarity: raw.Rarity || 'Common',
+        rarity: raw.Rarity || raw.rarity || 'Common',
         numericCost: Math.max(0, cost),
         atkNum: pwr,
         defNum: hp,
         originalYear: 2024,
         isDigitalOnly: false,
+        nativeRoles: /\bleader\b/i.test(rawType) ? ['Leader'] : (/\bbase\b/i.test(rawType) ? ['Base'] : []),
         statsText: `${cost} Cost${pwr !== null && hp !== null ? ` · ${pwr}/${hp}` : ''}`,
         typeLine: `${rawType}${traits ? ' — ' + traits : ''}`,
-        rulesText: frontText || 'Star Wars: Unlimited card.',
-        faces,
+        rulesText: rulesParts.join('\n\n') || 'Star Wars: Unlimited card.',
         selectedVersionIdx: 0,
-        versions: [version]
+        versions
       };
       card.selectedVersionIdx = getPreferredVersionIdx(card);
       return card;
+    }
+
+    function getSwuCardIdentity(card) {
+      const sortedAspects = String(card.colorText || '')
+        .split(/\s+/)
+        .filter(Boolean)
+        .sort()
+        .join(' ');
+      return JSON.stringify([
+        card.name,
+        card.category,
+        sortedAspects,
+        card.statsText,
+        card.typeLine,
+        card.rulesText
+      ].map(value => String(value || '').replace(/\s+/g, ' ').trim().toLowerCase()));
+    }
+
+    function hashSwuCardIdentity(identity) {
+      let hashOne = 2166136261;
+      let hashTwo = 0x9e3779b9;
+      for (let i = 0; i < identity.length; i++) {
+        const charCode = identity.charCodeAt(i);
+        hashOne = Math.imul(hashOne ^ charCode, 16777619);
+        hashTwo = Math.imul(hashTwo ^ charCode, 2246822519);
+      }
+      return `${(hashOne >>> 0).toString(36)}${(hashTwo >>> 0).toString(36)}`;
+    }
+
+    function mergeSwuCardPrintings(cards) {
+      const grouped = new Map();
+      cards.forEach(card => {
+        const identity = getSwuCardIdentity(card);
+        const existing = grouped.get(identity);
+        if (!existing) {
+          grouped.set(identity, card);
+          return;
+        }
+
+        if (card.id.localeCompare(existing.id) < 0) existing.id = card.id;
+        card.versions.forEach(version => {
+          const alreadyAdded = existing.versions.some(existingVersion =>
+            existingVersion.label === version.label &&
+            existingVersion.setInfo === version.setInfo &&
+            existingVersion.imageUrl === version.imageUrl
+          );
+          if (!alreadyAdded) existing.versions.push(version);
+        });
+      });
+
+      const groupedCards = Array.from(grouped.values());
+      const idCounts = new Map();
+      groupedCards.forEach(card => idCounts.set(card.id, (idCounts.get(card.id) || 0) + 1));
+      groupedCards.forEach(card => {
+        if (idCounts.get(card.id) > 1) {
+          card.id = `${card.id}_${hashSwuCardIdentity(getSwuCardIdentity(card))}`;
+        }
+        card.versions.forEach((version, index) => {
+          const label = version.label.replace(/^\d+(?:st|nd|rd|th):\s*/, '');
+          const position = index + 1;
+          const lastTwoDigits = position % 100;
+          const suffix = lastTwoDigits >= 11 && lastTwoDigits <= 13
+            ? 'th'
+            : position % 10 === 1
+              ? 'st'
+              : position % 10 === 2
+                ? 'nd'
+                : position % 10 === 3
+                  ? 'rd'
+                  : 'th';
+          version.label = `${position}${suffix}: ${label}`;
+        });
+        card.selectedVersionIdx = getPreferredVersionIdx(card);
+      });
+      return groupedCards;
     }
 
     function normalizeBuiltInDatabaseEntry(gameId, entry) {
@@ -3477,12 +3615,48 @@
         payload?.data?.cards,
         payload?.data?.results,
         payload?.response?.cards,
-        payload?.response?.data
+        payload?.response?.data,
+        payload?.result?.cards
       ];
       return candidates.find(Array.isArray) || [];
     }
 
+    function isValidSwuRawCard(card) {
+      return Boolean(
+        card && typeof card === 'object' &&
+        (card.Set || card.set || card.setCode || card.set_code) &&
+        (card.Number || card.number || card.cardNumber || card.card_number ||
+          card.collectorNumber || card.collector_number || card.id) &&
+        (card.Name || card.name)
+      );
+    }
+
+    function swuApiUrls(url) {
+      return [
+        url,
+        `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
+      ];
+    }
+
     async function fetchSwuCatalog() {
+      const exportUrl = 'https://api.swuapi.com/export/all';
+      const corsEnabledCatalog = await fetchWithCorsMirrorFallback(swuApiUrls(exportUrl));
+      const corsEnabledCards = extractSwuCards(corsEnabledCatalog).filter(isValidSwuRawCard);
+      if (corsEnabledCards.length > 0) return corsEnabledCards;
+
+      const cards = [];
+      const pageSize = 500;
+      for (let offset = 0; offset < 50000; offset += pageSize) {
+        const pageUrl = `https://api.swuapi.com/cards?limit=${pageSize}&offset=${offset}`;
+        const payload = await fetchWithCorsMirrorFallback(swuApiUrls(pageUrl));
+        const page = extractSwuCards(payload).filter(isValidSwuRawCard);
+        if (page.length === 0) break;
+        cards.push(...page);
+        if (page.length < pageSize) break;
+      }
+      if (cards.length > 0) return cards;
+
       const directUrl = 'https://api.swu-db.com/cards/search?q=*';
       const urls = [
         directUrl,
@@ -3494,10 +3668,8 @@
 
       for (const url of urls) {
         const payload = await fetchWithCorsMirrorFallback([url]);
-        const cards = extractSwuCards(payload).filter(card =>
-          (card.Set || card.set) && (card.Number || card.number) && (card.Name || card.name)
-        );
-        if (cards.length > 0) return cards;
+        const fallbackCards = extractSwuCards(payload).filter(isValidSwuRawCard);
+        if (fallbackCards.length > 0) return fallbackCards;
         emptyResponses.push(url);
       }
 
@@ -3515,9 +3687,7 @@
             const payload = await fetchWithCorsMirrorFallback([
               `https://api.swu-db.com/cards/${encodeURIComponent(setId)}`
             ]);
-            const setCards = extractSwuCards(payload).filter(card =>
-              (card.Set || card.set) && (card.Number || card.number) && (card.Name || card.name)
-            );
+            const setCards = extractSwuCards(payload).filter(isValidSwuRawCard);
             if (setCards.length === 0) throw new Error(`SWU set ${setId} returned no cards.`);
             return setCards;
           }));
@@ -3535,180 +3705,19 @@
       throw new Error(`SWU API returned no cards from its full-catalog endpoint (${emptyResponses.length} endpoints checked).`);
     }
 
-    async function fetchSwuSetReleaseDates() {
-      const baseUrl = 'https://api.swu-db.com/sets';
-      const sets = await fetchWithCorsMirrorFallback([
-        baseUrl,
-        `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
-        `https://api.allorigins.win/get?url=${encodeURIComponent(baseUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`
-      ]);
-      if (!Array.isArray(sets)) {
-        console.warn('SWU set release dates could not be loaded; printings will be ordered by set code.');
-        return new Map();
-      }
-
-      const dates = new Map();
-      sets.forEach(set => {
-        if (!set.setId || !set.releaseDate) return;
-        const date = new Date(set.releaseDate);
-        if (!Number.isNaN(date.getTime())) dates.set(set.setId, date.toISOString().slice(0, 10));
-      });
-      sets.forEach(set => {
-        if (set.setId && !dates.has(set.setId) && set.parentSetId && dates.has(set.parentSetId)) {
-          dates.set(set.setId, dates.get(set.parentSetId));
-        }
-      });
-      return dates;
-    }
-
-    function migrateSwuCardIds(aliasToCanonical, cardsById) {
-      let changed = false;
-      const remapFeatureKey = key => {
-        if (typeof key !== 'string') return key;
-        const separator = key.indexOf('::');
-        if (separator < 0) return key;
-        const zoneId = key.slice(0, separator);
-        const cardId = key.slice(separator + 2);
-        const canonicalId = aliasToCanonical.get(cardId);
-        return canonicalId ? `${zoneId}::${canonicalId}` : key;
-      };
-
-      state.decks.forEach(deck => {
-        const mergedCards = [];
-        (deck.cards || []).forEach(entry => {
-          const canonicalId = aliasToCanonical.get(entry.id);
-          if (!canonicalId) {
-            mergedCards.push(entry);
-            return;
-          }
-          const card = cardsById.get(canonicalId);
-          const preferredVersion = getVersionPreferenceKey(entry.versions?.[entry.selectedVersionIdx] || {});
-          entry.id = canonicalId;
-          entry.versions = card.versions;
-          entry.faces = card.faces;
-          const selectedIdx = card.versions.findIndex(version => getVersionPreferenceKey(version) === preferredVersion);
-          entry.selectedVersionIdx = selectedIdx >= 0 ? selectedIdx : getPreferredVersionIdx(card);
-          const duplicate = mergedCards.find(item => item.id === canonicalId && getCardZone(item) === getCardZone(entry));
-          if (duplicate) {
-            duplicate.quantity = (Number(duplicate.quantity) || 1) + (Number(entry.quantity) || 1);
-            duplicate.tags = Array.from(new Set([...(duplicate.tags || []), ...(entry.tags || [])]));
-          } else {
-            mergedCards.push(entry);
-          }
-          changed = true;
-        });
-        if (changed) {
-          deck.cards = mergedCards;
-          if (deck.exemplarFeatureId) deck.exemplarFeatureId = remapFeatureKey(deck.exemplarFeatureId);
-          if (Array.isArray(deck.sampleFeatureCardIds)) {
-            deck.sampleFeatureCardIds = [...new Set(deck.sampleFeatureCardIds.map(remapFeatureKey))];
-          }
-        }
-      });
-
-      state.formats.forEach(format => {
-        const overrides = format.cardPointOverrides || {};
-        const entries = format.cardPointEntries || {};
-        aliasToCanonical.forEach((canonicalId, oldId) => {
-          if (oldId === canonicalId) return;
-          if (Object.prototype.hasOwnProperty.call(overrides, oldId)) {
-            if (!Object.prototype.hasOwnProperty.call(overrides, canonicalId)) overrides[canonicalId] = overrides[oldId];
-            delete overrides[oldId];
-            changed = true;
-          }
-          if (entries[oldId]) {
-            if (!entries[canonicalId]) entries[canonicalId] = entries[oldId];
-            delete entries[oldId];
-            changed = true;
-          }
-        });
-        format.cardPointOverrides = overrides;
-        format.cardPointEntries = entries;
-      });
-
-      const bookmarkIds = new Set();
-      state.bookmarkedCards = state.bookmarkedCards.filter(bookmark => {
-        const canonicalId = aliasToCanonical.get(bookmark.id);
-        if (canonicalId) {
-          bookmark.id = canonicalId;
-          const card = cardsById.get(canonicalId);
-          bookmark.versions = card.versions;
-          bookmark.faces = card.faces;
-          changed = true;
-        }
-        if (bookmarkIds.has(bookmark.id)) {
-          changed = true;
-          return false;
-        }
-        bookmarkIds.add(bookmark.id);
-        return true;
-      });
-      if (changed) saveAllStateToStorage();
-    }
-
-    // LIVE SWU Pool: Retrieves the current full card catalog from api.swu-db.com
+    // LIVE SWU Pool: Retrieves the full card catalog from a CORS-enabled API with SWU-DB fallbacks.
     async function getCompleteSwuPool() {
       if (state.apiCaches.swu && state.apiCaches.swu.length > 0) return state.apiCaches.swu;
-      const fromIdb = await idbGetDataset('norm_swu_live_v14');
+      const fromIdb = await idbGetDataset('norm_swu_live_v16');
       if (Array.isArray(fromIdb) && fromIdb.length > 0) {
         state.apiCaches.swu = fromIdb;
         return fromIdb;
       }
 
-      const [rawCards, swuReleaseDates] = await Promise.all([
-        fetchSwuCatalog(),
-        fetchSwuSetReleaseDates()
-      ]);
-      const fetched = rawCards.map(normalizeSwuRawCard);
-      const grouped = new Map();
-      fetched.forEach(card => {
-        const existing = grouped.get(card.identityKey);
-        if (!existing) {
-          grouped.set(card.identityKey, { ...card, legacyIds: [card.id] });
-          return;
-        }
-        if (!existing.legacyIds.includes(card.id)) existing.legacyIds.push(card.id);
-        card.versions.forEach(version => {
-          if (!existing.versions.some(existingVersion => existingVersion.id === version.id)) {
-            existing.versions.push(version);
-          }
-        });
-      });
-
-      const finalSwu = Array.from(grouped.values());
-      finalSwu.forEach(card => {
-        card.versions.forEach(version => {
-          version.releaseDate = swuReleaseDates.get(version.printingId.split(':')[0]) || '';
-          if (version.releaseDate) version.year = Number(version.releaseDate.slice(0, 4));
-        });
-        card.versions.sort((a, b) =>
-          (a.releaseDate || '9999-99-99').localeCompare(b.releaseDate || '9999-99-99') ||
-          a.printingId.localeCompare(b.printingId)
-        );
-        card.originalYear = card.versions[0]?.year || card.originalYear;
-        card.faces = card.versions[0]?.faces || card.faces;
-        card.imageUrl = card.versions[0]?.imageUrl || card.imageUrl;
-        card.legacyIds.sort((a, b) => a.localeCompare(b));
-      });
-
-      const referencedIds = new Set([
-        ...state.decks.flatMap(deck => (deck.cards || []).map(card => card.id)),
-        ...state.bookmarkedCards.map(card => card.id),
-        ...state.formats.flatMap(format => Object.keys(format.cardPointOverrides || {}))
-      ]);
-      const aliasToCanonical = new Map();
-      finalSwu.forEach(card => {
-        const canonicalId = card.legacyIds.find(id => referencedIds.has(id)) || card.legacyIds[0];
-        card.id = canonicalId;
-        card.selectedVersionIdx = getPreferredVersionIdx(card);
-        card.legacyIds.forEach(id => aliasToCanonical.set(id, canonicalId));
-        delete card.legacyIds;
-      });
-      const cardsById = new Map(finalSwu.map(card => [card.id, card]));
-      migrateSwuCardIds(aliasToCanonical, cardsById);
+      const fetched = (await fetchSwuCatalog()).map(normalizeSwuRawCard);
+      const finalSwu = mergeSwuCardPrintings(fetched);
       state.apiCaches.swu = finalSwu;
-      idbSetDataset('norm_swu_live_v14', finalSwu);
+      idbSetDataset('norm_swu_live_v16', finalSwu);
       return finalSwu;
     }
 
@@ -4016,7 +4025,7 @@
       }
 
       // Hard invariant: every card returned from querySingleGameSource(gameId) MUST carry sourceGame === gameId
-      return rawResults.map(c => ({ ...c, sourceGame: gameId, searchVersionIdx: 0 }));
+      return rawResults.map(c => ({ ...c, sourceGame: gameId }));
     }
 
     async function executeMultiverseSearch() {
@@ -4084,13 +4093,8 @@
         }
       }
 
-      const initialPageCards = merged.slice(0, 30).filter(card => card.sourceGame === 'MTG');
-      if (initialPageCards.length > 0) {
-        statusMsg.innerHTML = '<span class="inline-block animate-pulse text-starlight-300 font-semibold">Finding original printings for the first page...</span>';
-        await Promise.all(initialPageCards.map(ensureOriginalSearchPrinting));
-      }
-
-      state.searchResults = merged.map(card => ({ ...card, searchVersionIdx: 0 }));
+      state.searchResultsOriginal = merged;
+      sortSearchResults();
       state.searchVisibleCount = 30;
 
       if (merged.length === 0) {
@@ -4109,9 +4113,40 @@
         gameCounts.map(gc => {
           const theme = getBadgeStyleForGame(gc.gameId);
           return `<span style="${theme.pillStyle}" class="px-1.5 py-0.2 rounded border font-bold">${escapeXml(gc.gameId)}: ${gc.count}</span>`;
-        }).join('');
+        }).join('') +
+        `<label class="ml-auto inline-flex items-center gap-1.5 text-slate-300">Sort
+          <select id="searchSortSelect" class="rounded px-2 py-1 text-[10px] border border-abyss-600">
+            <option value="relevance">Relevance</option>
+            <option value="name_asc">Name (A–Z)</option>
+            <option value="name_desc">Name (Z–A)</option>
+            <option value="cost_asc">Cost (Low–High)</option>
+            <option value="cost_desc">Cost (High–Low)</option>
+            <option value="game">Source Game</option>
+            <option value="year_desc">Newest Printing</option>
+          </select>
+        </label>`;
+      const searchSortSelect = document.getElementById('searchSortSelect');
+      searchSortSelect.value = state.searchSortBy;
+      searchSortSelect.addEventListener('change', () => {
+        state.searchSortBy = searchSortSelect.value;
+        sortSearchResults();
+        renderSearchResults();
+      });
 
       renderSearchResults();
+    }
+
+    function sortSearchResults() {
+      const originalOrder = new Map(state.searchResultsOriginal.map((card, index) => [card, index]));
+      state.searchResults = [...state.searchResultsOriginal].sort((a, b) => {
+        if (state.searchSortBy === 'name_asc') return a.name.localeCompare(b.name) || originalOrder.get(a) - originalOrder.get(b);
+        if (state.searchSortBy === 'name_desc') return b.name.localeCompare(a.name) || originalOrder.get(a) - originalOrder.get(b);
+        if (state.searchSortBy === 'cost_asc') return (a.numericCost - b.numericCost) || a.name.localeCompare(b.name);
+        if (state.searchSortBy === 'cost_desc') return (b.numericCost - a.numericCost) || a.name.localeCompare(b.name);
+        if (state.searchSortBy === 'game') return a.sourceGame.localeCompare(b.sourceGame) || a.name.localeCompare(b.name);
+        if (state.searchSortBy === 'year_desc') return (getActiveVersion(b)?.year || 0) - (getActiveVersion(a)?.year || 0) || a.name.localeCompare(b.name);
+        return originalOrder.get(a) - originalOrder.get(b);
+      });
     }
 
     function renderSearchResults() {
@@ -4129,15 +4164,16 @@
       }
 
       grid.innerHTML = visibleCards.map((card, index) => {
+        ensureCustomCardVersions(card);
         const theme = getBadgeStyleForGame(card.sourceGame);
         const versions = card.versions || [{ label: '1st: Original Printing' }];
-        const activeIdx = Math.min(card.versions.length - 1, Math.max(0, Number(card.searchVersionIdx) || 0));
+        const activeIdx = getPreferredVersionIdx(card);
         const bookmarked = isCardBookmarked(card);
 
         return `
-          <div class="group relative bg-transparent border border-abyss-700 hover:border-starlight-300/70 rounded-xl overflow-hidden flex flex-col shadow-md transition">
-            <div class="relative tcg-aspect w-full bg-transparent overflow-hidden cursor-pointer" data-inspect-search-idx="${index}">
-              ${renderCardVisualHtml(card, '', activeIdx)}
+          <div class="group relative bg-abyss-950 border border-abyss-700 hover:border-starlight-300/70 rounded-xl overflow-hidden flex flex-col shadow-md transition">
+            <div class="relative tcg-aspect w-full bg-abyss-900 overflow-hidden cursor-pointer" data-inspect-search-idx="${index}">
+              ${renderCardVisualHtml(card)}
               <span style="${theme.badgeStyle}" class="absolute top-1.5 left-1.5 z-10 px-2 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase tracking-wider border shadow-md">
                 ${escapeXml(card.sourceGame)}
               </span>
@@ -4158,7 +4194,6 @@
               <select data-search-version-idx="${index}" title="Select Preferred Printing Version" class="w-full rounded px-1.5 py-0.5 text-[10px] font-mono border border-abyss-700 cursor-pointer truncate">
                 ${versions.map((v, vIdx) => `<option value="${vIdx}" ${vIdx === activeIdx ? 'selected' : ''}>${escapeXml(v.label)}</option>`).join('')}
               </select>
-              ${card.searchOriginalError ? '<p class="text-[9px] text-amber-300 mt-1">Original printing unavailable; showing the database result.</p>' : ''}
             </div>
 
             <div class="p-2 flex items-center justify-between gap-1 bg-abyss-900">
@@ -4187,7 +4222,6 @@
         sel.addEventListener('change', (e) => {
           e.stopPropagation();
           const idx = Number(sel.dataset.searchVersionIdx);
-          state.searchResults[idx].searchVersionIdx = Number(sel.value);
           setPreferredVersionForCard(state.searchResults[idx], Number(sel.value));
           renderSearchResults();
           syncAllViews();
@@ -4254,7 +4288,7 @@
             data-collage-idx="${index}"
             title="${escapeXml(card.name)} [${escapeXml(card.sourceGame)}]"
             style="left:${left}%;top:${top}%;width:${widthPercent}%;transform:translate(-50%,-50%) rotate(${angle}deg);z-index:${index + 1}"
-            class="absolute tcg-aspect rounded-lg overflow-hidden bg-transparent border border-abyss-700 hover:border-starlight-300 cursor-pointer shadow-xl hover:scale-105 hover:z-50 transition-all duration-150"
+            class="absolute tcg-aspect rounded-lg overflow-hidden bg-abyss-950 border border-abyss-700 hover:border-starlight-300 cursor-pointer shadow-xl hover:scale-105 hover:z-50 transition-all duration-150"
           >
             ${renderCardVisualHtml(card)}
           </div>
@@ -4287,7 +4321,7 @@
           source: `MTG ${index + 1}`,
           timeoutMs: null,
           load: async () => {
-            const raw = await fetchScryfallJson('https://api.scryfall.com/cards/random');
+            const raw = await fetchScryfallJson('https://api.scryfall.com/cards/random?q=-is%3Auniversesbeyond');
             return raw?.object === 'card' ? [normalizeScryfallCard(raw)] : [];
           }
         })),
@@ -4320,7 +4354,8 @@
           if (!cardsByGame.has(card.sourceGame)) cardsByGame.set(card.sourceGame, []);
           cardsByGame.get(card.sourceGame).push(card);
         });
-        const onePerGame = Array.from(cardsByGame.values(), gameCards => pickRandomItems(gameCards, 1)[0]);
+        const onePerGame = Array.from(cardsByGame.values(), gameCards => pickRandomItems(gameCards, 1)[0])
+          .filter(card => card.sourceGame !== 'MTG' || !card.isUniversesBeyond);
         const shuffled = shuffleArray(onePerGame).slice(0, HOME_FAN_CARD_COUNT);
         state.homeCollageCards = shuffled;
         grid.innerHTML = renderCyclicalCardFan(shuffled, 19);
@@ -4352,7 +4387,7 @@
           if (!Array.isArray(cards)) throw new Error('source returned an invalid card list');
           if (cards.length === 0) failedSources.push(source);
           if (runId === activeCollageRun && cards.length > 0) {
-            pool.push(...cards);
+            pool.push(...cards.filter(card => card.sourceGame !== 'MTG' || !card.isUniversesBeyond));
             renderCards();
           }
         } catch (error) {
@@ -4400,9 +4435,11 @@
           id: 'ouroboros',
           name: 'Ouroboros',
           isCoreProtected: true,
-          description: 'The foundational Eclectica Card Game format: particularized Points-Principle budget balancing across all card universes with no banned cards except proper gamebreakers.',
+          description: 'The foundational Eclectica Card Game format: point-budget rules across all card universes with no banned cards except proper gamebreakers.',
           pointCap: 100,
           unlimitedPoints: false,
+          baseCardPoints: 0,
+          raritySurcharges: { common: 0, uncommon: 0, rare: 1, mythic: 2 },
           copySurcharges: { copy1: 0, copy2: 5, copy3: 15, copy4Plus: 30 },
           hardMaxCopies: 4,
           crossGameTaxThreshold: 4,
@@ -4416,8 +4453,9 @@
           maxDeckSize: 100,
           startingLifeFormula: '30 Life',
           cardPointOverrides: {},
-          cardPointEntries: {},
-          manualBannedCards: [],
+          cardPointCards: {},
+          rolePointCosts: Object.fromEntries(DECK_ROLES.map(role => [role, 1])),
+          roleAllowedGames: {},
           customBannedCards: [...PROPER_GAMEBREAKERS]
         }
       ];
@@ -4429,7 +4467,7 @@
         localStorage.setItem(STORAGE_FORMATS_KEY, JSON.stringify({ activeFormatId: state.activeFormatId, formats: state.formats }));
         localStorage.setItem(STORAGE_CUSTOM_CARDS_KEY, JSON.stringify(state.customCardPool));
         localStorage.setItem(STORAGE_PREFERRED_VERSIONS_KEY, JSON.stringify(state.preferredVersions));
-        localStorage.setItem(STORAGE_ORIENTATION_METRON_KEY, JSON.stringify(state.orientationMetronSettings));
+        localStorage.setItem('eclectica_custom_card_versions_v1', JSON.stringify(state.customCardVersions));
         localStorage.setItem(STORAGE_BOOKMARKS_KEY, JSON.stringify(state.bookmarkedCards));
       } catch (e) { console.warn(e); }
     }
@@ -4444,11 +4482,8 @@
         const rawPref = localStorage.getItem(STORAGE_PREFERRED_VERSIONS_KEY);
         if (rawPref) state.preferredVersions = JSON.parse(rawPref) || {};
 
-        const rawOrientationMetron = localStorage.getItem(STORAGE_ORIENTATION_METRON_KEY);
-        if (rawOrientationMetron) {
-          const parsed = JSON.parse(rawOrientationMetron);
-          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) state.orientationMetronSettings = parsed;
-        }
+        const rawCustomVersions = localStorage.getItem('eclectica_custom_card_versions_v1');
+        if (rawCustomVersions) state.customCardVersions = JSON.parse(rawCustomVersions) || {};
 
         const rawBookmarks = localStorage.getItem(STORAGE_BOOKMARKS_KEY);
         if (rawBookmarks) state.bookmarkedCards = JSON.parse(rawBookmarks) || [];
@@ -4506,10 +4541,44 @@
       return state.formats.find(f => f.id === state.activeFormatId) || state.formats[0];
     }
 
-    function computeSingleCardEntryPoints(card, format) {
-      const unitBase = Number(format.cardPointOverrides?.[card.id]) || 0;
+    function isNativeRoleCard(card, role) {
+      if (ROLE_NATIVE_GAMES[role] !== card.sourceGame) return false;
+      if ((card.nativeRoles || []).includes(role)) return true;
+      const typeLine = String(card.typeLine || '');
+      const roleMarkers = {
+        Leader: /\bleader\b/i,
+        Base: /\bbase\b/i,
+        Hero: /\bhero\b/i,
+        'Hero Power': /\bhero power\b/i,
+        Identity: /\bidentity\b/i,
+        Investigator: /\binvestigator\b/i
+      };
+      return Boolean(roleMarkers[role]?.test(typeLine));
+    }
 
-      let total = unitBase * card.quantity;
+    function computeSingleCardEntryPoints(card, format) {
+      const rar = (card.rarity || 'common').toLowerCase();
+      let rarityBonus = 0;
+      if (rar.includes('mythic') || rar.includes('legendary') || rar.includes('ultra') || rar.includes('majestic') || rar.includes('champion')) {
+        rarityBonus = Number(format.raritySurcharges?.mythic) || 0;
+      } else if (rar.includes('rare') || rar.includes('super')) {
+        rarityBonus = Number(format.raritySurcharges?.rare) || 0;
+      } else if (rar.includes('uncommon')) {
+        rarityBonus = Number(format.raritySurcharges?.uncommon) || 0;
+      } else {
+        rarityBonus = Number(format.raritySurcharges?.common) || 0;
+      }
+
+      const unitBase = format.cardPointOverrides?.[card.id] !== undefined
+        ? Number(format.cardPointOverrides[card.id])
+        : ((Number(format.baseCardPoints) || 0) + rarityBonus);
+
+      const deckRole = String(card.deckRole || '').trim();
+      const nativeRole = deckRole && isNativeRoleCard(card, deckRole);
+      const roleSurcharge = deckRole && !nativeRole
+        ? Number(format.rolePointCosts?.[deckRole] ?? format.customRolePointCost ?? 1)
+        : 0;
+      let total = unitBase * card.quantity + roleSurcharge * card.quantity;
       const cs = format.copySurcharges || { copy1: 0, copy2: 5, copy3: 15, copy4Plus: 30 };
       if (card.quantity >= 1) total += Number(cs.copy1) || 0;
       if (card.quantity >= 2) total += Number(cs.copy2) || 0;
@@ -4519,54 +4588,21 @@
       return total;
     }
 
-    function getCardFormatViolations(card, format) {
-      const violations = [];
-
-      if (format.hardMaxCopies > 0 && card.quantity > format.hardMaxCopies) {
-        violations.push(`Copy Cap Breach: "${card.name}" has ${card.quantity} copies (max ${format.hardMaxCopies}).`);
-      }
-
-      const lowerName = card.name.toLowerCase();
-      if ((format.manualBannedCards || []).some(entry => entry.id === card.id)) {
-        violations.push(`Manual Banlist Breach: "${card.name}" is banned in ${format.name}.`);
-      }
-      if (format.banPolicy === 'gamebreakers_only') {
-        const banList = Array.isArray(format.customBannedCards) ? format.customBannedCards : PROPER_GAMEBREAKERS;
-        if (banList.some(b => lowerName.includes(b.toLowerCase()))) {
-          violations.push(`Gamebreaker Banlist Breach: "${card.name}" is restricted in ${format.name}.`);
-        }
-      }
-
-      const gMeta = getBadgeStyleForGame(card.sourceGame);
-      const isDigital = card.isDigitalOnly || gMeta.isDigitalOnly;
-      if (format.mediumPolicy === 'tabletop_only' && isDigital) {
-        violations.push(`Tabletop-Exclusive Breach: "${card.name}" [${card.sourceGame}] is digital-only.`);
-      }
-      if (format.mediumPolicy === 'digital_only' && !isDigital) {
-        violations.push(`Digital-Exclusive Breach: "${card.name}" [${card.sourceGame}] is physical tabletop.`);
-      }
-
-      const activeVer = getActiveVersion(card);
-      const yr = format.firstPrintingsOnly ? (card.originalYear || 2000) : (activeVer.year || card.originalYear || 2000);
-      if (format.eraStartYear && yr < Number(format.eraStartYear)) {
-        violations.push(`Era Start Breach: "${card.name}" (${yr}) < ${format.eraStartYear}.`);
-      }
-      if (format.eraEndYear && yr > Number(format.eraEndYear)) {
-        violations.push(`Era End Breach: "${card.name}" (${yr}) > ${format.eraEndYear}.`);
-      }
-      if (format.firstPrintingsOnly && getPreferredVersionIdx(card) > 0) {
-        violations.push(`First-Printing-Only Breach: "${card.name}" must use its 1st printed edition.`);
-      }
-
-      return violations;
-    }
-
     function evaluateDeckAgainstFormat(deck, format) {
+      const pointsCards = (deck?.cards || []).filter(card => getCardZone(card) !== 'maybeboard');
       const formatCards = getDeckZoneCards(deck, 'main');
       let totalPoints = 0;
       const violations = [];
       const breakdown = [];
-      const totalCards = formatCards.reduce((s, c) => s + c.quantity, 0);
+      const totalCards = formatCards.reduce((sum, card) => sum + (Number(card.quantity) || 1), 0);
+      const morphologyPercent = pointsCards.reduce((sum, card) => {
+        const sosd = MORPHOLOGICAL_SOSD[String(card.sourceGame || 'CUSTOM').toUpperCase()] || MORPHOLOGICAL_SOSD.CUSTOM;
+        return sum + (100 / sosd) * (Number(card.quantity) || 1);
+      }, 0);
+
+      if (pointsCards.length > 0 && Math.abs(morphologyPercent - 100) > 0.0001) {
+        violations.push(`Deck morphology is ${morphologyPercent.toFixed(2)}%; cards outside the Maybeboard must total 100%.`);
+      }
 
       if (totalCards > 0 && format.minDeckSize && totalCards < format.minDeckSize) {
         violations.push(`Deck size (${totalCards}) is below minimum (${format.minDeckSize}).`);
@@ -4575,7 +4611,7 @@
         violations.push(`Deck size (${totalCards}) exceeds maximum (${format.maxDeckSize}).`);
       }
 
-      const distinctGames = new Set(formatCards.map(c => c.sourceGame));
+      const distinctGames = new Set(pointsCards.map(c => c.sourceGame));
       const thresh = Number(format.crossGameTaxThreshold) || 0;
       const perExtra = Number(format.crossGameTaxPerExtraGame) || 0;
       if (thresh > 0 && perExtra > 0 && distinctGames.size > thresh) {
@@ -4584,12 +4620,51 @@
         breakdown.push(`Cross-Universe Diversity Tax (${distinctGames.size} games > ${thresh}): +${tax} pts`);
       }
 
-      for (const card of formatCards) {
-        violations.push(...getCardFormatViolations(card, format));
-
+      for (const card of pointsCards) {
+        const deckRole = String(card.deckRole || '').trim();
+        const allowedGames = deckRole && (format.roleAllowedGames?.[deckRole] || format.roleAllowedGames?.__custom);
+        if (deckRole && Array.isArray(allowedGames) && allowedGames.length > 0
+          && !allowedGames.includes(String(card.sourceGame || '').toUpperCase())) {
+          violations.push(`Role Restriction: "${card.name}" cannot use the ${deckRole} role from ${card.sourceGame}.`);
+        }
         const pts = computeSingleCardEntryPoints(card, format);
         totalPoints += pts;
         if (pts > 0) breakdown.push(`${card.name} (×${card.quantity}): ${pts} pts`);
+      }
+
+      for (const card of formatCards) {
+        if (format.hardMaxCopies > 0 && card.quantity > format.hardMaxCopies) {
+          violations.push(`Copy Cap Breach: "${card.name}" has ${card.quantity} copies (max ${format.hardMaxCopies}).`);
+        }
+
+        const lowerName = card.name.toLowerCase();
+        if (format.banPolicy === 'gamebreakers_only') {
+          const banList = Array.isArray(format.customBannedCards) ? format.customBannedCards : PROPER_GAMEBREAKERS;
+          if (banList.some(b => lowerName.includes(b.toLowerCase()))) {
+            violations.push(`Gamebreaker Banlist Breach: "${card.name}" is restricted in ${format.name}.`);
+          }
+        }
+
+        const gMeta = getBadgeStyleForGame(card.sourceGame);
+        const isDigital = card.isDigitalOnly || gMeta.isDigitalOnly;
+        if (format.mediumPolicy === 'tabletop_only' && isDigital) {
+          violations.push(`Tabletop-Exclusive Breach: "${card.name}" [${card.sourceGame}] is digital-only.`);
+        }
+        if (format.mediumPolicy === 'digital_only' && !isDigital) {
+          violations.push(`Digital-Exclusive Breach: "${card.name}" [${card.sourceGame}] is physical tabletop.`);
+        }
+
+        const activeVer = getActiveVersion(card);
+        const yr = format.firstPrintingsOnly ? (card.originalYear || 2000) : (activeVer.year || card.originalYear || 2000);
+        if (format.eraStartYear && yr < Number(format.eraStartYear)) {
+          violations.push(`Era Start Breach: "${card.name}" (${yr}) < ${format.eraStartYear}.`);
+        }
+        if (format.eraEndYear && yr > Number(format.eraEndYear)) {
+          violations.push(`Era End Breach: "${card.name}" (${yr}) > ${format.eraEndYear}.`);
+        }
+        if (format.firstPrintingsOnly && getPreferredVersionIdx(card) > 0) {
+          violations.push(`First-Printing-Only Breach: "${card.name}" must use its 1st printed edition.`);
+        }
       }
 
       if (!format.unlimitedPoints && totalPoints > (Number(format.pointCap) || 0)) {
@@ -4599,6 +4674,7 @@
       return {
         totalPoints,
         pointCap: Number(format.pointCap) || 0,
+        morphologyPercent,
         unlimitedPoints: Boolean(format.unlimitedPoints),
         violations,
         breakdown,
@@ -4606,87 +4682,15 @@
       };
     }
 
-    function renderFormatPointsList(fmt) {
-      const container = document.getElementById('formatPointsListContainer');
-      if (!container) return;
-
-      const knownCards = [
-        ...state.searchResults,
-        ...state.bookmarkedCards,
-        ...state.customCardPool,
-        ...state.decks.flatMap(deck => deck.cards || []),
-        ...Object.values(state.apiCaches).filter(Array.isArray).flat()
-      ];
-      const cardById = new Map(knownCards.filter(card => card?.id).map(card => [card.id, card]));
-      const entries = Object.entries(fmt.cardPointOverrides || {}).map(([id, value]) => {
-        const metadata = fmt.cardPointEntries?.[id] || {};
-        const card = cardById.get(id);
-        return {
-          id,
-          name: card?.name || metadata.name || id,
-          sourceGame: card?.sourceGame || metadata.sourceGame || '—',
-          points: Number(value) || 0,
-          card
-        };
-      });
-      const sortBy = state.formatPointsSortBy || 'alpha_asc';
-      entries.sort((a, b) => {
-        if (sortBy === 'game') return a.sourceGame.localeCompare(b.sourceGame) || a.name.localeCompare(b.name);
-        if (sortBy === 'points_asc') return a.points - b.points || a.name.localeCompare(b.name);
-        if (sortBy === 'points_desc') return b.points - a.points || a.name.localeCompare(b.name);
-        return a.name.localeCompare(b.name);
-      });
-
-      container.innerHTML = `
-        <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
-          <div>
-            <h3 class="font-display text-lg font-bold text-starlight-100">${escapeXml(fmt.name)} Complete Points List</h3>
-            <p class="text-xs text-slate-300">Only cards with explicit manual point assignments are listed. Rarity is not used to calculate points.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <label for="formatPointsSortSelect" class="text-xs text-slate-300">Sort by</label>
-            <select id="formatPointsSortSelect" class="rounded-lg px-2 py-1 text-xs border border-abyss-600 cursor-pointer">
-              <option value="alpha_asc" ${sortBy === 'alpha_asc' ? 'selected' : ''}>Alphabetical</option>
-              <option value="game" ${sortBy === 'game' ? 'selected' : ''}>Source Game</option>
-              <option value="points_desc" ${sortBy === 'points_desc' ? 'selected' : ''}>Points (High to Low)</option>
-              <option value="points_asc" ${sortBy === 'points_asc' ? 'selected' : ''}>Points (Low to High)</option>
-            </select>
-            <span class="text-xs font-mono text-purple-200">${entries.length} manually pointed card${entries.length === 1 ? '' : 's'}</span>
-          </div>
-        </div>
-        ${entries.length
-          ? `<div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="text-[10px] uppercase tracking-wider text-slate-400 border-b border-abyss-700"><tr><th class="py-2 pr-3">Card Name</th><th class="py-2 pr-3">Source Game</th><th class="py-2 text-right">Points</th></tr></thead><tbody>${entries.map(entry =>
-            `<tr class="border-b border-abyss-800/80"><td class="py-2 pr-3 text-starlight-100">${entry.card
-              ? `<button type="button" data-point-card="${escapeXml(entry.id)}" class="text-left hover:text-starlight-300 underline decoration-dotted underline-offset-2">${escapeXml(entry.name)}</button>`
-              : `<span title="${escapeXml(entry.id)}">${escapeXml(entry.name)}</span>`}</td><td class="py-2 pr-3 text-slate-300">${escapeXml(entry.sourceGame)}</td><td class="py-2 text-right font-mono font-bold text-purple-200">${entry.points}</td></tr>`
-          ).join('')}</tbody></table></div>`
-          : '<p class="text-sm text-slate-400 py-3">No cards have manual point assignments yet.</p>'}
-      `;
-
-      container.querySelector('#formatPointsSortSelect').onchange = event => {
-        state.formatPointsSortBy = event.target.value;
-        renderFormatPointsList(fmt);
-      };
-      container.querySelectorAll('[data-point-card]').forEach(button => {
-        button.onclick = () => {
-          const card = cardById.get(button.dataset.pointCard);
-          if (card) openCardInspector(card);
-        };
-      });
-    }
-
     function renderFormatsStudio() {
       const listContainer = document.getElementById('formatsListContainer');
       const editorContainer = document.getElementById('formatEditorContainer');
-      const directoryView = document.getElementById('formatsDirectoryView');
-      const detailView = document.getElementById('formatDetailView');
-      const settingsContainer = document.getElementById('adminOrientationMetronSettings');
 
       listContainer.innerHTML = state.formats.map(fmt => {
         const isSelected = fmt.id === state.selectedFormatEditorId;
         const isActive = fmt.id === state.activeFormatId;
         return `
-          <button type="button" data-open-format-page="${escapeXml(fmt.id)}" class="text-left w-full p-4 rounded-2xl border transition cursor-pointer ${
+          <div data-select-format-edit="${escapeXml(fmt.id)}" class="p-4 rounded-2xl border transition cursor-pointer ${
             isSelected ? 'bg-abyss-900 border-purple-400 ring-1 ring-purple-400/40 shadow-lg' : 'bg-abyss-900/70 border-abyss-700 hover:border-abyss-600'
           }">
             <div class="flex items-center justify-between gap-2 mb-1">
@@ -4701,56 +4705,46 @@
               <span>Cap: ${fmt.unlimitedPoints ? '∞' : fmt.pointCap + ' pts'}</span>
               <span>Max Copies: ${fmt.hardMaxCopies || '∞'}</span>
             </div>
-          </button>
+          </div>
         `;
       }).join('');
 
-      listContainer.querySelectorAll('[data-open-format-page]').forEach(el => {
+      listContainer.querySelectorAll('[data-select-format-edit]').forEach(el => {
         el.addEventListener('click', () => {
-          state.selectedFormatEditorId = el.dataset.openFormatPage;
-          state.formatPageOpen = true;
+          state.selectedFormatEditorId = el.dataset.selectFormatEdit;
           renderFormatsStudio();
         });
       });
 
-      const detailOpen = state.formatPageOpen && state.formats.some(f => f.id === state.selectedFormatEditorId);
-      directoryView.classList.toggle('hidden', detailOpen);
-      detailView.classList.toggle('hidden', !detailOpen);
-      settingsContainer.classList.toggle('hidden', !isAdministrator());
-      if (isAdministrator()) {
-        const settingsJson = document.getElementById('adminOrientationMetronJson');
-        settingsJson.value = JSON.stringify(state.orientationMetronSettings || {}, null, 2);
-        document.getElementById('saveOrientationMetronBtn').onclick = async () => {
-          let parsed;
-          try {
-            parsed = JSON.parse(settingsJson.value);
-            if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-              throw new Error('The configuration root must be a JSON object.');
-            }
-          } catch (error) {
-            showToast(`Invalid configuration JSON: ${error.message}`, 'error');
-            return;
-          }
-          try {
-            await publishOrientationMetronSettings(parsed);
-            state.orientationMetronSettings = parsed;
-            saveAllStateToStorage();
-            showToast('Orientation and metron configuration saved.', 'success');
-          } catch (error) {
-            showToast(`Could not publish orientation/metron configuration: ${error.message}`, 'error');
-          }
-        };
-      }
-
-      document.getElementById('formatsBackBtn').onclick = () => {
-        state.formatPageOpen = false;
-        renderFormatsStudio();
-      };
-
       const fmt = state.formats.find(f => f.id === state.selectedFormatEditorId) || state.formats[0];
-      if (!fmt || !detailOpen) return;
+      if (!fmt) return;
+      const rs = fmt.raritySurcharges || { common: 0, uncommon: 0, rare: 1, mythic: 2 };
       const cs = fmt.copySurcharges || { copy1: 0, copy2: 5, copy3: 15, copy4Plus: 30 };
+      const rolePointCosts = fmt.rolePointCosts || {};
+      const roleAllowedGames = fmt.roleAllowedGames || {};
       const canEditFormat = fmt.id !== 'ouroboros' || isAdministrator();
+      const knownCards = [
+        ...state.searchResultsOriginal,
+        ...state.bookmarkedCards,
+        ...state.customCardPool,
+        ...state.decks.flatMap(deck => deck.cards || [])
+      ];
+      const assignedPointRows = Object.entries(fmt.cardPointOverrides || {})
+        .filter(([, points]) => Number(points) >= 1)
+        .sort((a, b) => Number(b[1]) - Number(a[1]))
+        .map(([cardId, points]) => {
+          const card = fmt.cardPointCards?.[cardId] || knownCards.find(entry => entry.id === cardId);
+          const imageUrl = card ? (getActiveVersion(card)?.imageUrl || card.imageUrl || '') : '';
+          return `
+            <tr class="border-t border-abyss-800">
+              <td class="py-2 px-2">${imageUrl
+                ? `<img src="${escapeXml(imageUrl)}" alt="${escapeXml(card?.name || cardId)}" class="w-10 h-14 object-contain rounded bg-abyss-950" loading="lazy" />`
+                : '<span class="text-[10px] text-slate-500">No image</span>'}</td>
+              <td class="py-2 px-2 font-semibold text-starlight-50">${escapeXml(card?.name || cardId)}</td>
+              <td class="py-2 px-2 text-slate-300">${escapeXml(card?.sourceGame || '')}</td>
+              <td class="py-2 px-2 text-right font-mono font-bold text-purple-200">${Number(points)}</td>
+            </tr>`;
+        }).join('');
 
       editorContainer.innerHTML = `
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-abyss-700 pb-4">
@@ -4782,13 +4776,13 @@
             <input id="fmtLifeInput" type="text" value="${escapeXml(fmt.startingLifeFormula || '30 Life')}" class="w-full bg-abyss-950 border border-abyss-600 rounded-xl px-3 py-2 text-xs text-starlight-50" />
           </div>
           <div class="md:col-span-2">
-            <label class="block text-[11px] font-semibold text-starlight-200 mb-1">Format-Principle Summary</label>
+            <label class="block text-[11px] font-semibold text-starlight-200 mb-1">Format Summary</label>
             <input id="fmtDescInput" type="text" value="${escapeXml(fmt.description || '')}" class="w-full bg-abyss-950 border border-abyss-600 rounded-xl px-3 py-2 text-xs text-starlight-50" />
           </div>
         </div>
 
         <div class="bg-abyss-950 border border-abyss-700 rounded-xl p-4 space-y-3">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-starlight-300">1. Manually Assigned Points-Principle Budget</h4>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-starlight-300">1. Points Budget &amp; Rarity Point Tiers</h4>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div>
               <label class="block text-[10px] text-starlight-200 mb-1">Total Point Cap</label>
@@ -4797,6 +4791,10 @@
                 <input id="fmtUnlimitedCheck" type="checkbox" ${fmt.unlimitedPoints ? 'checked' : ''} class="accent-starlight-300" />
                 <span>Unlimited</span>
               </label>
+            </div>
+            <div>
+              <label class="block text-[10px] text-starlight-200 mb-1">Base Pts / Card</label>
+              <input id="fmtBasePtsInput" type="number" min="0" max="100" value="${fmt.baseCardPoints || 0}" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1.5 text-xs font-mono text-starlight-50" />
             </div>
             <div>
               <label class="block text-[10px] text-starlight-200 mb-1">Cross-Game Tax Start</label>
@@ -4808,7 +4806,24 @@
             </div>
           </div>
 
-          <p class="text-[11px] text-slate-400">Unassigned cards have a base value of 0. Assign card values individually from the card inspector; rarity does not affect points.</p>
+          <div class="grid grid-cols-4 gap-2 pt-1">
+            <div>
+              <label class="block text-[10px] text-slate-300 mb-0.5">Common Pts</label>
+              <input id="fmtRarCommon" type="number" min="0" value="${rs.common ?? 0}" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1 text-xs font-mono text-starlight-50" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-300 mb-0.5">Uncommon Pts</label>
+              <input id="fmtRarUncommon" type="number" min="0" value="${rs.uncommon ?? 0}" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1 text-xs font-mono text-starlight-50" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-300 mb-0.5">Rare Pts</label>
+              <input id="fmtRarRare" type="number" min="0" value="${rs.rare ?? 1}" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1 text-xs font-mono text-starlight-50" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-300 mb-0.5">Mythic/Legend Pts</label>
+              <input id="fmtRarMythic" type="number" min="0" value="${rs.mythic ?? 2}" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1 text-xs font-mono text-starlight-50" />
+            </div>
+          </div>
         </div>
 
         <div class="bg-abyss-950 border border-abyss-700 rounded-xl p-4 space-y-3">
@@ -4885,9 +4900,39 @@
             <label class="block text-[10px] text-starlight-200 mb-1">Proper Gamebreakers / Banned List (Comma-separated)</label>
             <input id="fmtGamebreakersInput" type="text" value="${escapeXml((fmt.customBannedCards || PROPER_GAMEBREAKERS).join(', '))}" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2.5 py-1.5 text-xs font-mono text-rose-200" />
           </div>
-          <div>
-            <label class="block text-[10px] text-rose-200 mb-1">Manually Banned Cards</label>
-            <div id="fmtManualBansList" class="space-y-1.5 text-xs"></div>
+        </div>
+
+        <div class="bg-abyss-950 border border-abyss-700 rounded-xl p-4 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-300">4. Deck Roles and Cross-Game Rules</h4>
+          <p class="text-[11px] text-slate-300">Blank allowed-game lists leave a role unrestricted. Cards using a role outside its native game pay that role's point surcharge.</p>
+          <div class="space-y-2">
+            ${DECK_ROLES.map(role => `
+              <div class="grid grid-cols-1 sm:grid-cols-[115px_1fr_100px] gap-2 items-center">
+                <span class="text-xs font-semibold text-starlight-100">${escapeXml(role)}</span>
+                <input data-role-allowed-games="${escapeXml(role)}" type="text" value="${escapeXml((roleAllowedGames[role] || []).join(', '))}" placeholder="All games (or codes: MTG, SWU...)" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1.5 text-[10px] font-mono text-starlight-50" />
+                <label class="flex items-center gap-1 text-[10px] text-slate-300">Off-game pts
+                  <input data-role-point-cost="${escapeXml(role)}" type="number" min="0" value="${Number(rolePointCosts[role] ?? 1)}" class="w-12 bg-abyss-900 border border-abyss-600 rounded px-1 py-1 text-center font-mono text-starlight-50" />
+                </label>
+              </div>
+            `).join('')}
+            <label class="grid grid-cols-1 sm:grid-cols-[115px_1fr_100px] gap-2 items-center">
+              <span class="text-xs font-semibold text-starlight-100">Custom role</span>
+              <input data-role-allowed-games="__custom" type="text" value="${escapeXml((roleAllowedGames.__custom || []).join(', '))}" placeholder="All games (or comma-separated game codes)" class="w-full bg-abyss-900 border border-abyss-600 rounded-lg px-2 py-1.5 text-[10px] font-mono text-starlight-50" />
+              <span class="flex items-center gap-1 text-[10px] text-slate-300">Off-game pts
+                <input id="fmtCustomRolePointCost" type="number" min="0" value="${Number(fmt.customRolePointCost ?? 1)}" class="w-12 bg-abyss-900 border border-abyss-600 rounded px-1 py-1 text-center font-mono text-starlight-50" />
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-abyss-950 border border-abyss-700 rounded-xl p-4 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-purple-300">Cards Assigned a Point Value</h4>
+          <p class="text-[11px] text-slate-300">Only cards with a specifically assigned value of at least 1 point appear here.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="text-[10px] uppercase tracking-wider text-slate-400"><tr><th class="py-2 px-2">Image</th><th class="py-2 px-2">Card</th><th class="py-2 px-2">Game</th><th class="py-2 px-2 text-right">Points</th></tr></thead>
+              <tbody>${assignedPointRows || '<tr><td colspan="4" class="py-4 text-center text-slate-400">No cards have a non-zero point override in this format.</td></tr>'}</tbody>
+            </table>
           </div>
         </div>
 
@@ -4899,35 +4944,12 @@
       `;
 
       if (!canEditFormat) {
-        editorContainer.querySelectorAll('input, select, button[data-remove-format-ban]').forEach(control => { control.disabled = true; });
+        editorContainer.querySelectorAll('input, select').forEach(control => { control.disabled = true; });
         const saveButton = document.getElementById('saveFormatRulesBtn');
         saveButton.disabled = true;
         saveButton.textContent = 'Administrator access required';
         editorContainer.insertAdjacentHTML('afterbegin', '<div class="rounded-xl border border-amber-400/40 bg-amber-950/30 px-3 py-2 text-xs text-amber-200">Ouroboros rules can only be edited by an administrator.</div>');
       }
-
-      renderFormatPointsList(fmt);
-
-      const manualBans = Array.isArray(fmt.manualBannedCards) ? fmt.manualBannedCards : [];
-      const manualBansList = document.getElementById('fmtManualBansList');
-      manualBansList.innerHTML = manualBans.length
-        ? manualBans.map(entry => `<div class="flex items-center justify-between gap-2 rounded-lg bg-rose-950/30 border border-rose-500/20 px-2.5 py-1.5"><span class="text-rose-100">${escapeXml(entry.name || entry.id)} <span class="text-slate-400">[${escapeXml(entry.sourceGame || '')}]</span></span><button type="button" data-remove-format-ban="${escapeXml(entry.id)}" class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 hover:bg-rose-500/40 cursor-pointer">Unban</button></div>`).join('')
-        : '<span class="text-slate-400">No manually banned cards.</span>';
-      manualBansList.querySelectorAll('[data-remove-format-ban]').forEach(button => {
-        button.addEventListener('click', async () => {
-          if (!isAdministrator()) return showToast('Only administrators can change manual card bans.', 'error');
-          const previousBans = [...manualBans];
-          fmt.manualBannedCards = manualBans.filter(entry => entry.id !== button.dataset.removeFormatBan);
-          try {
-            await publishSharedFormat(fmt);
-            saveAllStateToStorage();
-            syncAllViews();
-          } catch (error) {
-            fmt.manualBannedCards = previousBans;
-            showToast(`Could not publish card unban: ${error.message}`, 'error');
-          }
-        });
-      });
 
       document.getElementById('fmtActivateBtn').addEventListener('click', () => {
         state.activeFormatId = fmt.id;
@@ -4970,10 +4992,15 @@
         fmt.startingLifeFormula = document.getElementById('fmtLifeInput').value.trim();
         fmt.pointCap = Number(document.getElementById('fmtPointCapInput').value) || 0;
         fmt.unlimitedPoints = document.getElementById('fmtUnlimitedCheck').checked;
-        delete fmt.baseCardPoints;
-        delete fmt.raritySurcharges;
+        fmt.baseCardPoints = Number(document.getElementById('fmtBasePtsInput').value) || 0;
         fmt.crossGameTaxThreshold = Number(document.getElementById('fmtCrossThreshInput').value) || 0;
         fmt.crossGameTaxPerExtraGame = Number(document.getElementById('fmtCrossTaxInput').value) || 0;
+        fmt.raritySurcharges = {
+          common: Number(document.getElementById('fmtRarCommon').value) || 0,
+          uncommon: Number(document.getElementById('fmtRarUncommon').value) || 0,
+          rare: Number(document.getElementById('fmtRarRare').value) || 0,
+          mythic: Number(document.getElementById('fmtRarMythic').value) || 0
+        };
         fmt.hardMaxCopies = Number(document.getElementById('fmtHardMaxInput').value) || 0;
         fmt.copySurcharges = {
           copy1: Number(document.getElementById('fmtCopy1Input').value) || 0,
@@ -4989,10 +5016,33 @@
         fmt.eraEndYear = Number(document.getElementById('fmtEraEndInput').value) || 2030;
         fmt.firstPrintingsOnly = document.getElementById('fmtFirstPrintCheck').checked;
         fmt.customBannedCards = document.getElementById('fmtGamebreakersInput').value.split(',').map(s => s.trim()).filter(Boolean);
+        fmt.rolePointCosts = Object.fromEntries(Array.from(document.querySelectorAll('[data-role-point-cost]'))
+          .map(input => [input.dataset.rolePointCost, Math.max(0, Number(input.value) || 0)]));
+        fmt.customRolePointCost = Math.max(0, Number(document.getElementById('fmtCustomRolePointCost').value) || 0);
+        fmt.roleAllowedGames = {};
+        let invalidRoleGameCode = '';
+        document.querySelectorAll('[data-role-allowed-games]').forEach(input => {
+          const role = input.dataset.roleAllowedGames;
+          const games = input.value.split(',').map(code => code.trim().toUpperCase()).filter(Boolean);
+          const invalidCode = games.find(code => !ALL_SUPPORTED_GAMES.some(game => game.id === code));
+          if (invalidCode) invalidRoleGameCode = invalidCode;
+          fmt.roleAllowedGames[role] = games;
+        });
+        if (invalidRoleGameCode) {
+          Object.assign(fmt, previousFormat);
+          syncAllViews();
+          showToast(`Unknown game code "${invalidRoleGameCode}" in role rules. Use a supported game code.`, 'error');
+          return;
+        }
 
         if (fmt.id === 'ouroboros') {
           try {
-            await publishSharedFormat(fmt);
+            if (!state.currentUser) throw new Error('Sign in as an administrator to publish Ouroboros rules.');
+            await setDoc(doc(db, 'sharedFormats', 'ouroboros'), {
+              format: JSON.parse(JSON.stringify(fmt)),
+              updatedBy: state.currentUser.uid,
+              updatedAt: serverTimestamp()
+            }, { merge: true });
           } catch (error) {
             Object.assign(fmt, previousFormat);
             syncAllViews();
@@ -5010,6 +5060,33 @@
     // =========================================================================
     // 14. DECK MUTATIONS, CUSTOM TAGS, ALPHABETICAL SORTING, & SAMPLE HAND
     // =========================================================================
+    function moveCardToZone(cardId, fromZone, targetZone) {
+      if (state.sharedViewData || fromZone === targetZone || !DECK_ZONES.some(zone => zone.id === targetZone)) return false;
+      const deck = getActiveDeck();
+      const sourceIndex = deck.cards.findIndex(card => card.id === cardId && getCardZone(card) === fromZone);
+      if (sourceIndex < 0) return false;
+
+      const sourceCard = deck.cards[sourceIndex];
+      const oldFeatureKey = getFeaturedCardKey(sourceCard);
+      const destinationCard = deck.cards.find(card => card.id === cardId && getCardZone(card) === targetZone);
+      const newFeatureKey = `${targetZone}::${cardId}`;
+      if (destinationCard) {
+        destinationCard.quantity = (Number(destinationCard.quantity) || 1) + (Number(sourceCard.quantity) || 1);
+        destinationCard.tags = Array.from(new Set([...(destinationCard.tags || []), ...(sourceCard.tags || [])]));
+        if (!destinationCard.deckRole) destinationCard.deckRole = sourceCard.deckRole || '';
+        deck.cards.splice(sourceIndex, 1);
+      } else {
+        sourceCard.deckZone = targetZone;
+      }
+
+      if (deck.exemplarFeatureId === oldFeatureKey) deck.exemplarFeatureId = newFeatureKey;
+      deck.sampleFeatureCardIds = (deck.sampleFeatureCardIds || []).map(key => key === oldFeatureKey ? newFeatureKey : key);
+      deck.sampleFeatureCardIds = [...new Set(deck.sampleFeatureCardIds)];
+      saveAllStateToStorage();
+      syncAllViews();
+      return true;
+    }
+
     function addCardToDeck(cardObj, qty = 1, deckZone = state.activeDeckZone) {
       if (state.sharedViewData) {
         showToast('Exit Shared View or Clone this deck first to edit.', 'info');
@@ -5019,9 +5096,7 @@
       if (!deck) return;
 
       const quantity = Math.max(1, Number(qty) || 1);
-      const prefIdx = Number.isInteger(cardObj.searchVersionIdx)
-        ? cardObj.searchVersionIdx
-        : getPreferredVersionIdx(cardObj, deck);
+      const prefIdx = getPreferredVersionIdx(cardObj, deck);
       const existing = deck.cards.find(c => c.id === cardObj.id && getCardZone(c) === deckZone);
       if (existing) {
         existing.quantity = Math.max(1, Number(existing.quantity) || 1) + quantity;
@@ -5062,74 +5137,6 @@
       removeDeckFeatureCard(deck, `${state.activeDeckZone}::${cardId}`);
       saveAllStateToStorage();
       syncAllViews();
-    }
-
-    function removeOneCardFromZone(cardId, zoneId) {
-      if (state.sharedViewData) return;
-      const deck = getActiveDeck();
-      if (!deck) return;
-      const index = deck.cards.findIndex(entry => entry.id === cardId && getCardZone(entry) === zoneId);
-      if (index === -1) return;
-      if (deck.cards[index].quantity > 1) {
-        deck.cards[index].quantity--;
-      } else {
-        deck.cards.splice(index, 1);
-        removeDeckFeatureCard(deck, `${zoneId}::${cardId}`);
-      }
-      saveAllStateToStorage();
-      syncAllViews();
-    }
-
-    function moveDeckCardToZone(cardId, sourceZone, targetZone) {
-      if (state.sharedViewData) {
-        showToast('Exit Shared View or Clone this deck first to edit.', 'info');
-        return false;
-      }
-      if (!DECK_ZONES.some(zone => zone.id === targetZone)) {
-        showToast('Select a valid board / deck zone.', 'error');
-        return false;
-      }
-      if (sourceZone === targetZone) return true;
-
-      const deck = getActiveDeck();
-      if (!deck) {
-        showToast('No active deck is selected.', 'error');
-        return false;
-      }
-      const sourceIndex = deck.cards.findIndex(card => card.id === cardId && getCardZone(card) === sourceZone);
-      if (sourceIndex === -1) {
-        showToast('This card is no longer in the selected board / deck zone.', 'error');
-        return false;
-      }
-
-      const source = deck.cards[sourceIndex];
-      const target = deck.cards.find(card => card.id === cardId && getCardZone(card) === targetZone);
-      const sourceFeatureKey = `${sourceZone}::${cardId}`;
-      const targetFeatureKey = `${targetZone}::${cardId}`;
-
-      if (target) {
-        target.quantity = Math.max(1, Number(target.quantity) || 1) + Math.max(1, Number(source.quantity) || 1);
-        const mergedTags = Array.isArray(target.tags) ? [...target.tags] : [];
-        for (const tag of Array.isArray(source.tags) ? source.tags : []) {
-          if (!mergedTags.some(existingTag => existingTag.toLowerCase() === tag.toLowerCase())) {
-            mergedTags.push(tag);
-          }
-        }
-        if (mergedTags.length > 0) target.tags = mergedTags;
-        deck.cards.splice(sourceIndex, 1);
-      } else {
-        source.deckZone = targetZone;
-      }
-
-      if (deck.exemplarFeatureId === sourceFeatureKey) deck.exemplarFeatureId = targetFeatureKey;
-      deck.sampleFeatureCardIds = [...new Set(
-        (deck.sampleFeatureCardIds || []).map(key => key === sourceFeatureKey ? targetFeatureKey : key)
-      )].slice(0, 16);
-
-      state.activeDeckZone = targetZone;
-      saveAllStateToStorage();
-      syncAllViews();
-      return true;
     }
 
     function addTagToDeckCard(cardId, rawTag) {
@@ -5184,7 +5191,7 @@
       grid.innerHTML = state.sampleHandCards.map((c, idx) => {
         const theme = getBadgeStyleForGame(c.sourceGame);
         return `
-          <div data-sample-hand-idx="${idx}" title="${escapeXml(c.name)} [${escapeXml(c.sourceGame)}]" class="relative tcg-aspect rounded-xl overflow-hidden bg-transparent border border-abyss-600 hover:border-sky-300 shadow-md cursor-pointer transition hover:scale-105">
+          <div data-sample-hand-idx="${idx}" title="${escapeXml(c.name)} [${escapeXml(c.sourceGame)}]" class="relative tcg-aspect rounded-xl overflow-hidden bg-abyss-900 border border-abyss-600 hover:border-sky-300 shadow-md cursor-pointer transition hover:scale-105">
             ${renderCardVisualHtml(c)}
             <span style="${theme.badgeStyle}" class="absolute top-1 left-1 z-10 px-1.5 py-0.2 rounded text-[8px] font-mono font-extrabold border">${escapeXml(c.sourceGame)}</span>
           </div>
@@ -5212,6 +5219,61 @@
       document.getElementById('vaultCapacityBadge').textContent = `${state.decks.length} Deckslots`;
     }
 
+    function renderCompareListSelectors() {
+      const selectA = document.getElementById('compareListA');
+      const selectB = document.getElementById('compareListB');
+      const previousA = selectA.value;
+      const previousB = selectB.value;
+      const options = state.decks.map(deck => `<option value="${escapeXml(deck.id)}">${escapeXml(deck.name)}</option>`).join('');
+      selectA.innerHTML = options;
+      selectB.innerHTML = options;
+      selectA.value = state.decks.some(deck => deck.id === previousA) ? previousA : state.activeDeckId;
+      const alternateDeck = state.decks.find(deck => deck.id !== selectA.value);
+      selectB.value = state.decks.some(deck => deck.id === previousB)
+        ? previousB
+        : (alternateDeck?.id || selectA.value);
+    }
+
+    function compareDeckLists() {
+      const deckA = state.decks.find(deck => deck.id === document.getElementById('compareListA').value);
+      const deckB = state.decks.find(deck => deck.id === document.getElementById('compareListB').value);
+      const results = document.getElementById('compareListsResults');
+      if (!deckA || !deckB) {
+        results.innerHTML = '<p class="text-sm text-slate-300">Choose two deck lists to compare.</p>';
+        return;
+      }
+
+      const listCards = deck => deck.cards || [];
+      const keyFor = card => `${getCardZone(card)}::${card.sourceGame}::${card.id}`;
+      const cardsA = new Map(listCards(deckA).map(card => [keyFor(card), card]));
+      const cardsB = new Map(listCards(deckB).map(card => [keyFor(card), card]));
+      const keys = [...new Set([...cardsA.keys(), ...cardsB.keys()])];
+      const rows = keys.map(key => {
+        const cardA = cardsA.get(key);
+        const cardB = cardsB.get(key);
+        const quantityA = Number(cardA?.quantity) || 0;
+        const quantityB = Number(cardB?.quantity) || 0;
+        return { key, card: cardA || cardB, quantityA, quantityB };
+      }).sort((a, b) => a.card.name.localeCompare(b.card.name));
+      const differences = rows.filter(row => row.quantityA !== row.quantityB);
+      results.innerHTML = `
+        <div class="text-xs text-slate-300 mb-2">${differences.length} card/board difference(s) · Maybeboard excluded</div>
+        <table class="w-full text-left text-xs">
+          <thead class="text-[10px] uppercase tracking-wider text-slate-400"><tr>
+            <th class="py-2 px-2">Board</th><th class="py-2 px-2">Game</th><th class="py-2 px-2">Card</th>
+            <th class="py-2 px-2 text-right">${escapeXml(deckA.name)}</th><th class="py-2 px-2 text-right">${escapeXml(deckB.name)}</th>
+          </tr></thead>
+          <tbody>${(differences.length ? differences : rows).map(row => `
+            <tr class="border-t border-abyss-800 ${row.quantityA !== row.quantityB ? 'bg-amber-950/20' : ''}">
+              <td class="py-2 px-2 text-slate-300">${escapeXml(DECK_ZONES.find(zone => zone.id === getCardZone(row.card))?.label || 'Main Deck')}</td>
+              <td class="py-2 px-2 text-slate-300">${escapeXml(row.card.sourceGame)}</td>
+              <td class="py-2 px-2 text-starlight-50">${escapeXml(row.card.name)}</td>
+              <td class="py-2 px-2 text-right font-mono">${row.quantityA || '—'}</td>
+              <td class="py-2 px-2 text-right font-mono">${row.quantityB || '—'}</td>
+            </tr>`).join('') || '<tr><td colspan="5" class="py-4 text-center text-slate-400">Both lists are empty.</td></tr>'}</tbody>
+        </table>`;
+    }
+
     function renderFormatSelectorAndAudit() {
       const activeFmt = getActiveFormat();
       const selector = document.getElementById('activeFormatSelector');
@@ -5229,6 +5291,11 @@
       ptsLabel.textContent = audit.unlimitedPoints ? `${audit.totalPoints} / ∞` : `${audit.totalPoints} / ${audit.pointCap}`;
       const overBudget = !audit.unlimitedPoints && audit.totalPoints > audit.pointCap;
       ptsLabel.className = overBudget ? 'font-bold text-rose-400' : 'font-bold text-emerald-300';
+      const morphologyLabel = document.getElementById('deckMorphologyLabel');
+      morphologyLabel.textContent = `${audit.morphologyPercent.toFixed(2)}%`;
+      morphologyLabel.className = Math.abs(audit.morphologyPercent - 100) <= 0.0001
+        ? 'font-bold text-emerald-300'
+        : 'font-bold text-amber-300';
 
       const statusDot = document.getElementById('formatStatusDot');
       const statusText = document.getElementById('formatStatusSummaryText');
@@ -5291,20 +5358,16 @@
       const featureKey = getFeaturedCardKey(card);
       const isExemplarFeature = activeDeck?.exemplarFeatureId === featureKey;
       const isSampleFeature = (activeDeck?.sampleFeatureCardIds || []).includes(featureKey);
-      const cardFormatViolations = getCardZone(card) === 'main' ? getCardFormatViolations(card, activeFmt) : [];
-      const cardFormatViolationText = cardFormatViolations.join(' ');
 
       return `
-        <div class="group relative rounded-2xl overflow-hidden bg-transparent border border-abyss-700 hover:border-starlight-300 card-foil-shadow select-none flex flex-col">
-          <div class="relative tcg-aspect w-full bg-transparent cursor-pointer overflow-hidden" data-inspect-deck-id="${escapeXml(card.id)}" ${cardFormatViolations.length > 0 ? `title="Illegal in ${escapeXml(activeFmt.name)}: ${escapeXml(cardFormatViolationText)}"` : ''}>
+        <div class="group relative rounded-2xl overflow-hidden bg-abyss-900 border border-abyss-700 hover:border-starlight-300 card-foil-shadow select-none flex flex-col">
+          <div class="relative tcg-aspect w-full bg-abyss-950 cursor-pointer overflow-hidden" data-inspect-deck-id="${escapeXml(card.id)}">
             ${renderCardVisualHtml(card)}
-            ${cardFormatViolations.length > 0
-              ? `<div class="card-illegal-stripes" role="img" aria-label="Illegal in ${escapeXml(activeFmt.name)}: ${escapeXml(cardFormatViolationText)}"></div>`
-              : ''}
 
             <span style="${theme.badgeStyle}" class="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-md text-[10px] font-mono font-extrabold uppercase tracking-wider border shadow-md transition-opacity ${badgeVisibility}">
               ${escapeXml(card.sourceGame)}
             </span>
+            ${card.deckRole ? `<span class="absolute top-9 left-2 z-10 max-w-[70%] truncate px-2 py-0.5 rounded-md bg-emerald-950/95 border border-emerald-400/60 text-emerald-200 text-[9px] font-bold shadow">${escapeXml(card.deckRole)}</span>` : ''}
 
             <div class="absolute top-2 right-2 flex items-center gap-1 transition-opacity ${badgeVisibility}">
               ${cardPts > 0 ? `<span class="px-1.5 py-0.5 rounded-full bg-purple-950/95 border border-purple-400/60 text-purple-200 font-mono text-[10px] font-bold shadow">${cardPts}p</span>` : ''}
@@ -5385,12 +5448,20 @@
         tagStrip.classList.add('hidden');
       }
 
-      if (activeZoneCards.length === 0) {
+      const featuredKeys = new Set([
+        deck.exemplarFeatureId,
+        ...(deck.sampleFeatureCardIds || [])
+      ].filter(Boolean));
+      const workspaceCards = state.viewMode === 'featured'
+        ? activeZoneCards.filter(card => featuredKeys.has(getFeaturedCardKey(card)))
+        : activeZoneCards;
+
+      if (workspaceCards.length === 0) {
         canvas.innerHTML = `
           <div class="h-full min-h-[380px] flex flex-col items-center justify-center text-center max-w-md mx-auto px-4">
-            <h3 class="font-display text-lg font-bold text-starlight-50 mb-1.5">${escapeXml(activeZone.label)} is Empty</h3>
+            <h3 class="font-display text-lg font-bold text-starlight-50 mb-1.5">${state.viewMode === 'featured' ? 'No Featured Cards in This Board' : `${escapeXml(activeZone.label)} is Empty`}</h3>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Add cards from search or import a decklist. New cards go into the selected slot.
+              ${state.viewMode === 'featured' ? 'Mark cards with E or S in the full deck view to feature them.' : 'Add cards from search or import a decklist. New cards go into the selected slot.'}
             </p>
           </div>
         `;
@@ -5398,8 +5469,8 @@
       }
 
       const filteredCards = state.activeTagFilter
-        ? activeZoneCards.filter(c => Array.isArray(c.tags) && c.tags.includes(state.activeTagFilter))
-        : activeZoneCards;
+        ? workspaceCards.filter(c => Array.isArray(c.tags) && c.tags.includes(state.activeTagFilter))
+        : workspaceCards;
 
       const sortedCards = getSortedDeckCards(filteredCards);
 
@@ -5567,8 +5638,8 @@
       grid.innerHTML = state.bookmarkedCards.map((card, idx) => {
         const theme = getBadgeStyleForGame(card.sourceGame);
         return `
-          <div class="group relative bg-transparent border border-starlight-300/40 hover:border-starlight-300 rounded-xl overflow-hidden flex flex-col shadow-md transition">
-            <div class="relative tcg-aspect w-full bg-transparent overflow-hidden cursor-pointer" data-inspect-bookmark-idx="${idx}">
+          <div class="group relative bg-abyss-950 border border-starlight-300/40 hover:border-starlight-300 rounded-xl overflow-hidden flex flex-col shadow-md transition">
+            <div class="relative tcg-aspect w-full bg-abyss-900 overflow-hidden cursor-pointer" data-inspect-bookmark-idx="${idx}">
               ${renderCardVisualHtml(card)}
               <span style="${theme.badgeStyle}" class="absolute top-1.5 left-1.5 z-10 px-2 py-0.5 rounded text-[10px] font-mono font-extrabold border shadow">
                 ${escapeXml(card.sourceGame)}
@@ -5677,7 +5748,7 @@
       } else {
         boardGrid.innerHTML = pt.battlefield.map((c, idx) => `
           <div class="group relative flex flex-col items-center">
-            <div data-pt-tap-idx="${idx}" title="Click to Tap / Untap" class="relative w-full tcg-aspect rounded-xl overflow-hidden bg-transparent border-2 ${c.tapped ? 'border-amber-400' : 'border-emerald-400/70'} shadow-lg cursor-pointer transition-all duration-200">
+            <div data-pt-tap-idx="${idx}" title="Click to Tap / Untap" class="relative w-full tcg-aspect rounded-xl overflow-hidden bg-abyss-950 border-2 ${c.tapped ? 'border-amber-400 tapped-card' : 'border-emerald-400/70'} shadow-lg cursor-pointer transition-all duration-200">
               ${renderCardVisualHtml(c)}
               ${c.counters !== 0 ? `<span class="absolute top-1.5 right-1.5 px-2 py-0.5 rounded-full bg-purple-600 text-white font-mono text-xs font-extrabold shadow">${c.counters > 0 ? '+' : ''}${c.counters}</span>` : ''}
             </div>
@@ -5696,7 +5767,7 @@
         handGrid.innerHTML = `<div class="col-span-full text-center text-xs text-slate-400 py-8">Your hand is empty. Click "Draw 1" or "Next Turn" to draw cards.</div>`;
       } else {
         handGrid.innerHTML = pt.hand.map((c, idx) => `
-          <div class="group relative rounded-xl overflow-hidden bg-transparent border border-sky-400/50 hover:border-starlight-300 shadow-md flex flex-col">
+          <div class="group relative rounded-xl overflow-hidden bg-abyss-950 border border-sky-400/50 hover:border-starlight-300 shadow-md flex flex-col">
             <div data-pt-play-idx="${idx}" title="Click to Play onto Battlefield" class="relative tcg-aspect w-full cursor-pointer overflow-hidden">
               ${renderCardVisualHtml(c)}
               <div class="absolute inset-x-0 bottom-0 p-1.5 bg-abyss-950/90 opacity-0 group-hover:opacity-100 transition flex items-center justify-between gap-1 text-[10px]">
@@ -5967,9 +6038,10 @@
     // 17. CARD INSPECTOR MODAL, VAULT, ROADMAP, AUTH MODAL, & EVENT WIRING
     // =========================================================================
     async function openCardInspector(card) {
+      ensureCustomCardVersions(card);
+      state.inspectorFaceIndex = 0;
       const modal = document.getElementById('cardInspectorModal');
       const theme = getBadgeStyleForGame(card.sourceGame);
-      let selectedFaceIdx = 0;
 
       modal.classList.remove('hidden');
       modal.classList.add('flex');
@@ -5978,9 +6050,26 @@
         const ver = getActiveVersion(card);
         const versions = card.versions || [ver];
         const activeIdx = getPreferredVersionIdx(card);
-        const activeFaces = ver.faces?.length ? ver.faces : card.faces;
-        const faces = Array.isArray(activeFaces) && activeFaces.length ? activeFaces : null;
-        const selectedFace = faces?.[Math.min(selectedFaceIdx, faces.length - 1)];
+        const faces = Array.isArray(ver.faces) ? ver.faces : [];
+        const face = faces[state.inspectorFaceIndex] || null;
+        const faceControls = document.getElementById('inspectorFaceControls');
+        faceControls.classList.toggle('hidden', faces.length < 2);
+        faceControls.querySelectorAll('[data-inspector-face]').forEach(button => {
+          const isActive = Number(button.dataset.inspectorFace) === state.inspectorFaceIndex;
+          button.className = isActive
+            ? 'py-1.5 rounded-lg bg-starlight-300 text-abyss-950 text-xs font-bold cursor-pointer'
+            : 'py-1.5 rounded-lg bg-abyss-800 text-starlight-100 text-xs font-bold cursor-pointer';
+          button.onclick = () => {
+            state.inspectorFaceIndex = Number(button.dataset.inspectorFace);
+            renderModalContents();
+          };
+        });
+        const customImageControls = document.getElementById('inspectorCustomImageControls');
+        customImageControls.classList.toggle('hidden', card.sourceGame === 'CUSTOM' || Boolean(state.sharedViewData));
+        document.getElementById('inspectorUploadCustomImageBtn').onclick = async () => {
+          const uploadedVersion = await uploadCustomCardImage(card);
+          if (uploadedVersion) renderModalContents();
+        };
 
         // Reset gallery status so MTG status messages never bleed onto SWU/YGO/PKM/etc.
         const statusEl = document.getElementById('inspectorGalleryStatus');
@@ -5995,28 +6084,17 @@
         badge.setAttribute('style', theme.badgeStyle);
         badge.className = 'px-2.5 py-0.5 rounded-md text-xs font-mono font-extrabold uppercase tracking-wider border shadow';
 
-        document.getElementById('inspectorCardName').textContent = selectedFace?.name || card.name;
+        document.getElementById('inspectorCardName').textContent = face?.name || card.name;
         document.getElementById('inspectorCategory').textContent = card.category || 'Universal Card';
         document.getElementById('inspectorOriginalYear').textContent = String(card.originalYear || ver.year || '—');
-        document.getElementById('inspectorStats').textContent = selectedFace?.statsText || card.statsText || '—';
-        document.getElementById('inspectorTypeLine').textContent = selectedFace?.typeLine || card.typeLine || '—';
+        document.getElementById('inspectorStats').textContent = card.statsText || '—';
+        document.getElementById('inspectorTypeLine').textContent = face?.typeLine || card.typeLine || '—';
         document.getElementById('inspectorSetInfo').textContent = ver.setInfo || '';
-        document.getElementById('inspectorOracleText').textContent = selectedFace?.rulesText || card.rulesText || 'No rules text.';
+        document.getElementById('inspectorOracleText').textContent = face?.rulesText || card.rulesText || 'No rules text.';
 
         document.getElementById('inspectorImageContainer').innerHTML = `
-          <div class="tcg-aspect w-full">${renderCardVisualHtml(card, '', null, selectedFaceIdx)}</div>
+          <div class="tcg-aspect w-full">${renderCardVisualHtml(card, '', activeIdx, state.inspectorFaceIndex)}</div>
         `;
-        const faceControls = document.getElementById('inspectorCardFaceControls');
-        faceControls.classList.toggle('hidden', !faces || faces.length < 2);
-        faceControls.innerHTML = faces && faces.length > 1
-          ? faces.map((face, idx) => `<button type="button" data-inspector-face="${idx}" class="px-3 py-1.5 rounded-lg border text-xs font-bold cursor-pointer ${idx === selectedFaceIdx ? 'bg-starlight-300 text-abyss-950 border-starlight-300' : 'bg-abyss-950 text-starlight-100 border-abyss-600'}">${escapeXml(face.label || (idx === 0 ? 'Front' : `Side ${idx + 1}`))}</button>`).join('')
-          : '';
-        faceControls.querySelectorAll('[data-inspector-face]').forEach(button => {
-          button.addEventListener('click', () => {
-            selectedFaceIdx = Number(button.dataset.inspectorFace);
-            renderModalContents();
-          });
-        });
 
         // Bookmark button state inside Card Inspector
         const bmBtn = document.getElementById('inspectorBookmarkBtn');
@@ -6063,6 +6141,7 @@
               setDeckSpecificPreferredVersion(card, chosen);
               showToast(`Set preferred printing specifically for "${activeDeckObj.name}"`, 'gold');
             }
+            state.inspectorFaceIndex = 0;
             syncAllViews();
             renderModalContents();
           };
@@ -6079,6 +6158,7 @@
 
         verSelect.onchange = (e) => {
           setPreferredVersionForCard(card, Number(e.target.value));
+          state.inspectorFaceIndex = 0;
           syncAllViews();
           renderModalContents();
           showToast('Saved global default printing for this card', 'gold');
@@ -6102,76 +6182,88 @@
         galleryEl.querySelectorAll('[data-gallery-ver-idx]').forEach(btn => {
           btn.addEventListener('click', () => {
             setPreferredVersionForCard(card, Number(btn.dataset.galleryVerIdx));
+            state.inspectorFaceIndex = 0;
             syncAllViews();
             renderModalContents();
             showToast('Saved preferred printing as default for this card', 'gold');
           });
         });
 
-        const deckZoneBox = document.getElementById('inspectorDeckZoneBox');
+        const deckEntry = getDeckZoneCards(getActiveDeck()).find(c => c.id === card.id);
         const tagsSection = document.getElementById('inspectorDeckTagsSection');
-        const zoneActions = document.getElementById('inspectorDeckZoneActions');
-        if (getActiveDeck() && !state.sharedViewData) {
-          deckZoneBox.classList.remove('hidden');
-          zoneActions.innerHTML = DECK_ZONES.map(zone => {
-            const entry = getDeckZoneCards(getActiveDeck(), zone.id).find(item => item.id === card.id);
-            const quantity = Number(entry?.quantity) || 0;
-            return `
-              <div class="flex items-center justify-between gap-2">
-                <span class="text-[11px] text-starlight-100">${escapeXml(zone.label)} <span class="font-mono text-emerald-200">(${quantity})</span></span>
-                <div class="flex gap-1">
-                  <button type="button" data-zone-add="${zone.id}" class="px-2 py-1 rounded bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] font-bold cursor-pointer">Add</button>
-                  <button type="button" data-zone-remove="${zone.id}" ${quantity === 0 ? 'disabled' : ''} class="px-2 py-1 rounded bg-rose-900/70 hover:bg-rose-800 text-rose-100 text-[10px] font-bold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">Remove</button>
-                </div>
-              </div>
-            `;
-          }).join('');
-          zoneActions.querySelectorAll('[data-zone-add]').forEach(button => {
-            button.onclick = () => {
-              addCardToDeck(card, 1, button.dataset.zoneAdd);
-              renderModalContents();
-            };
-          });
-          zoneActions.querySelectorAll('[data-zone-remove]').forEach(button => {
-            button.onclick = () => {
-              removeOneCardFromZone(card.id, button.dataset.zoneRemove);
-              renderModalContents();
-            };
-          });
+        if (deckEntry && !state.sharedViewData) {
+          const moveBox = document.getElementById('inspectorMoveCardBox');
+          const moveSelect = document.getElementById('inspectorMoveZoneSelect');
+          moveBox.classList.remove('hidden');
+          moveSelect.innerHTML = DECK_ZONES.map(zone =>
+            `<option value="${zone.id}" ${zone.id === getCardZone(deckEntry) ? 'selected' : ''}>${escapeXml(zone.label)}</option>`
+          ).join('');
+          moveSelect.onchange = () => {
+            const fromZone = getCardZone(deckEntry);
+            if (moveCardToZone(deckEntry.id, fromZone, moveSelect.value)) {
+              modal.classList.add('hidden');
+              modal.classList.remove('flex');
+              showToast(`Moved "${card.name}" to ${DECK_ZONES.find(zone => zone.id === moveSelect.value)?.label}.`, 'success');
+            }
+          };
 
-          const deckEntry = getDeckZoneCards(getActiveDeck()).find(entry => entry.id === card.id);
-          if (deckEntry) {
-            tagsSection.classList.remove('hidden');
-            const tags = deckEntry.tags || [];
-            document.getElementById('inspectorTagsChips').innerHTML = tags.length > 0
-              ? tags.map(t => `
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-sky-500/20 border border-sky-400/50 text-sky-200 font-mono text-xs">
-                    #${escapeXml(t)}
-                    <button type="button" data-insp-del-tag="${escapeXml(t)}" class="hover:text-rose-300 cursor-pointer">×</button>
-                  </span>
-                `).join('')
-              : '<span class="text-[11px] text-slate-400">No tags assigned to this card yet.</span>';
-
-            document.querySelectorAll('[data-insp-del-tag]').forEach(btn => {
-              btn.addEventListener('click', () => {
-                removeTagFromDeckCard(deckEntry.id, btn.dataset.inspDelTag);
-                renderModalContents();
-              });
-            });
-
-            document.getElementById('inspectorAddTagBtn').onclick = () => {
-              const inp = document.getElementById('inspectorNewTagInput');
-              if (inp.value.trim()) {
-                addTagToDeckCard(deckEntry.id, inp.value.trim());
-                inp.value = '';
-                renderModalContents();
+          const roleSection = document.getElementById('inspectorRoleSection');
+          const roleSelect = document.getElementById('inspectorDeckRoleSelect');
+          roleSection.classList.remove('hidden');
+          const roles = [...DECK_ROLES];
+          if (deckEntry.deckRole && !roles.includes(deckEntry.deckRole)) roles.push(deckEntry.deckRole);
+          roleSelect.innerHTML = `<option value="">No special role</option>${roles.map(role =>
+            `<option value="${escapeXml(role)}">${escapeXml(role)}</option>`
+          ).join('')}<option value="__custom">Add custom role…</option>`;
+          roleSelect.value = deckEntry.deckRole || '';
+          roleSelect.onchange = async () => {
+            let role = roleSelect.value;
+            if (role === '__custom') {
+              role = (await showCustomDialog({
+                title: 'Assign a Custom Deck Role',
+                defaultValue: deckEntry.deckRole && !DECK_ROLES.includes(deckEntry.deckRole) ? deckEntry.deckRole : '',
+                confirmText: 'Assign'
+              }) || '').trim();
+              if (!role) {
+                roleSelect.value = deckEntry.deckRole || '';
+                return;
               }
-            };
-          } else {
-            tagsSection.classList.add('hidden');
-          }
+            }
+            deckEntry.deckRole = role;
+            saveAllStateToStorage();
+            syncAllViews();
+            renderModalContents();
+          };
+
+          tagsSection.classList.remove('hidden');
+          const tags = deckEntry.tags || [];
+          document.getElementById('inspectorTagsChips').innerHTML = tags.length > 0
+            ? tags.map(t => `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-sky-500/20 border border-sky-400/50 text-sky-200 font-mono text-xs">
+                  #${escapeXml(t)}
+                  <button type="button" data-insp-del-tag="${escapeXml(t)}" class="hover:text-rose-300 cursor-pointer">×</button>
+                </span>
+              `).join('')
+            : '<span class="text-[11px] text-slate-400">No tags assigned to this card yet.</span>';
+
+          document.querySelectorAll('[data-insp-del-tag]').forEach(btn => {
+            btn.addEventListener('click', () => {
+              removeTagFromDeckCard(deckEntry.id, btn.dataset.inspDelTag);
+              renderModalContents();
+            });
+          });
+
+          document.getElementById('inspectorAddTagBtn').onclick = () => {
+            const inp = document.getElementById('inspectorNewTagInput');
+            if (inp.value.trim()) {
+              addTagToDeckCard(deckEntry.id, inp.value.trim());
+              inp.value = '';
+              renderModalContents();
+            }
+          };
         } else {
-          deckZoneBox.classList.add('hidden');
+          document.getElementById('inspectorMoveCardBox').classList.add('hidden');
+          document.getElementById('inspectorRoleSection').classList.add('hidden');
           tagsSection.classList.add('hidden');
         }
 
@@ -6179,66 +6271,63 @@
         document.getElementById('inspectorFormatName').textContent = activeFmt.name;
         const currentPts = activeFmt.cardPointOverrides?.[card.id] !== undefined
           ? activeFmt.cardPointOverrides[card.id]
-          : 0;
+          : (activeFmt.baseCardPoints || 0);
         document.getElementById('inspectorPointInput').value = currentPts;
         const canEditPoints = activeFmt.id !== 'ouroboros' || isAdministrator();
         document.getElementById('inspectorPointInput').disabled = !canEditPoints;
         document.getElementById('inspectorSavePointBtn').disabled = !canEditPoints;
 
-        document.getElementById('inspectorSavePointBtn').onclick = async () => {
+        document.getElementById('inspectorSavePointBtn').onclick = () => {
           if (activeFmt.id === 'ouroboros' && !isAdministrator()) {
             showToast('Only administrators can edit Ouroboros.', 'error');
             return;
           }
           const val = Math.max(0, Number(document.getElementById('inspectorPointInput').value) || 0);
-          const previousOverrides = { ...(activeFmt.cardPointOverrides || {}) };
-          const previousEntries = { ...(activeFmt.cardPointEntries || {}) };
           if (!activeFmt.cardPointOverrides) activeFmt.cardPointOverrides = {};
-          if (!activeFmt.cardPointEntries) activeFmt.cardPointEntries = {};
           activeFmt.cardPointOverrides[card.id] = val;
-          activeFmt.cardPointEntries[card.id] = { id: card.id, name: card.name, sourceGame: card.sourceGame };
-          try {
-            await publishSharedFormat(activeFmt);
-          } catch (error) {
-            activeFmt.cardPointOverrides = previousOverrides;
-            activeFmt.cardPointEntries = previousEntries;
-            showToast(`Could not publish card points: ${error.message}`, 'error');
-            return;
-          }
+          if (!activeFmt.cardPointCards) activeFmt.cardPointCards = {};
+          const pointCardVersion = getActiveVersion(card);
+          activeFmt.cardPointCards[card.id] = {
+            id: card.id,
+            sourceGame: card.sourceGame,
+            name: card.name,
+            category: card.category || '',
+            rarity: card.rarity || '',
+            typeLine: card.typeLine || '',
+            statsText: card.statsText || '',
+            rulesText: card.rulesText || '',
+            nativeRoles: Array.isArray(card.nativeRoles) ? [...card.nativeRoles] : [],
+            selectedVersionIdx: 0,
+            versions: [{
+              id: pointCardVersion.id || getVersionPreferenceKey(pointCardVersion),
+              label: pointCardVersion.label || 'Assigned printing',
+              setInfo: pointCardVersion.setInfo || '',
+              year: pointCardVersion.year || card.originalYear || 0,
+              imageUrl: pointCardVersion.imageUrl || ''
+            }]
+          };
           saveAllStateToStorage();
           syncAllViews();
           showToast(`Assigned ${val} pts to ${card.name} in ${activeFmt.name}`, 'gold');
         };
 
-        const isManuallyBanned = (activeFmt.manualBannedCards || []).some(entry => entry.id === card.id);
-        const banButton = document.getElementById('inspectorBanToggleBtn');
-        document.getElementById('inspectorBanFormatName').textContent = activeFmt.name;
-        document.getElementById('inspectorBanStatus').textContent = isManuallyBanned ? 'This card is manually banned.' : 'This card is not manually banned.';
-        banButton.textContent = isManuallyBanned ? 'Unban Card' : 'Ban Card';
-        banButton.disabled = !isAdministrator();
-        banButton.classList.toggle('opacity-50', !isAdministrator());
-        banButton.onclick = async () => {
-          if (!isAdministrator()) {
-            showToast('Only administrators can change manual card bans.', 'error');
-            return;
-          }
-          const previousBans = [...(activeFmt.manualBannedCards || [])];
-          activeFmt.manualBannedCards = isManuallyBanned
-            ? previousBans.filter(entry => entry.id !== card.id)
-            : [...previousBans, { id: card.id, name: card.name, sourceGame: card.sourceGame }];
-          try {
-            await publishSharedFormat(activeFmt);
-          } catch (error) {
-            activeFmt.manualBannedCards = previousBans;
-            showToast(`Could not publish card ban: ${error.message}`, 'error');
-            return;
-          }
-          saveAllStateToStorage();
-          syncAllViews();
+        document.getElementById('inspectorQtyVal').textContent = String(deckEntry ? deckEntry.quantity : 0);
+
+        document.getElementById('inspectorPlusBtn').onclick = () => {
+          addCardToDeck(card, 1);
           renderModalContents();
-          showToast(isManuallyBanned ? `Unbanned ${card.name}` : `Banned ${card.name}`, 'success');
         };
 
+        document.getElementById('inspectorMinusBtn').onclick = () => {
+          updateCardQuantity(card.id, -1);
+          renderModalContents();
+        };
+
+        document.getElementById('inspectorRemoveBtn').onclick = () => {
+          removeCardCompletely(card.id);
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        };
       };
 
       renderModalContents();
@@ -6264,13 +6353,10 @@
         const gameSet = Array.from(new Set(deck.cards.map(c => c.sourceGame)));
 
         return `
-          <div data-vault-deck-id="${escapeXml(deck.id)}" class="vault-deck-slot bg-abyss-900 border ${isCurrent ? 'border-starlight-300 ring-1 ring-starlight-300/40' : 'border-abyss-700 hover:border-abyss-600'} rounded-2xl p-4 flex flex-col justify-between gap-3 shadow-lg transition">
+          <div draggable="true" data-vault-deck-id="${escapeXml(deck.id)}" title="Drag to reorder deckslots" class="vault-deck-slot cursor-grab active:cursor-grabbing bg-abyss-900 border ${isCurrent ? 'border-starlight-300 ring-1 ring-starlight-300/40' : 'border-abyss-700 hover:border-abyss-600'} rounded-2xl p-4 flex flex-col justify-between gap-3 shadow-lg transition">
             <div>
               <div class="flex items-center justify-between gap-2 mb-1.5">
-                <div class="flex items-center gap-2">
-                  <span class="font-mono text-[11px] text-slate-400">SLOT #${idx + 1}</span>
-                  <button type="button" draggable="true" data-vault-drag-handle="${escapeXml(deck.id)}" title="Drag this handle to reorder decks" aria-label="Drag to reorder deckslots" class="px-2 py-0.5 rounded bg-abyss-800 hover:bg-abyss-700 border border-abyss-600 text-slate-300 cursor-grab active:cursor-grabbing">↕</button>
-                </div>
+                <span class="font-mono text-[11px] text-slate-400">SLOT #${idx + 1}</span>
                 <div class="flex items-center gap-1">
                   ${deck.isPublic ? '<span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono text-[10px] font-bold">PUBLIC</span>' : ''}
                   ${isCurrent ? '<span class="px-2 py-0.5 rounded-full bg-starlight-300/20 text-starlight-300 font-mono text-[10px] font-bold">ACTIVE</span>' : ''}
@@ -6283,17 +6369,17 @@
                 ${gameSet.map(g => `<span class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-abyss-800 text-starlight-100">${escapeXml(g)}</span>`).join('')}
               </div>
 
-              <div class="mt-3 h-28 flex gap-2">
-                <div class="w-[68px] shrink-0 relative rounded-xl border border-amber-400/60 bg-abyss-950 overflow-hidden">
+              <div class="mt-3 h-24 bg-abyss-950 rounded-xl border border-abyss-800 overflow-hidden grid grid-cols-[1.08fr_0.92fr] gap-1 p-1">
+                <div class="min-w-0 min-h-0 rounded-lg overflow-hidden border border-starlight-300/40 bg-abyss-900">
                   ${exemplarCard
-                    ? `${renderCardVisualHtml(exemplarCard, '', getPreferredVersionIdx(exemplarCard, deck))}<span class="absolute bottom-0 inset-x-0 bg-amber-400/90 text-abyss-950 text-[8px] font-mono font-bold text-center">EXEMPLAR</span>`
-                    : '<span class="absolute inset-0 flex items-center justify-center text-[9px] text-slate-500 text-center px-1">NO EXEMPLAR</span>'
+                    ? renderCardVisualHtml(exemplarCard)
+                    : `<span class="h-full flex items-center justify-center text-[10px] text-slate-300 text-center px-1">${deck.cards.length > 0 ? 'Choose E for exemplar' : 'Empty Deckslot'}</span>`
                   }
                 </div>
-                <div class="flex-1 min-w-0 relative rounded-xl border border-abyss-800 bg-abyss-950 overflow-hidden">
+                <div class="min-w-0 min-h-0 grid grid-cols-4 grid-rows-4 gap-0.5">
                   ${sampleFeatureCards.length > 0
-                    ? renderCyclicalCardFan(sampleFeatureCards, 30)
-                    : `<span class="absolute inset-0 flex items-center justify-center text-[11px] text-slate-300">${deck.cards.length > 0 ? 'Choose S cards for sample fan' : 'Empty Deckslot'}</span>`
+                    ? sampleFeatureCards.map(card => `<div class="min-w-0 min-h-0 rounded-sm overflow-hidden border border-sky-300/50 bg-abyss-900" title="${escapeXml(card.name)}">${renderCardVisualHtml(card)}</div>`).join('')
+                    : `<span class="col-span-4 row-span-4 flex items-center justify-center text-[9px] text-slate-400 text-center">Sample cards</span>`
                   }
                 </div>
               </div>
@@ -6311,20 +6397,20 @@
         `;
       }).join('');
 
-      grid.querySelectorAll('[data-vault-drag-handle]').forEach(handle => {
-        handle.addEventListener('dragstart', (event) => {
-          event.dataTransfer.setData('text/plain', handle.dataset.vaultDragHandle);
+      grid.querySelectorAll('[data-vault-deck-id]').forEach(slot => {
+        slot.addEventListener('dragstart', (event) => {
+          if (event.target instanceof Element && event.target.closest('button')) {
+            event.preventDefault();
+            return;
+          }
+          event.dataTransfer.setData('text/plain', slot.dataset.vaultDeckId);
           event.dataTransfer.effectAllowed = 'move';
-          handle.closest('[data-vault-deck-id]').classList.add('opacity-50');
+          slot.classList.add('opacity-50');
         });
-        handle.addEventListener('dragend', () => {
-          const slot = handle.closest('[data-vault-deck-id]');
+        slot.addEventListener('dragend', () => {
           slot.classList.remove('opacity-50');
           grid.querySelectorAll('[data-vault-deck-id]').forEach(item => item.classList.remove('border-sky-400'));
         });
-      });
-
-      grid.querySelectorAll('[data-vault-deck-id]').forEach(slot => {
         slot.addEventListener('dragover', (event) => {
           event.preventDefault();
           event.dataTransfer.dropEffect = 'move';
@@ -6665,6 +6751,37 @@
         }
       });
 
+      document.getElementById('editUsernameBtn').addEventListener('click', async () => {
+        if (!state.currentUser) return;
+        const updatedUsername = await showCustomDialog({
+          title: 'Change Username',
+          message: 'This is the name shown to other players.',
+          defaultValue: state.username,
+          confirmText: 'Save Username'
+        });
+        if (typeof updatedUsername !== 'string') return;
+        const username = updatedUsername.trim();
+        if (!username || username.length > 32) {
+          showToast('Username must be between 1 and 32 characters.', 'error');
+          return;
+        }
+
+        try {
+          await setDoc(doc(db, 'users', state.currentUser.uid), {
+            username,
+            displayName: username,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+          await updateProfile(state.currentUser, { displayName: username });
+          state.username = username;
+          document.getElementById('authUserLabel').textContent = `${username}${isAdministrator() ? ' · Admin' : ''}`;
+          showToast('Username updated.', 'success');
+        } catch (error) {
+          console.error('Username update failed:', error);
+          showToast(`Could not update username: ${error.message}`, 'error');
+        }
+      });
+
       document.getElementById('authResetPasswordBtn').addEventListener('click', async () => {
         const email = document.getElementById('authEmailInput').value.trim();
         if (!email) {
@@ -6732,6 +6849,23 @@
         authModal.classList.remove('hidden');
         authModal.classList.add('flex');
       });
+
+      const compareModal = document.getElementById('compareListsModal');
+      const closeCompareModal = () => {
+        compareModal.classList.add('hidden');
+        compareModal.classList.remove('flex');
+      };
+      document.getElementById('closeCompareListsBtn').addEventListener('click', closeCompareModal);
+      compareModal.addEventListener('click', event => { if (event.target === compareModal) closeCompareModal(); });
+      document.getElementById('openCompareListsBtn').addEventListener('click', () => {
+        renderCompareListSelectors();
+        compareDeckLists();
+        compareModal.classList.remove('hidden');
+        compareModal.classList.add('flex');
+      });
+      document.getElementById('runCompareListsBtn').addEventListener('click', compareDeckLists);
+      document.getElementById('compareListA').addEventListener('change', compareDeckLists);
+      document.getElementById('compareListB').addEventListener('change', compareDeckLists);
 
       document.getElementById('toggleDeckPublicBtn').addEventListener('click', async () => {
         const url = await publishActiveDeckToCloud();
@@ -6968,9 +7102,7 @@
         executeMultiverseSearch();
       });
 
-      document.getElementById('searchLoadMoreBtn').addEventListener('click', async () => {
-        const nextPage = state.searchResults.slice(state.searchVisibleCount, state.searchVisibleCount + 30);
-        await Promise.all(nextPage.filter(card => card.sourceGame === 'MTG').map(ensureOriginalSearchPrinting));
+      document.getElementById('searchLoadMoreBtn').addEventListener('click', () => {
         state.searchVisibleCount += 30;
         renderSearchResults();
       });
@@ -7062,7 +7194,6 @@
 
       document.getElementById('jumpToFormatsEditorBtn').addEventListener('click', () => {
         state.selectedFormatEditorId = state.activeFormatId;
-        state.formatPageOpen = true;
         renderFormatsStudio();
         switchTopPage('formats');
       });
@@ -7076,7 +7207,6 @@
         newFmt.isCoreProtected = false;
         state.formats.push(newFmt);
         state.selectedFormatEditorId = newFmt.id;
-        state.formatPageOpen = true;
         state.activeFormatId = newFmt.id;
         saveAllStateToStorage();
         syncAllViews();
@@ -7198,7 +7328,8 @@
           formats: state.formats,
           customCardPool: state.customCardPool,
           preferredVersions: state.preferredVersions,
-          orientationMetronSettings: state.orientationMetronSettings
+          customCardVersions: state.customCardVersions,
+          bookmarkedCards: state.bookmarkedCards
         }, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -7230,9 +7361,8 @@
               }
               if (Array.isArray(imported.customCardPool)) state.customCardPool = imported.customCardPool;
               if (imported.preferredVersions) state.preferredVersions = imported.preferredVersions;
-              if (isAdministrator() && imported.orientationMetronSettings && typeof imported.orientationMetronSettings === 'object' && !Array.isArray(imported.orientationMetronSettings)) {
-                state.orientationMetronSettings = imported.orientationMetronSettings;
-              }
+              if (imported.customCardVersions) state.customCardVersions = imported.customCardVersions;
+              if (Array.isArray(imported.bookmarkedCards)) state.bookmarkedCards = imported.bookmarkedCards;
               saveAllStateToStorage();
               syncAllViews();
               closeExport();
